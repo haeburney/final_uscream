@@ -23,9 +23,12 @@ public class Store {
 	@Id
 	private String storeid ;
 	private String storebranch; 
+	private float x; 
+	private float y; 
 	
 	
 	private static int num = 1;
+	
 	
 	@PrePersist
 	public void makeid(){
