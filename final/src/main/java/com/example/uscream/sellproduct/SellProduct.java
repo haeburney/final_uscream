@@ -1,10 +1,9 @@
-package com.example.uscream.store;
+package com.example.uscream.sellproduct;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,28 +12,17 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Setter
 @Getter
-@ToString
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class Store {
+@NoArgsConstructor
+@ToString
+public class SellProduct {
 	
 	@Id
-	private String storeid ;
-	private String storebranch; 
-	private float x; 
-	private float y; 
-	
-	
-	private static int num = 1;
-	
-	
-	@PrePersist
-	public void makeid(){
-		storeid = storebranch+"_"+num ;
-		num = num +1;
-	}
-	
-	
+	@SequenceGenerator(name="seq_sellproduct",sequenceName = "seq_sellproduct",allocationSize = 1)
+	@GeneratedValue(strategy =GenerationType.SEQUENCE, generator ="seq_sellproduct")
+	private int sellproductnum;
+	private String sellproductname;
+	private int sellproductprice;
 }

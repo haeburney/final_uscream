@@ -1,3 +1,4 @@
+
 package com.example.uscream.selling;
 
 import java.util.ArrayList;
@@ -50,3 +51,4 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 
 
 }
+
