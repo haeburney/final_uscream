@@ -34,7 +34,7 @@ public class MsgDto {
 	private MultipartFile mimg;
 	
 	private int reply;			
-	private String mark;		
+	private boolean mark;		
 	private boolean tempcheck;
 	private boolean readcheck;		
 	private boolean delcheck;		

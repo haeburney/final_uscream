@@ -54,7 +54,7 @@ public class Msg {
 	
 	@Column(columnDefinition = "integer default 0")
 	private int reply;			// 답장
-	private String mark;			// 즐겨찾기 확인용
+	private boolean mark;			// 즐겨찾기 확인용
 	
 	@Column(columnDefinition = "boolean default false")
 	private boolean tempcheck;		// 임시보관 
