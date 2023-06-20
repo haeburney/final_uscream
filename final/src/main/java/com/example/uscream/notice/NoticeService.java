@@ -37,6 +37,15 @@ public class NoticeService {
 		return list2;
 	}
 	
+	//아이디로 검색
+	public NoticeDto getById(int noticenum) {
+		Notice n = dao.findById(noticenum).orElse(null);
+		if(n == null) {
+			return null;
+		}
+		return new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCategory(), n.getImg1(), n.getImg2(), n.getImg3());
+	}
+	
 	//카테고리로 검색
 	public ArrayList<NoticeDto> getByCategory(int category) {
 		ArrayList<Notice> list = dao.findByCategory(category);
