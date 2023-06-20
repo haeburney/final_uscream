@@ -1,7 +1,7 @@
 package com.example.uscream.netsales;
 
 import com.example.uscream.order.Order;
-import com.example.uscream.payroll.Payroll;
+import com.example.uscream.monthlypay.monthlypay;
 import com.example.uscream.selling.Selling;
 import com.example.uscream.store.Store;
 
@@ -35,8 +35,8 @@ public class Netsales {
 	@JoinColumn(name="selling", nullable=false)
 	private Selling selling;
 	
-	@JoinColumn(name="payroll", nullable=false)
-	private Payroll payroll;
+	@JoinColumn(name="monthlypay", nullable=false)
+	private Monthlypay monthlypay;
 	
 	@JoinColumn(name="order", nullable=false)
 	private Order order;

@@ -59,7 +59,7 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 	
 	
 	// 일간 매출 TOP3 지점 (매출액, 지점명 함께 표출) 
-	@Query(value="select sellingdate, store.storebranch , totalprice"
+	@Query(value="select sellingdate, store.storename , totalprice"
 			+ "from (select sellingdate, storeid, sum(sellingprice) as totalprice,"
 			+ "row_number() over (partition by sellingdate order by sum(sellingprice) desc) as rank"
 			+ "from selling"
@@ -70,7 +70,7 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 	
 	
 	// 월간 매출 TOP3 지점 (매출액, 지점명 함께 표출)
-	@Query(value="SELECT sellingmonth, store.storebranch, totalprice " +
+	@Query(value="SELECT sellingmonth, store.storename, totalprice " +
 	        "FROM (SELECT EXTRACT(MONTH FROM sellingdate) AS sellingmonth, storeid, " +
 	        "             SUM(sellingprice) AS totalprice, " +
 	        "             ROW_NUMBER() OVER (PARTITION BY EXTRACT(MONTH FROM sellingdate) " +
