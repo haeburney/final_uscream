@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.uscream.account.Account;
+import com.example.uscream.store.Store;
 
 
 
@@ -49,7 +50,7 @@ public class MsgService {
 	// 발신자로 검색 
 	public ArrayList<MsgDto> getByName(String name) {
 		
-		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySenderLike(name);
+		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySenderLike("%"+name+"%");
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
 		
 		for (Msg msg : msglist) {
@@ -153,20 +154,20 @@ public class MsgService {
 	}
 	
 	// 수신자로 완전 삭제
-	public void deleteAllByReceiver(Account receiver) {
+	public void deleteAllByReceiver(Store receiver) {
 		dao.deleteByReceiver(receiver);
 	}
 	
 	
 	//=========================================================
 	// 전체 메일 수
-	public long countAllBySenderAndReceiver(Account account){
-		return dao.countAll(account);
+	public long countAllBySenderAndReceiver(Store store){
+		return dao.countAll(store);
 	}
 	
 	// 전체 메일 중에서 읽지 않은 메일 수
-	public long countAllBySenderAndReceiverAndRead(Account account){
-		return dao.countAllRead(account);
+	public long countAllBySenderAndReceiverAndRead(Store store){
+		return dao.countAllRead(store);
 	}
 	
 	//=========================================================
@@ -174,13 +175,58 @@ public class MsgService {
 	
 	//=========================================================
 	// 즐찾에 있는 메일 전체 수
-	public long countBy(Account account){
-		return dao.countByDelcheck(account);
+	public long countBy(Store store){
+		return dao.countByMark(store);
 	}
 	
 	// 즐찾에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByDelRead(Account account){
-		return dao.countByDelRead(account);
+	public long countByDelRead(Store store){
+		return dao.countByDelRead(store);
+	}
+	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
+	
+	//=========================================================
+	
+	
+	
+	//=========================================================
+	// 받은 메일함에 있는 메일 전체 수
+	public long countAll(Store store){
+		return dao.countAll(store);
+	}
+	
+	// 받은 메일함에 있는 메일 중에서 읽지 않은 메일 수
+	public long countAllRead(Store store){
+		return dao.countAllRead(store);
+	}
+	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
+	
+	//=========================================================
+	
+	//=========================================================
+	// 보낸 메일에 있는 메일 전체 수
+	public long countByVender(Store store){
+		return dao.countByVender(store);
+	}
+	
+	// 보낸 메일에 있는 메일 중에서 읽지 않은 메일 수
+	public long countByVenderTemp(Store store){
+		return dao.countByVenderTemp(store);
+	}
+	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
+	
+	//=========================================================
+
+	
+	//=========================================================
+	// 임시 보관에 있는 메일 전체 수
+	public long countByD(Store store){
+		return dao.countByTemp(store);
+	}
+	
+	// 임시 보관에 있는 메일 중에서 읽지 않은 메일 수
+	public long countByDelRe(Store store){
+		return dao.countByTempRead(store);
 	}
 	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	
@@ -189,28 +235,13 @@ public class MsgService {
 	
 	//=========================================================
 	// 휴지통에 있는 메일 전체 수
-	public long countByDel(Account account){
-		return dao.countByDelcheck(account);
+	public long countByDel(Store store){
+		return dao.countByDelcheck(store);
 	}
 	
 	// 휴지통에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByDelRead(Account account){
-		return dao.countByDelRead(account);
-	}
-	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
-	
-	//=========================================================
-	
-	
-	//=========================================================
-	// 휴지통에 있는 메일 전체 수
-	public long countByDel(Account account){
-		return dao.countByDelcheck(account);
-	}
-	
-	// 휴지통에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByDelRead(Account account){
-		return dao.countByDelRead(account);
+	public long countBybyDelReads(Store store){
+		return dao.countByDelRead(store);
 	}
 	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	

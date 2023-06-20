@@ -6,7 +6,7 @@ import java.util.Date;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.example.uscream.account.Account;
+import com.example.uscream.store.Store;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,11 +37,11 @@ public class Msg {
 	
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Account sender;			// 발신자
+	private Store sender;			// 발신자
 	
 	@ManyToOne
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Account receiver;		// 수신자
+	private Store receiver;		// 수신자
 	
 	private String title;
 	private Date date;
@@ -54,8 +54,8 @@ public class Msg {
 	
 	@Column(columnDefinition = "integer default 0")
 	private int reply;			// 답장
+	@Column(columnDefinition = "boolean default false")
 	private boolean mark;			// 즐겨찾기 확인용
-	
 	@Column(columnDefinition = "boolean default false")
 	private boolean tempcheck;		// 임시보관 
 	@Column(columnDefinition = "boolean default false")
