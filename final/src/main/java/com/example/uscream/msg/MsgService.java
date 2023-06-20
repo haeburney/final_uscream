@@ -24,11 +24,11 @@ public class MsgService {
 	public MsgDto save(MsgDto msgdto) {
 		
 		Msg msg = dao.save(new Msg(msgdto.getMsgnum(),msgdto.getSender(),msgdto.getReceiver(),msgdto.getTitle(),msgdto.getDate(),
-				msgdto.getContent(),msgdto.getFile(),msgdto.getImg(),msgdto.getReply(),msgdto.getMark(),msgdto.isTempcheck(),
+				msgdto.getContent(),msgdto.getFile(),msgdto.getImg(),msgdto.getReply(),msgdto.isMark(),msgdto.isTempcheck(),
 				msgdto.isReadcheck(),msgdto.isDelcheck())); 
 		
 		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-				msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.getMark(),msg.isTempcheck(),
+				msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 				msg.isReadcheck(),msg.isDelcheck());
 	}
 	
@@ -42,7 +42,7 @@ public class MsgService {
 		}
 		
 		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-				msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.getMark(),msg.isTempcheck(),
+				msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 				msg.isReadcheck(),msg.isDelcheck());
 	}
 	
@@ -54,7 +54,7 @@ public class MsgService {
 		
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.getMark(),msg.isTempcheck(),
+					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 					msg.isReadcheck(),msg.isDelcheck()));
 		}
 		return dtolist;
@@ -67,7 +67,7 @@ public class MsgService {
 			
 			for (Msg msg : msglist) {
 				dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-						msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.getMark(),msg.isTempcheck(),
+						msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 						msg.isReadcheck(),msg.isDelcheck()));
 			}
 			return dtolist;
@@ -81,7 +81,7 @@ public class MsgService {
 			
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.getMark(),msg.isTempcheck(),
+					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 					msg.isReadcheck(),msg.isDelcheck()));
 		}
 		return dtolist;
@@ -96,7 +96,7 @@ public class MsgService {
 		
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.getMark(),msg.isTempcheck(),
+					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 					msg.isReadcheck(),msg.isDelcheck()));
 		}
 		return dtolist;
@@ -159,14 +159,58 @@ public class MsgService {
 	
 	
 	//=========================================================
-	// 휴지통에 있는 메일 전체 검색
-	public int countByDel(Account account){
+	// 전체 메일 수
+	public long countAllBySenderAndReceiver(Account account){
+		return dao.countAll(account);
+	}
+	
+	// 전체 메일 중에서 읽지 않은 메일 수
+	public long countAllBySenderAndReceiverAndRead(Account account){
+		return dao.countAllRead(account);
+	}
+	
+	//=========================================================
+	
+	
+	//=========================================================
+	// 즐찾에 있는 메일 전체 수
+	public long countBy(Account account){
 		return dao.countByDelcheck(account);
 	}
 	
-	// 휴지통에 있는 메일 중에서 읽지 않은 메일 검색
-	public int countByDelRead(Account account){
-		return dao.countByDelandRead(account);
+	// 즐찾에 있는 메일 중에서 읽지 않은 메일 수
+	public long countByDelRead(Account account){
+		return dao.countByDelRead(account);
+	}
+	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
+	
+	//=========================================================
+	
+	
+	//=========================================================
+	// 휴지통에 있는 메일 전체 수
+	public long countByDel(Account account){
+		return dao.countByDelcheck(account);
+	}
+	
+	// 휴지통에 있는 메일 중에서 읽지 않은 메일 수
+	public long countByDelRead(Account account){
+		return dao.countByDelRead(account);
+	}
+	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
+	
+	//=========================================================
+	
+	
+	//=========================================================
+	// 휴지통에 있는 메일 전체 수
+	public long countByDel(Account account){
+		return dao.countByDelcheck(account);
+	}
+	
+	// 휴지통에 있는 메일 중에서 읽지 않은 메일 수
+	public long countByDelRead(Account account){
+		return dao.countByDelRead(account);
 	}
 	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	
@@ -175,12 +219,6 @@ public class MsgService {
 	
 	
 	
-	
-	
-	// 임시보관 메일 검색
-	public int countByTemp(Account account){
-		return dao.countByTempcheck(account);
-	}
 	
 	 
 	
