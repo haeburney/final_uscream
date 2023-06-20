@@ -34,9 +34,12 @@ public class Notice {
 	
 	private Date wdate;
 	@PrePersist
-	public void preprocess() {
+	public void sysdate() {
 		wdate = new Date(); //현재 날짜 생성
 	}
+	
+	@Column(columnDefinition = "integer default 0") //조회수 기본값=0
+	private int cnt;
 	
 	@Column(nullable=true)
 	private String img1;
@@ -46,4 +49,5 @@ public class Notice {
 	
 	@Column(nullable=true)
 	private String img3;
+	
 }

@@ -18,8 +18,9 @@ public class NoticeDto {
 	private int noticenum;
 	private int category;
 	private String title;
-	private String Content;
+	private String content;
 	private Date wdate;
+	private int cnt;
 	
 	private String img1;
 	private String img2;
