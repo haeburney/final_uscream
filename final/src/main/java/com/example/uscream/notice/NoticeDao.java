@@ -15,7 +15,7 @@ public interface NoticeDao extends JpaRepository<Notice, Integer> {
 	//조회수 증가
 	@Transactional
 	@Modifying
-	@Query(value="update data set cnt=cnt+1 where noticenum=:noticenum" , nativeQuery=true)
+	@Query(value="update data set cnt=cnt+1 where noticenum=:num" , nativeQuery=true)
 	void updateCnt(@Param("noticenum") int noticenum);
 	
 	
