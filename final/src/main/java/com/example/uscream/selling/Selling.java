@@ -1,5 +1,3 @@
-
-
 package com.example.uscream.selling;
 
 import java.util.Date;
@@ -29,27 +27,18 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Selling {
 	
-	/*
-	 판매내역 Selling 
-	 -(시퀀스) 넘버(pk) 
-	 -판매상품 종류(fk) 
-	 -지점 아이디(fk) => 지점 테이블로 변경
-	 -판매 날짜 
-	 -판매 수량 
-	 -결제 금액
-	 */
-	
 	@Id
-	@SequenceGenerator(name="seq_gen", sequenceName="seq_selling", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_selling")
+	@SequenceGenerator(name = "seq_selling", sequenceName = "seq_selling", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_selling") 
 	private int sellingnum;
 	
+	@ManyToOne
 	@JoinColumn(name="sellproduct", nullable=false)
 	private SellProduct sellproduct;
 	
 	@ManyToOne
 	@JoinColumn(name="store", nullable=false)
-	private Store store;	// 매출 top3 집계 시 지점명도 필요해서 store 테이블 전체를 가져와야할 듯
+	private Store store;	
 	
 	private Date sellingdate;
 	private int sellingcnt;
