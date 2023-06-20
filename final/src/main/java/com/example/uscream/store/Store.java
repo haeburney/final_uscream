@@ -22,19 +22,11 @@ public class Store {
 	
 	@Id
 	private String storeid ;
-	private String storebranch; 
+	private String storename;
+	private String pwd;
+	private String managername;
+	private int accounttype;	//본사: 1, 점주:2
 	private float x; 
-	private float y; 
-	
-	
-	private static int num = 1;
-	
-	
-	@PrePersist
-	public void makeid(){
-		storeid = storebranch+"_"+num ;
-		num = num +1;
-	}
-	
+	private float y;
 	
 }
