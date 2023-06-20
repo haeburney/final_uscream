@@ -15,7 +15,7 @@ public class StoreService {
 	private ArrayList<StoreDto> change(ArrayList<Store> list){
 		ArrayList<StoreDto> slist = new ArrayList<StoreDto>();
 		for(Store entity:list) {
-			slist.add(new StoreDto(entity.getStoreid(),entity.getManagername(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getX(),entity.getY()));
+			slist.add(new StoreDto(entity.getStoreid(),entity.getManagername(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getPath(),entity.getX(),entity.getY(),null));
 		}
 		return slist;
 	}
@@ -23,8 +23,8 @@ public class StoreService {
 	
 	//지점(아이디) 생성, 수정
 		public StoreDto save(StoreDto dto) {
-		Store entity = dao.save(new Store(dto.getStoreid(), dto.getStorename(), dto.getPwd(), dto.getManagername(), dto.getAccounttype(), dto.getX(), dto.getY()));
-		return new StoreDto(entity.getStoreid(), entity.getStorename(), entity.getPwd(), entity.getManagername(),entity.getAccounttype(), dto.getX(),entity.getY());
+		Store entity = dao.save(new Store(dto.getStoreid(), dto.getStorename(), dto.getPwd(), dto.getManagername(), dto.getAccounttype(),dto.getPath(), dto.getX(), dto.getY()));
+		return new StoreDto(entity.getStoreid(), entity.getStorename(), entity.getPwd(), entity.getManagername(),entity.getAccounttype(), entity.getPath(),entity.getX(),entity.getY(),null);
 	}
 	
 	
@@ -46,7 +46,7 @@ public class StoreService {
 		ArrayList<Store> entity = dao.findByStorenameLike("%"+storename+"%");
 		ArrayList<StoreDto> slist = new ArrayList<StoreDto>();
 		for(Store s: entity) {
-			slist.add(new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getX(),s.getY()));
+			slist.add(new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getPath(),s.getX(),s.getY(),null));
 		}		
 		return slist;
 	}

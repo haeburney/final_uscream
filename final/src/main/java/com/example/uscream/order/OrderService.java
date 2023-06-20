@@ -53,7 +53,7 @@ public class OrderService {
 	}
 	
 	public ArrayList<OrderDto> getStoreOrder(String ordernum, String storeid){
-		Store store = new Store(storeid,"","","",0,0,0);
+		Store store = new Store(storeid,"","","",0,"", 0,0);
 		ArrayList<Order> list = dao.findByOrdernumAndStoreid(ordernum, store);
 		return change(list);
 		
