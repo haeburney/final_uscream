@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.uscream.account.Account;
+import com.example.uscream.store.Store;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +21,8 @@ import lombok.ToString;
 public class MsgDto {
 	
 	private int msgnum;
-	private Account sender;			
-	private Account receiver;		
+	private Store sender;			
+	private Store receiver;		
 	
 	private String title;
 	private Date date;

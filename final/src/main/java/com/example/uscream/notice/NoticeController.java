@@ -1,17 +1,24 @@
 package com.example.uscream.notice;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -70,14 +77,18 @@ public class NoticeController {
 	}
 	
 	//수정
-	@PatchMapping()
-	public Map edit(NoticeDto dto) {
-		service.save(dto);
-		Map map = new HashMap<>();
-		map.put("Notice", dto);
-		
-		return map;
-	}
+	 @PutMapping("")
+	   public Map edit(int noticenum, NoticeDto dto) {
+	      NoticeDto n = service.getById(noticenum);
+	      dto.setCategory(n.getCategory());
+	      dto.setTitle(n.getTitle());
+	      dto.setContent(n.getContent());
+	      NoticeDto n2 = service.save(dto);
+	      Map map = new HashMap();
+	      map.put("Notice", n2);
+	      
+	      return map;
+	   }
 	
 	//삭제
 	@DeleteMapping("/{num}")
@@ -92,6 +103,39 @@ public class NoticeController {
 		map.put("flag", flag);
 		
 		return map;
+	}
+	
+	//이미지
+	@GetMapping("/imgs/{noticenum}/{idx}")  
+	public ResponseEntity<byte[]> read_img(@PathVariable("noticenum") int noticenum, @PathVariable("idx") int idx) {
+		String fname = "";
+		NoticeDto dto = service.getById(noticenum);  
+		switch(idx) {
+		case 1:
+			fname = dto.getImg1(); 
+			break;
+		case 2:
+			fname = dto.getImg2();
+			break;
+		case 3:
+			fname = dto.getImg3();
+			break;
+		default:
+			return null;
+		}
+		System.out.println(fname);
+		
+		File f = new File(fname);
+		HttpHeaders header = new HttpHeaders(); 
+		ResponseEntity<byte[]> result = null; 
+		try {
+			header.add("Content-Type", Files.probeContentType(f.toPath()));
+			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(f),
+					header, HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 }

@@ -4,7 +4,7 @@ package com.example.uscream.selling;
 
 import java.util.Date;
 
-import com.example.uscream.sellproduct.Sellproduct;
+import com.example.uscream.sellproduct.SellProduct;
 import com.example.uscream.store.Store;
 
 import jakarta.persistence.Entity;
@@ -45,7 +45,7 @@ public class Selling {
 	private int sellingnum;
 	
 	@JoinColumn(name="sellproduct", nullable=false)
-	private Sellproduct sellproduct;
+	private SellProduct sellproduct;
 	
 	@ManyToOne
 	@JoinColumn(name="store", nullable=false)
@@ -57,7 +57,7 @@ public class Selling {
 	
 	@PrePersist	// sellingprice 자동으로 구하는 쿼리: sell product 테이블의 상품정보(판매가)를 가져와서 sellingcnt(수량)을 곱함
 	public void calculateSellingPrice() {
-		int sellproductprice = getSellproductPriceByNum(sellproductnum);
+		int sellproductprice = sellproduct.getSellproductprice();
 		sellingprice = sellproductprice * sellingcnt;
 	}
 	
