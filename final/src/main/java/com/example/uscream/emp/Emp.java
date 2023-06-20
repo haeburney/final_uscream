@@ -5,6 +5,7 @@ import java.util.Date;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.example.uscream.grade.Grade;
 import com.example.uscream.store.Store;
 
 import jakarta.persistence.Entity;
@@ -35,12 +36,15 @@ public class Emp {
 	@ManyToOne
 	@JoinColumn(name="storeid", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
-	private Store storeid;	// 지점 번호
+	private Store storeid;	// 지점 아이디
 	
 	private String empname;	// 직원 이름
 	private Date joindate;	// 입사 날짜
-	private int salary;		// 급여
-	private int grade;		// 등급
+	
+	@ManyToOne
+	@JoinColumn(name="gnum", nullable=false)
+	@OnDelete(action=OnDeleteAction.CASCADE)
+	private Grade grade;		// 등급
 	private String color;	// 컬러 
 	
 }
