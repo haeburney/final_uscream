@@ -1,5 +1,6 @@
-package com.example.uscream.order;
+package com.example.uscream.porder;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.hibernate.annotations.OnDelete;
@@ -29,7 +30,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Order {
+public class Porder {
 
 	@Id
 	@SequenceGenerator(name="seq_order",sequenceName = "seq_order",allocationSize = 1)
@@ -58,19 +59,16 @@ public class Order {
 	
 	
 	@PrePersist
-	public String sysdate() {
+	public void sysdate() {
 		orderdate = new Date();
 		confirmdate = null;
-		return orderdate+"";
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyymmdd");
+		Date sysdate = new Date();
+		String date = simpleDate.format(sysdate);
+		ordernum = date + storeid.getStoreid();
 	}
 	
-	@PrePersist
-	public void oredernum() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(sysdate());
-		sb.append(storeid.getStoreid());
-		ordernum = sb.toString();
-	}
+	
 	
 	
 }

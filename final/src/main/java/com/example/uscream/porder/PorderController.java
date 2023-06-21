@@ -1,4 +1,4 @@
-package com.example.uscream.order;
+package com.example.uscream.porder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/orders")
-public class OrderController {
+public class PorderController {
 	
 	@Autowired
-	private OrderService service;
+	private PorderService service;
 	
 	@PostMapping()
-	public Map order(OrderDto dto,@PathVariable("num") int num) {
-		OrderDto d = service.save(dto);
+	public Map order(PorderDto dto,@PathVariable("num") int num) {
+		PorderDto d = service.save(dto);
 		Map map = new HashMap();
 		map.put("order",d);
 		
@@ -32,7 +32,7 @@ public class OrderController {
 	
 	@GetMapping()
 	public Map getAll() {
-		ArrayList<OrderDto> dlist = service.getAll();
+		ArrayList<PorderDto> dlist = service.getAll();
 		Map map = new HashMap();
 		map.put("orderlist", dlist);
 		return map;
@@ -41,7 +41,7 @@ public class OrderController {
 	
 	@GetMapping("/detail/{ordernum}")
 	public Map getByOrdernum(@PathVariable("ordernum") String ordernum) {
-		ArrayList<OrderDto> dlist = service.getByOrderNum(ordernum);
+		ArrayList<PorderDto> dlist = service.getByOrderNum(ordernum);
 		Map map = new HashMap();
 		map.put("Storeoder",dlist);
 		return map;
@@ -49,15 +49,15 @@ public class OrderController {
 	}
 	
 	@PatchMapping()
-	public Map editOrder(int tempnum ,OrderDto dto) {
-		OrderDto d = service.getById(tempnum);
+	public Map editOrder(int tempnum ,PorderDto dto) {
+		PorderDto d = service.getById(tempnum);
 		dto.setTempnum(d.getTempnum());
 		dto.setStoreid(d.getStoreid());
 		dto.setProduct(d.getProduct());
 		dto.setOrderdate(d.getOrderdate());
 		dto.setConfirmdate(d.getConfirmdate());
 		dto.setConfirm(d.isConfirm());
-		OrderDto d2 = service.save(dto);
+		PorderDto d2 = service.save(dto);
 		Map map = new HashMap();
 		map.put("order", d2);
 		return map;
