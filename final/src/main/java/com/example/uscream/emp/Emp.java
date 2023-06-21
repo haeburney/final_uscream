@@ -36,13 +36,13 @@ public class Emp {
 	@ManyToOne
 	@JoinColumn(name="storeid", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
-	private Store storeid;	// 지점 아이디
+	private Store storeid;	// 지점
 	
 	private String empname;	// 직원 이름
 	private Date joindate;	// 입사 날짜
 	
 	@ManyToOne
-	@JoinColumn(name="gnum", nullable=false)
+	@JoinColumn(name="grade", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Grade grade;		// 등급
 	private String color;	// 컬러 
