@@ -1,4 +1,4 @@
-package com.example.uscream.order;
+package com.example.uscream.porder;
 
 import java.util.Date;
 
@@ -16,7 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderDto {
+public class PorderDto {
 	private int tempnum;
 	private String ordernum;
 	private Store storeid;
