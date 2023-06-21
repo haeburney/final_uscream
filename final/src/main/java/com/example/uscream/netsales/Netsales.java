@@ -1,7 +1,7 @@
 package com.example.uscream.netsales;
 
 import com.example.uscream.monthlypay.Monthlypay;
-import com.example.uscream.order.Order;
+import com.example.uscream.porder.Porder;
 import com.example.uscream.selling.Selling;
 import com.example.uscream.store.Store;
 
@@ -44,6 +44,6 @@ public class Netsales {
 	
 	@ManyToOne
 	@JoinColumn(name="order", nullable=false)
-	private Order order;
+	private Porder order;
 
 }
