@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,15 +30,19 @@ public class Netsales {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_netsales")
 	private int netsalesnum;
 	
+	@ManyToOne
 	@JoinColumn(name="storeid", nullable=false)
 	private Store store;
 	
+	@ManyToOne
 	@JoinColumn(name="selling", nullable=false)
 	private Selling selling;
 	
+	@ManyToOne
 	@JoinColumn(name="monthlypay", nullable=false)
 	private Monthlypay monthlypay;
 	
+	@ManyToOne
 	@JoinColumn(name="order", nullable=false)
 	private Order order;
 
