@@ -43,7 +43,7 @@ public class Netsales {
 	private Monthlypay monthlypay;
 	
 	@ManyToOne
-	@JoinColumn(name="order", nullable=false)
-	private Porder order;
+	@JoinColumn(name="porder", nullable=false)
+	private Porder porder;
 
 }
