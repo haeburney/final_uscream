@@ -8,7 +8,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.example.uscream.emp.Emp;
 import com.example.uscream.store.Store;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,28 +20,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
 @Setter
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Schedule {
-	@Id
-	@SequenceGenerator(name="seq_schedule", sequenceName="seq_schedule", allocationSize =1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_schedule")
+public class ScheduleDto {
 	private int snum;
-	
-	@ManyToOne
-	@JoinColumn(name="emp", nullable=false)
-	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Emp emp;
-	
-	@ManyToOne
-	@JoinColumn(name="storeid", nullable=false)
-	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Store storeid;
-	
 	private Date sdate;
 	private Date starttime;
 	private Date endtime;
