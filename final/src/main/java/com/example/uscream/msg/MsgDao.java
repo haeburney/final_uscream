@@ -1,6 +1,5 @@
 package com.example.uscream.msg;
-	
-	
+
 import java.util.ArrayList;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,17 +9,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.uscream.account.Account;
 import com.example.uscream.store.Store;
-	
+
+
+
 @Repository
 public interface MsgDao extends JpaRepository<Msg, Integer> {
-	ArrayList<Msg> findAllOrderByDateAsc();
-	ArrayList<Msg> findBySenderLike(String name);	//보낸 사람으로 검색
-	ArrayList<Msg> findByReceiver(String name);		//내가 받은 메일 검색 
+	ArrayList<Msg> findBySenderLike(Store store);	//보낸 사람으로 검색 (받은 메세지함에서 검색용)
+	ArrayList<Msg> findBySender(Store store);		//보낸 사람으로 검색 (내가 보낸 메세지)
+	ArrayList<Msg> findByReceiver(Store store);		//내가 받은 메일 검색 
 	ArrayList<Msg> findByTitleLike(String title);
-	ArrayList<Msg> findAll(String title);
-	ArrayList<Msg> findByReceiverAndSender(Store store);	
 	
 	@Modifying
 	@Transactional
@@ -50,8 +48,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	//보낸 메일 중 읽지 않은 메시지 
 	@Query(value="select count(*)  from msg where tempcheck =1 sender =:Store ", nativeQuery=true)
 	long countByVenderTemp(@Param("Store") Store store);
-	
-	
+			
 	// 임시보관 전체
 	@Query(value="select count(*)  from msg where tempcheck = 1 and sender = :Store", nativeQuery=true)
 	long countByTemp(@Param("Store") Store store);
