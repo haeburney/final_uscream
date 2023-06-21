@@ -31,15 +31,15 @@ import lombok.ToString;
 public class Voc {
 
 	@Id
-	@SequenceGenerator(name="seq_vocnum", sequenceName="seq_vocnum", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_vocnum")
+	@SequenceGenerator(name="seq_voc", sequenceName="seq_voc", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_voc")
 	private int vocnum;
 	
 	private int category;
 	private String title;
 	private String content;
 	private String storecomment; //댓글
-	private int check; //본사 확인
+	private int voccheck; //본사 확인
 	
 	private Date wdate;
 	@PrePersist
@@ -50,7 +50,7 @@ public class Voc {
 	@ManyToOne
 	@JoinColumn(name="store", nullable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Store storeid;
+	private Store storeid; //지점번호
 	
 	@Column(nullable=true)
 	private String img1;

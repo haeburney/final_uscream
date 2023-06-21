@@ -24,8 +24,8 @@ import lombok.ToString;
 public class Notice {
 
 	@Id
-	@SequenceGenerator(name="seq_noticenum", sequenceName="seq_noticenum", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_noticenum")
+	@SequenceGenerator(name="seq_notice", sequenceName="seq_notice", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_notice")
 	private int noticenum;
 	
 	private int category;

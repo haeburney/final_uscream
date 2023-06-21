@@ -77,18 +77,18 @@ public class NoticeController {
 	}
 	
 	//수정
-	 @PutMapping("")
-	   public Map edit(int noticenum, NoticeDto dto) {
-	      NoticeDto n = service.getById(noticenum);
-	      dto.setCategory(n.getCategory());
-	      dto.setTitle(n.getTitle());
-	      dto.setContent(n.getContent());
-	      NoticeDto n2 = service.save(dto);
-	      Map map = new HashMap();
-	      map.put("Notice", n2);
+	@PutMapping("")
+	public Map edit(int noticenum, NoticeDto dto) {
+		NoticeDto n = service.getById(noticenum);
+		dto.setCategory(n.getCategory());
+		dto.setTitle(n.getTitle());
+		dto.setContent(n.getContent());
+		NoticeDto n2 = service.save(dto);
+		Map map = new HashMap();
+		map.put("Notice", n2);
 	      
-	      return map;
-	   }
+		return map;
+	}
 	
 	//삭제
 	@DeleteMapping("/{num}")

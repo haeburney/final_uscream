@@ -22,7 +22,7 @@ public class VocDto {
 	private String title;
 	private String content;
 	private String storecomment;
-	private int check;
+	private int voccheck;
 	private Date wdate;
 	private Store storeid;
 	

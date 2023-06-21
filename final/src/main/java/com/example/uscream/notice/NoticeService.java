@@ -40,10 +40,9 @@ public class NoticeService {
 	//아이디로 검색
 	public NoticeDto getById(int noticenum) {
 		Notice n = dao.findById(noticenum).orElse(null);
-		if(n == null) {
-			return null;
-		}
-		return new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCategory(), n.getImg1(), n.getImg2(), n.getImg3());
+		NoticeDto dto = new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCategory(), n.getImg1(), n.getImg2(), n.getImg3());
+		
+		return dto; 
 	}
 	
 	//카테고리로 검색
@@ -58,12 +57,12 @@ public class NoticeService {
 		 
 	}
 	
-	//del()
+	//삭제
 	public void delNotice(int noticenum) {
 		dao.deleteById(noticenum);
 	}
 	
-	//editCnt() : 조회수 증가
+	//조회수
 	public void editCnt(int noticenum) {
 		dao.updateCnt(noticenum);
 	}
