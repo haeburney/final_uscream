@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.Value;
 
 @RestController
 @CrossOrigin("*")
@@ -30,8 +30,8 @@ public class StoreController {
 	@Autowired
 	public StoreService service;
 	
-//	@Value("${spring.servlet.multipart.location}")
-//	private String path; 
+	@Value("spring.servlet.multipart.location")
+	private String path; 
 	
 	//1.등록
 	@PostMapping("")
