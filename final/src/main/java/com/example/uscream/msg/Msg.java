@@ -44,30 +44,32 @@ public class Msg {
 	private Store receiver;		// 수신자
 	
 	private String title;
-	private Date date;
+	private Date msgdate;
 	private String content;
 	
 	@Column(nullable = true)
-	private File file;
+	private File msgfile;
 	@Column(nullable = true)
-	private String img;
+	private String msgimg;
 	
-	@Column(columnDefinition = "integer default 0")
+	@Column(columnDefinition = "number default 0")
 	private int reply;			// 답장
-	@Column(columnDefinition = "boolean default false")
+	
+	
+	@Column(columnDefinition = "number default 0")
 	private boolean mark;			// 즐겨찾기 확인용
-	@Column(columnDefinition = "boolean default false")
+	@Column(columnDefinition = "number default 0")
 	private boolean tempcheck;		// 임시보관 
-	@Column(columnDefinition = "boolean default false")
+	@Column(columnDefinition = "number default 0")
 	private boolean readcheck;		// 읽었는지 안읽었는지
-	@Column(columnDefinition = "boolean default false")
+	@Column(columnDefinition = "number default 0")
 	private boolean delcheck;		//휴지통으로 보낼지 진짜 삭제할지 
 	
 	
 	
 	@PrePersist
 	public void updateDate() {
-		date = new Date();
+		msgdate = new Date();
 	}
 	
 }

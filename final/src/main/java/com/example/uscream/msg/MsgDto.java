@@ -25,12 +25,12 @@ public class MsgDto {
 	private Store receiver;		
 	
 	private String title;
-	private Date date;
+	private Date msgdate;
 	private String content;
 	
-	private File file;
+	private File msgfile;
 	private MultipartFile mfile;
-	private String img;
+	private String msgimg;
 	private MultipartFile mimg;
 	
 	private int reply;			

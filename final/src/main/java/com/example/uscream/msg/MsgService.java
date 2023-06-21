@@ -24,12 +24,12 @@ public class MsgService {
 	// 생성 및 수정 
 	public MsgDto save(MsgDto msgdto) {
 		
-		Msg msg = dao.save(new Msg(msgdto.getMsgnum(),msgdto.getSender(),msgdto.getReceiver(),msgdto.getTitle(),msgdto.getDate(),
-				msgdto.getContent(),msgdto.getFile(),msgdto.getImg(),msgdto.getReply(),msgdto.isMark(),msgdto.isTempcheck(),
+		Msg msg = dao.save(new Msg(msgdto.getMsgnum(),msgdto.getSender(),msgdto.getReceiver(),msgdto.getTitle(),msgdto.getMsgdate(),
+				msgdto.getContent(),msgdto.getMsgfile(),msgdto.getMsgimg(),msgdto.getReply(),msgdto.isMark(),msgdto.isTempcheck(),
 				msgdto.isReadcheck(),msgdto.isDelcheck())); 
 		
-		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-				msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
+				msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 				msg.isReadcheck(),msg.isDelcheck());
 	}
 	
@@ -42,37 +42,50 @@ public class MsgService {
 			return null;						
 		}
 		
-		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-				msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
+				msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 				msg.isReadcheck(),msg.isDelcheck());
 	}
 	
-	// 발신자로 검색 
-	public ArrayList<MsgDto> getByName(String name) {
-		
-		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySenderLike("%"+name+"%");
-		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-		
-		for (Msg msg : msglist) {
-			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-					msg.isReadcheck(),msg.isDelcheck()));
-		}
-		return dtolist;
-	}
+	// 발신자로 검색(내가 받은 메세지에서 검색) 
+//	public ArrayList<MsgDto> getByName(String name) {
+//		
+//		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySenderLike("%"+name+"%");
+//		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+//		
+//		for (Msg msg : msglist) {
+//			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
+//					msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+//					msg.isReadcheck(),msg.isDelcheck()));
+//		}
+//		return dtolist;
+//	}
 	
+	// 발신자로 검색 (내가 보낸)
+//		public ArrayList<MsgDto> getBySender(String name) {
+//		
+//		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySender(name);
+//		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+//		
+//		for (Msg msg : msglist) {
+//			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
+//					msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+//					msg.isReadcheck(),msg.isDelcheck()));
+//		}
+//		return dtolist;
+//	}
 	// 수신자로 검색
-		public ArrayList<MsgDto> countByReceiver(String receiver) {
-			ArrayList<Msg> msglist = dao.findByReceiver(receiver);
-			ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-			
-			for (Msg msg : msglist) {
-				dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-						msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-						msg.isReadcheck(),msg.isDelcheck()));
-			}
-			return dtolist;
-		}
+//		public ArrayList<MsgDto> getByReceiver(String receiver) {
+//			ArrayList<Msg> msglist = dao.findByReceiver(receiver);
+//			ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+//			
+//			for (Msg msg : msglist) {
+//				dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
+//						msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+//						msg.isReadcheck(),msg.isDelcheck()));
+//			}
+//			return dtolist;
+//		}
 		
 	// 제목으로 검색 
 	public ArrayList<MsgDto> getByTitle(String title) {
@@ -81,27 +94,15 @@ public class MsgService {
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
 			
 		for (Msg msg : msglist) {
-			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
+					msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 					msg.isReadcheck(),msg.isDelcheck()));
 		}
 		return dtolist;
 		
 	}
 	
-	//전체 메일 조회 (날짜순으로)
-	public ArrayList<MsgDto> getAllByDate(){
-		
-		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findAllOrderByDateAsc();
-		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-		
-		for (Msg msg : msglist) {
-			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getDate(),
-					msg.getContent(),msg.getFile(),null,msg.getImg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-					msg.isReadcheck(),msg.isDelcheck()));
-		}
-		return dtolist;
-	}
+	
 	
 	//임시보관 기능
 	public void changeTempcheck(int num) {
@@ -113,6 +114,20 @@ public class MsgService {
 			msg.setTempcheck(false);		// 기본
 		}else {
 			msg.setTempcheck(true);			// 임시보관
+		}
+		
+	}
+	
+	//임시보관 기능
+	public void changeMark(int num) {
+		
+		Msg msg = dao.findById(num).orElse(null);
+		
+		
+		if(msg.isMark()==true) {
+			msg.setMark(false);			// 기본
+		}else {
+			msg.setMark(true);			// 즐찾
 		}
 		
 	}
