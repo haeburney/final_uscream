@@ -1,6 +1,6 @@
 package com.example.uscream.monthlypay;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -42,6 +42,6 @@ public class Monthlypay {
 	@JoinColumn(name="storeid", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Store storeid;
-	private Date mpmonth;
+	private LocalDate mpmonth;
 	private int mpsalary;	
 }

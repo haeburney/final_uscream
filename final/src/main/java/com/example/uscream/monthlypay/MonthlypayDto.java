@@ -1,6 +1,6 @@
 package com.example.uscream.monthlypay;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.example.uscream.emp.Emp;
 import com.example.uscream.store.Store;
@@ -20,6 +20,6 @@ public class MonthlypayDto {
 	private int mpnum;
 	private Emp emp;
 	private Store storeid;
-	private Date mpmonth;
+	private LocalDate mpmonth;
 	private int mpsalary;	
 }

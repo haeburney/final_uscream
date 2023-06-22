@@ -1,6 +1,7 @@
 package com.example.uscream.schedule;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -43,7 +44,7 @@ public class Schedule {
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Store storeid;
 	
-	private Date sdate;
-	private Date starttime;
-	private Date endtime;
+	private LocalDate sdate;
+	private LocalDateTime  starttime;
+	private LocalDateTime  endtime;
 }

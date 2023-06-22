@@ -1,7 +1,7 @@
 package com.example.uscream.schedule;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,22 +29,37 @@ public class ScheduleService {
 	// 직원 번호로 검색
 	public ArrayList<ScheduleDto> getByEmp(int empnum){
 		Emp e = new Emp(empnum, null, "" ,null, null, "");
-		ArrayList<ScheduleDto> list = dao.findByEmp(e);
-		return list;
+		ArrayList<Schedule> list = dao.findByEmp(e);
+		ArrayList<ScheduleDto> dtoList = new ArrayList<ScheduleDto>();
+		for(Schedule vo:list) {
+			dtoList.add(new ScheduleDto(vo.getSnum(), vo.getEmp(), vo.getStoreid(), vo.getSdate(), vo.getStarttime(), vo.getEndtime()));
+		}
+		
+		return dtoList;
 	}
 	
 	// 지점 아이디로 검색
 	public ArrayList<ScheduleDto> getByStoreid(String storeid){
 		Store s = new Store(storeid, "", "", "", 0, "", 0, 0);
-		ArrayList<ScheduleDto> list = dao.findByStoreid(s);
-		return list;
+		ArrayList<Schedule> list = dao.findByStoreid(s);
+		ArrayList<ScheduleDto> dtoList = new ArrayList<ScheduleDto>();
+		for(Schedule vo:list) {
+			dtoList.add(new ScheduleDto(vo.getSnum(), vo.getEmp(), vo.getStoreid(), vo.getSdate(), vo.getStarttime(), vo.getEndtime()));
+		}
+		
+		return dtoList;
 	}
 	
 	// 직원 번호 & 날짜로 검색
-	public ScheduleDto getByEmpAndDate(int empnum, Date sdate) {
+	public ArrayList<ScheduleDto> getByEmpAndDate(int empnum, LocalDate sdate) {
 		Emp e = new Emp(empnum, null, "" ,null, null, "");
-		ScheduleDto dto = dao.findByEmpAndSdate(e, sdate);
-		return dto;
+		ArrayList<Schedule> list = dao.findByEmpAndSdate(e, sdate);
+		ArrayList<ScheduleDto> dtoList = new ArrayList<ScheduleDto>();
+		for(Schedule vo:list) {
+			dtoList.add(new ScheduleDto(vo.getSnum(), vo.getEmp(), vo.getStoreid(), vo.getSdate(), vo.getStarttime(), vo.getEndtime()));
+		}
+	
+		return dtoList;
 	}
 	
 	// 삭제 

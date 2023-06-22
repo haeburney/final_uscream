@@ -31,16 +31,23 @@ public class BasicscheduleService {
 	// 직원 번호로 검색 
 	public ArrayList<BasicscheduleDto> getByEmp(int empnum){
 		Emp e = new Emp(empnum, null, "" ,null, null, "");
-		ArrayList<BasicscheduleDto> list = dao.findByEmp(e);
-		
-		return list;
+		ArrayList<Basicschedule> list = dao.findByEmp(e);
+		ArrayList<BasicscheduleDto> dtoList =new ArrayList<BasicscheduleDto>();
+		for(Basicschedule vo:list) {
+			dtoList.add(new BasicscheduleDto(vo.getBsnum(), vo.getStoreid(), vo.getEmp(), vo.getBsdate(), vo.getStarttime(), vo.getEndtime()));
+		}
+		return dtoList;
 	}
 
 	// 지점 아이디로 검색
 	public ArrayList<BasicscheduleDto> getByStoreid(String storeid) {
 		Store s = new Store(storeid, "", "", "", 0, "", 0, 0);
-		ArrayList<BasicscheduleDto> list = dao.findByStoreid(s);
-		return list;
+		ArrayList<Basicschedule> list = dao.findByStoreid(s);
+		ArrayList<BasicscheduleDto> dtoList =new ArrayList<BasicscheduleDto>();
+		for(Basicschedule vo:list) {
+			dtoList.add(new BasicscheduleDto(vo.getBsnum(), vo.getStoreid(), vo.getEmp(), vo.getBsdate(), vo.getStarttime(), vo.getEndtime()));
+		}
+		return dtoList;
 	}
 
 	// 삭제
