@@ -48,7 +48,8 @@ public class MsgController {
 		
 		StoreDto store = storeservice.getById(id);
 		System.out.println("1 "+store);
-		long CountByReceiver = service.countAllReceiver(store);
+		// 여기부터 문제 
+		long CountByReceiver = service.countAllReceiver(store.getStoreid());
 		System.out.println("2 "+CountByReceiver);
 		long CountByReceiverAndRead = service.countAllReadReceiver(store);
 		System.out.println("3 "+CountByReceiverAndRead);

@@ -196,7 +196,7 @@ public class MsgService {
 	
 	//=========================================================
 	// 받은 메일함에 있는 메일 전체 수
-	public long countAllReceiver(StoreDto store){
+	public long countAllReceiver(String store){
 		return dao.countAll(store);
 	}
 	
