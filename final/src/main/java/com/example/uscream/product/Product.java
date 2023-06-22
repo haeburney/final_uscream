@@ -1,5 +1,6 @@
 package com.example.uscream.product;
 
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -28,4 +28,5 @@ public class Product {
 	private String productinfo;
 	private int cost;
 	private boolean orderble;
+	
 }
