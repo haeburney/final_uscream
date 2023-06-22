@@ -1,5 +1,7 @@
 package com.example.uscream.netsales;
 
+import java.util.Date;
+
 import com.example.uscream.monthlypay.Monthlypay;
 import com.example.uscream.porder.Porder;
 import com.example.uscream.selling.Selling;
@@ -19,9 +21,10 @@ import lombok.ToString;
 
 public class NetsalesDto {
 	private int netsalesnum;
+	private Date netsalesdate;
 	private Store storeid;
-	private Selling sellingprice;
-	private Monthlypay totalpayroll;
-	private Porder ordernum;
+	private int sellingprice;
+	private int mpsalary;
+	private int ordercost;
 
 }

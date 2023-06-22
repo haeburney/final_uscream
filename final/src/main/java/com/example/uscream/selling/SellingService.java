@@ -15,7 +15,7 @@ public class SellingService {
 	
 	// 판매내역 저장  
 	public SellingDto save(SellingDto dto) {
-		dao.save(new Selling(dto.getSellingnum(), dto.getSellproduct(), dto.getStore(), 
+		dao.save(new Selling(dto.getSellingnum(), dto.getSellproduct(), dto.getStoreid(), 
 				dto.getSellingdate(), dto.getSellingcnt(), dto.getSellingprice()));
 		return dto;
 	}

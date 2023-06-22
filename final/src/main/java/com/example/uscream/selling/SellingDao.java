@@ -46,6 +46,15 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 	        @Param("year") int year);
 	
 	
+	// 모든 월 매출 검색하여 표출 *** 수정중
+	@Transactional
+	@Query(value = "SELECT EXTRACT(YEAR FROM se.sellingdate) AS year, EXTRACT(MONTH FROM se.sellingdate) AS month, se.storeid, st.storename, SUM(se.sellingprice) AS totalprice " 
+	        + "FROM selling se "
+	        + "JOIN store st ON se.storeid = st.storeid "
+	        + "GROUP BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate), se.storeid, st.storename", nativeQuery = true)
+	ArrayList<Object[]> findTotalPriceByAllMonth();
+	
+	
 	// 연도 선택하면 특정 지점의 모든 월 매출 검색하여 표출 *
 	@Transactional
 	@Query(value = "SELECT se.storeid, st.storename, EXTRACT(MONTH FROM se.sellingdate) AS month, SUM(se.sellingprice) AS totalprice "
