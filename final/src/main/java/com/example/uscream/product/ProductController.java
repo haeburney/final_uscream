@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+//import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -35,8 +36,12 @@ public class ProductController {
 	@Value(value = "${spring.servlet.multipart.location}")
 	private String path;
 	
-	@PostMapping()
+//	 @Autowired
+//	    private HttpServletRequest request;
+	
+	@RequestMapping()
 	public Map addProduct(ProductDto dto) {
+//		String absolutePath = request.getSession().getServletContext().getRealPath("/");
 		ProductDto d = service.save(dto);
 		File dir = new File(path+"product");
 		dir.mkdir();
