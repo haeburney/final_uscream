@@ -35,7 +35,7 @@ public class StoreController {
 	@Value("${spring.servlet.multipart.location}")
 	private String path; 
 	
-	//1.등록
+	//1.등록(가입)
 	@PostMapping("")
 	public Map add(StoreDto dto) {
 		StoreDto s = service.save(dto);
@@ -77,17 +77,22 @@ public class StoreController {
 	}
 	
 	
-	//2.수정
-//	@PostMapping("")
-//	public Map edit(StoreDto dto) {
-//		service.save(dto);
-//		Map map = new HashMap<>();
-//		map.put("store", dto);
-//		return map;
-//	}
+	//2.로그인
+	@PostMapping("/login")
+	public Map login(String storeid, String pwd){
+		Map map = new HashMap();
+		boolean flag = false;
+		StoreDto  dto = service.getById(path);
+		if (dto != null && pwd.equals(dto.getPwd())) {
+			flag=true;
+			map.put("type", dto.getAccounttype());
+		}
+		map.put("flag", flag);
+		return map;
+	}
 	
 	
-	//3. 전체조회
+	//3. 전체조회(지점 전체 조회)
 	@GetMapping("")
 	public Map getAll() {
 		ArrayList<StoreDto> list = service.getAll();
@@ -101,6 +106,7 @@ public class StoreController {
 		public Map getByid(@PathVariable("storeid") String storeid) {
 			StoreDto dto = service.getById(storeid);
 			Map map = new HashMap();
+			System.out.println("오나?");
 			map.put("dto", dto);
 			return map;
 		}
