@@ -1,6 +1,7 @@
 package com.example.uscream.worklogs;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -43,9 +44,9 @@ public class Worklogs { // 알바 출퇴근 시간이 기록되는 곳
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Store storeid;
 	
-	private Date wdate;
-	private Date starttime;
-	private Date endtime;
+	private LocalDate wdate;
+	private LocalDateTime starttime;
+	private LocalDateTime endtime;
 	private int alltime;
 	private int latetime;
 	

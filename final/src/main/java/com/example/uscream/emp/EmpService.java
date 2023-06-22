@@ -43,6 +43,16 @@ public class EmpService {
 		return listDto;
 	}
 	
+	// 전체 검색
+	public ArrayList<EmpDto> getByAll(){
+		ArrayList<Emp> list = (ArrayList<Emp>) dao.findAll();
+		ArrayList<EmpDto> listDto = new ArrayList<>();
+		for(Emp e:list) {
+			listDto.add(new EmpDto(e.getEmpnum(),e.getStoreid(),e.getEmpname(),e.getJoindate(), e.getGrade(), e.getColor()));
+		}
+		return listDto;
+	}
+	
 	// 삭제 
 	public void delete(int empnum) {
 		dao.deleteById(empnum);
