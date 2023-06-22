@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.example.uscream.emp.Emp;
+import com.example.uscream.store.Store;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class BasicscheduleDto {
 	private int bsnum;
+	private Store storeid;
 	private Emp emp;
 	private Date bsdate;
 	private Date starttime;
