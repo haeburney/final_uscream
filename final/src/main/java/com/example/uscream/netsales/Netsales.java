@@ -26,7 +26,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Netsales {
 	@Id
-	@SequenceGenerator(name="seq_gen", sequenceName="seq_netsales", allocationSize=1)
+	@SequenceGenerator(name="seq_netsales", sequenceName="seq_netsales", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_netsales")
 	private int netsalesnum;
 	

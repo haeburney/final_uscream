@@ -37,8 +37,8 @@ public class Selling {
 	private SellProduct sellproduct;
 	
 	@ManyToOne
-	@JoinColumn(name="store", nullable=false)
-	private Store store;	
+	@JoinColumn(name="storeid", nullable=false)
+	private Store storeid;	
 	
 	private Date sellingdate;
 	private int sellingcnt;
