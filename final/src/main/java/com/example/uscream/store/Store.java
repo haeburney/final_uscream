@@ -22,8 +22,10 @@ public class Store {
 	private String pwd;
 	private String managername;
 	private int accounttype;	//본사: 1, 점주:2
-	private String path;
+	private String storeimg;
 	private float x; 
 	private float y;
+	
+	
 	
 }
