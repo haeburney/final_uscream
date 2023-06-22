@@ -56,8 +56,8 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	
 	
 	// 수신자로 메일 수 조회 
-	@Query(value="select count(*)  from msg where receiver = :StoreDto", nativeQuery=true)
-	long countAll(@Param("StoreDto") StoreDto store);
+	@Query(value="select count(*)  from msg where receiver = :StoreDto.storeid", nativeQuery=true)
+	long countAll(@Param("StoreDto.storeid") String receiver);
 	// 수신자 메일 중 읽지 않은 메시지 
 	@Query(value="select count(*)  from msg where receiver = :StoreDto and readcheck = 0 ", nativeQuery=true)
 	long countAllRead(@Param("StoreDto") StoreDto store);
