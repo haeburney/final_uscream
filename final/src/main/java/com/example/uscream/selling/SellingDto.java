@@ -21,7 +21,7 @@ import lombok.ToString;
 public class SellingDto {
 	private int sellingnum;
 	private SellProduct sellproduct;
-	private Store store;
+	private Store storeid;
 	private Date sellingdate;
 	private int sellingcnt;
 	private int sellingprice;

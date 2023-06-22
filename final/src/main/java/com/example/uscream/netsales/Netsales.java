@@ -1,8 +1,7 @@
 package com.example.uscream.netsales;
 
-import com.example.uscream.monthlypay.Monthlypay;
-import com.example.uscream.porder.Porder;
-import com.example.uscream.selling.Selling;
+import java.util.Date;
+
 import com.example.uscream.store.Store;
 
 import jakarta.persistence.Entity;
@@ -30,20 +29,29 @@ public class Netsales {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_netsales")
 	private int netsalesnum;
 	
+	// 월이 없다..
+	private Date netsalesdate;
+	
 	@ManyToOne
 	@JoinColumn(name="storeid", nullable=false)
-	private Store store;
+	private Store storeid;
 	
-	@ManyToOne
-	@JoinColumn(name="selling", nullable=false)
-	private Selling selling;
+//	@ManyToOne
+//	@JoinColumn(name="sellingprice", nullable=false)
+//	private Selling sellingprice;
 	
-	@ManyToOne
-	@JoinColumn(name="monthlypay", nullable=false)
-	private Monthlypay monthlypay;
+	private int sellingprice;
 	
-	@ManyToOne
-	@JoinColumn(name="porder", nullable=false)
-	private Porder porder;
+//	@ManyToOne
+//	@JoinColumn(name="mpsalary", nullable=false)
+//	private Monthlypay mpsalary;
+	
+	private int mpsalary;
+	
+//	@ManyToOne
+//	@JoinColumn(name="ordernum", nullable=false)
+//	private Porder ordernum;
 
+	private int ordercost;
+	
 }
