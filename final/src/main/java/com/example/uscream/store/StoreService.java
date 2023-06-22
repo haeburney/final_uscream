@@ -15,7 +15,7 @@ public class StoreService {
 	private ArrayList<StoreDto> change(ArrayList<Store> list){
 		ArrayList<StoreDto> slist = new ArrayList<StoreDto>();
 		for(Store entity:list) {
-			slist.add(new StoreDto(entity.getStoreid(),entity.getManagername(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getPath(),entity.getX(),entity.getY(),null));
+			slist.add(new StoreDto(entity.getStoreid(),entity.getManagername(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getStoreimg(),entity.getX(),entity.getY(),null));
 		}
 		return slist;
 	}
@@ -23,8 +23,8 @@ public class StoreService {
 	
 	// 2. 지점(아이디) 생성, 수정
 		public StoreDto save(StoreDto dto) {
-		Store entity = dao.save(new Store(dto.getStoreid(), dto.getStorename(), dto.getPwd(), dto.getManagername(), dto.getAccounttype(),dto.getPath(), dto.getX(), dto.getY()));
-		return new StoreDto(entity.getStoreid(), entity.getStorename(), entity.getPwd(), entity.getManagername(),entity.getAccounttype(), entity.getPath(),entity.getX(),entity.getY(),null);
+		Store entity = dao.save(new Store(dto.getStoreid(), dto.getStorename(), dto.getPwd(), dto.getManagername(), dto.getAccounttype(),dto.getStoreimg(), dto.getX(), dto.getY()));
+		return new StoreDto(entity.getStoreid(), entity.getStorename(), entity.getPwd(), entity.getManagername(),entity.getAccounttype(), entity.getStoreimg(),entity.getX(),entity.getY(),null);
 	}
 	
 	
@@ -40,7 +40,7 @@ public class StoreService {
 			if(s==null) {
 				return null;
 			}
-			return new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getPath(),s.getX(),s.getY(), null);
+			return new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getStoreimg(),s.getX(),s.getY(), null);
 		}
 	
 	// 4. 지점정보확인(1개_지점명으로 검색)
@@ -48,10 +48,11 @@ public class StoreService {
 		ArrayList<Store> entity = dao.findByStorenameLike("%"+storename+"%");
 		ArrayList<StoreDto> slist = new ArrayList<StoreDto>();
 		for(Store s: entity) {
-			slist.add(new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getPath(),s.getX(),s.getY(),null));
+			slist.add(new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getStoreimg(),s.getX(),s.getY(),null));
 		}		
 		return slist;
 	}
+		
 		
 		
 	//지점정보확인(1개_지점명으로 검색)
@@ -65,7 +66,6 @@ public class StoreService {
 		dao.deleteById(storeid);
 	}
 
-	
 	
 }
 

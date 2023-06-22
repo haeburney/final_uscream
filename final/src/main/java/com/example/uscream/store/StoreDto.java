@@ -18,9 +18,9 @@ public class StoreDto {
 	private String storename;
 	private String pwd;
 	private String managername;
-	private int accounttype;//본사: 1, 점주:2
-	private String path;
+	private int accounttype;		//본사: 1, 점주:2
+	private String storeimg;		//이미지 경로
 	private float x; 
 	private float y;
-	private MultipartFile img;
+	private MultipartFile simg;
 }
