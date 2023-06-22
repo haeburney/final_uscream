@@ -17,9 +17,15 @@ import com.example.uscream.store.StoreDto;
 @Repository
 public interface MsgDao extends JpaRepository<Msg, Integer> {
 	ArrayList<Msg> findBySenderLike(StoreDto store);	//보낸 사람으로 검색 (받은 메세지함에서 검색용)
-	ArrayList<Msg> findBySender(StoreDto store);		//보낸 사람으로 검색 (내가 보낸 메세지)
-	ArrayList<Msg> findByReceiver(StoreDto store);		//내가 받은 메일 검색 
 	ArrayList<Msg> findByTitleLike(String title);
+
+	@Query(value="select * from msg where sender=:StoreDto.storeid", nativeQuery=true)
+	ArrayList<Msg> findBySender(@Param("StoreDto.storeid") String sender);		//보낸 사람으로 검색 (내가 보낸 메세지)
+
+	@Query(value="select * from msg where receiver=:StoreDto.storeid", nativeQuery=true)
+	ArrayList<Msg> findByReceiver(@Param("StoreDto.storeid") String receiver);
+	
+	
 	
 	
 	@Modifying
@@ -48,27 +54,26 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value="update msg set mark = 0 where msgnum=:msgnum", nativeQuery=true)
 	int minusMark(@Param("msgnum") int num);
 	//전체 즐찾 조회 
-	@Query(value="select count(*)  from msg where mark = 1 and receiver=:StoreDto", nativeQuery=true)
-	long countByMark(@Param("StoreDto") StoreDto store);
+	@Query(value="select count(*)  from msg where mark = 1 and receiver=:StoreDto.storeid", nativeQuery=true)
+	long countByMark(@Param("StoreDto.storeid") String receiver);
 	// 전체 즐찾 중 읽지 않은 메시지 
-	@Query(value="select count(*)  from msg where mark = 1 and readcheck = 1 and receiver=:StoreDto", nativeQuery=true)
-	long countByMarkRead(@Param("StoreDto") StoreDto store);
+	@Query(value="select count(*)  from msg where mark = 1 and readcheck = 0 and receiver=:StoreDto.storeid", nativeQuery=true)
+	long countByMarkRead(@Param("StoreDto.storeid") String receiver);
 	
 	
 	// 수신자로 메일 수 조회 
-	@Query(value="select count(*)  from msg where receiver = :StoreDto.storeid", nativeQuery=true)
+	@Query(value="select count(*) from msg where receiver=:StoreDto.storeid", nativeQuery=true)
 	long countAll(@Param("StoreDto.storeid") String receiver);
 	// 수신자 메일 중 읽지 않은 메시지 
-	@Query(value="select count(*)  from msg where receiver = :StoreDto and readcheck = 0 ", nativeQuery=true)
-	long countAllRead(@Param("StoreDto") StoreDto store);
-	
+	@Query(value="select count(*) from msg where receiver=:StoreDto.storeid and readcheck=0", nativeQuery=true)
+	long countAllRead(@Param("StoreDto.storeid") String receiver);
 	
 	//보낸 메일 메시지 
-	@Query(value="select count(*)  from msg where sender = :StoreDto ", nativeQuery=true)
-	long countByVender(@Param("StoreDto") StoreDto store);
+	@Query(value="select count(*) from msg where sender=:StoreDto.storeid", nativeQuery=true)
+	long countBySender(@Param("StoreDto.storeid") String sender);
 	//보낸 메일 중 읽지 않은 메시지 
-	@Query(value="select count(*)  from msg where tempcheck =1 sender =:StoreDto ", nativeQuery=true)
-	long countByVenderTemp(@Param("StoreDto") StoreDto store);
+	@Query(value="select count(*) from msg where readcheck=1 and sender=:StoreDto.storeid", nativeQuery=true)
+	long countBySenderRead(@Param("StoreDto.storeid") String sender);
 			
 	//임시보관 기능
 	@Modifying
@@ -80,11 +85,11 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value="update msg set tempcheck = 0 where msgnum=:msgnum", nativeQuery=true)
 	int minusTemp(@Param("msgnum") int num);
 	// 임시보관 전체
-	@Query(value="select count(*)  from msg where tempcheck = 1 and sender = :StoreDto", nativeQuery=true)
-	long countByTemp(@Param("StoreDto") StoreDto store);
+	@Query(value="select count(*)  from msg where tempcheck = 1 and sender = :StoreDto.storeid", nativeQuery=true)
+	long countByTemp(@Param("StoreDto.storeid") String sender);
 	// 임시보관에서 읽지 않은 메세지
-	@Query(value="select count(*)  from msg where tempcheck = 1 and readcheck = 0 and sender = :StoreDto ", nativeQuery=true)
-	long countByTempRead(@Param("StoreDto") StoreDto store);
+	@Query(value="select count(*)  from msg where tempcheck = 1 and readcheck = 0 and sender = :StoreDto.storeid ", nativeQuery=true)
+	long countByTempRead(@Param("StoreDto.storeid") String sender);
 		
 	// 휴지통 기능
 	@Modifying
@@ -96,11 +101,11 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value="update msg set delcheck = 0 where msgnum=:msgnum", nativeQuery=true)
 	int minusDel(@Param("msgnum") int num);
 	// 휴지통 전체
-	@Query(value="select count(*)  from msg where delcheck = 1 and receiver = :StoreDto", nativeQuery=true)
-	long countByDelcheck(@Param("StoreDto") StoreDto receiver);
+	@Query(value="select count(*)  from msg where delcheck = 1 and receiver = :StoreDto.storeid", nativeQuery=true)
+	long countByDel(@Param("StoreDto.storeid") String receiver);
 	// 휴지통에서 읽지 않은 메시지  
-	@Query(value="select count(*) from msg where delcheck = 1 and readcheck = 0 and receiver = :StoreDto", nativeQuery=true)
-	long countByDelRead(@Param("StoreDto") StoreDto receiver);
+	@Query(value="select count(*) from msg where delcheck = 1 and readcheck = 0 and receiver = :StoreDto.storeid", nativeQuery=true)
+	long countByDelRead(@Param("StoreDto.storeid") String receiver);
 	
 	
 }	
