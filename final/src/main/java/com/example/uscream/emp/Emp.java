@@ -47,4 +47,5 @@ public class Emp {
 	private Grade grade;		// 등급
 	private String color;	// 컬러 
 	
+	
 }

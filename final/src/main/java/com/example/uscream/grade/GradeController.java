@@ -21,6 +21,16 @@ public class GradeController {
 	@GetMapping("/{gnum}")
 	public Map getSalary(@PathVariable("gnum") int gnum) {
 		Map map = new HashMap();
+		boolean flag = true;
+		GradeDto dto = new GradeDto();
+		try {
+			dto = service.getSalary(gnum);
+		}catch(Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("flag", flag);
+		map.put("dto", dto);
 		return map;
 	}
 	

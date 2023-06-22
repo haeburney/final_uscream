@@ -27,7 +27,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Worklogs { // 알바들 출퇴근 시간이 기록되는 곳
+public class Worklogs { // 알바 출퇴근 시간이 기록되는 곳
 	@Id
 	@SequenceGenerator(name="seq_worklogs", sequenceName="seq_worklogs", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_worklogs")
