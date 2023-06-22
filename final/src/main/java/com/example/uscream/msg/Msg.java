@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
@@ -36,10 +37,12 @@ public class Msg {
 	private int msgnum;
 	
 	@ManyToOne
+	@JoinColumn(name="sender", nullable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Store sender;			// 발신자
 	
 	@ManyToOne
+	@JoinColumn(name="receiver", nullable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Store receiver;		// 수신자
 	
@@ -55,7 +58,6 @@ public class Msg {
 	@Column(columnDefinition = "number default 0")
 	private int reply;			// 답장
 	
-	
 	@Column(columnDefinition = "number default 0")
 	private boolean mark;			// 즐겨찾기 확인용
 	@Column(columnDefinition = "number default 0")
@@ -64,7 +66,6 @@ public class Msg {
 	private boolean readcheck;		// 읽었는지 안읽었는지
 	@Column(columnDefinition = "number default 0")
 	private boolean delcheck;		//휴지통으로 보낼지 진짜 삭제할지 
-	
 	
 	
 	@PrePersist
