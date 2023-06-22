@@ -25,11 +25,11 @@ public class MsgService {
 	public MsgDto save(MsgDto msgdto) {
 		
 		Msg msg = dao.save(new Msg(msgdto.getMsgnum(),msgdto.getSender(),msgdto.getReceiver(),msgdto.getTitle(),msgdto.getMsgdate(),
-				msgdto.getContent(),msgdto.getMsgfile(),msgdto.getMsgimg(),msgdto.getReply(),msgdto.isMark(),msgdto.isTempcheck(),
+				msgdto.getContent(),msgdto.getMsgfile(),msgdto.getReply(),msgdto.isMark(),msgdto.isTempcheck(),
 				msgdto.isReadcheck(),msgdto.isDelcheck())); 
 		
 		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-				msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+				msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 				msg.isReadcheck(),msg.isDelcheck());
 	}
 	
@@ -44,7 +44,7 @@ public class MsgService {
 		}
 		
 		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-				msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+				msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 				msg.isReadcheck(),msg.isDelcheck());
 	}
 	
@@ -56,34 +56,37 @@ public class MsgService {
 		
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-					msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+					msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 					msg.isReadcheck(),msg.isDelcheck()));
 		}
 		return dtolist;
 	}
 	
 	 //발신자로 검색 (내가 보낸)
-		public ArrayList<MsgDto> getBySender(StoreDto sender) {
+		public ArrayList<MsgDto> getBySender(StoreDto store) {
 		
-		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySender(sender);
+		String id = store.getStoreid();
+			
+		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySender(id);
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
 		
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-					msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+					msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 					msg.isReadcheck(),msg.isDelcheck()));
 		}
 		return dtolist;
 	}
 		
 	// 수신자로 검색
-		public ArrayList<MsgDto> getByReceiver(StoreDto receiver) {
-			ArrayList<Msg> msglist = dao.findByReceiver(receiver);
+		public ArrayList<MsgDto> getByReceiver(StoreDto Store) {
+			String id = Store.getStoreid();
+			ArrayList<Msg> msglist = dao.findByReceiver(id);
 			ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
 			
 			for (Msg msg : msglist) {
 				dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-						msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+						msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 						msg.isReadcheck(),msg.isDelcheck()));
 			}
 			return dtolist;
@@ -97,7 +100,7 @@ public class MsgService {
 			
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-					msg.getContent(),msg.getMsgfile(),null,msg.getMsgimg(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
+					msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 					msg.isReadcheck(),msg.isDelcheck()));
 		}
 		return dtolist;
@@ -109,7 +112,8 @@ public class MsgService {
 	//임시보관 기능
 	public void changeTempcheck(int num) {
 		
-		Msg msg = dao.findById(num).orElse(null);	
+		Msg msg = dao.findById(num).orElse(null);
+		
 		int temp = (msg.isTempcheck()) ? 1:0 ;			
 		if(temp==1) {
 			dao.minusTemp(num);
@@ -158,99 +162,69 @@ public class MsgService {
 		dao.deleteById(num);
 	}
 	
-	// 수신자로 완전 삭제
-	public void deleteAllByReceiver(StoreDto receiver) {
-		dao.deleteByReceiver(receiver);
-	}
 	
-	
-	//=========================================================
-	// 전체 메일 수
-	public long countAllBySenderAndReceiver(StoreDto store){
-		return dao.countAll(store);
-	}
-	
-	// 전체 메일 중에서 읽지 않은 메일 수
-	public long countAllBySenderAndReceiverAndRead(StoreDto store){
-		return dao.countAllRead(store);
-	}
-	
-	//=========================================================
-	
-	
-	//=========================================================
 	// 즐찾에 있는 메일 전체 수
-	public long countBy(StoreDto store){
-		return dao.countByMark(store);
+	public long countByMark(String receiver){
+		return dao.countByMark(receiver);
 	}
 	
 	// 즐찾에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByDelRead(StoreDto store){
-		return dao.countByDelRead(store);
+	public long countByMarkRead(String receiver){
+		return dao.countByMarkRead(receiver);
 	}
 	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	
-	//=========================================================
 	
 	
 	
-	//=========================================================
 	// 받은 메일함에 있는 메일 전체 수
 	public long countAllReceiver(String store){
 		return dao.countAll(store);
 	}
 	
 	// 받은 메일함에 있는 메일 중에서 읽지 않은 메일 수
-	public long countAllReadReceiver(StoreDto store){
-		return dao.countAllRead(store);
+	public long countAllReadReceiver(String receiver){
+		return dao.countAllRead(receiver);
 	}
 	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	
-	//=========================================================
 	
-	//=========================================================
+	
 	// 보낸 메일에 있는 메일 전체 수
-	public long countByVender(StoreDto store){
-		return dao.countByVender(store);
+	public long countBySender(String sender){
+		return dao.countBySender(sender);
 	}
 	
 	// 보낸 메일에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByVenderTemp(StoreDto store){
-		return dao.countByVenderTemp(store);
+	public long countBySenderRead(String sender){
+		return dao.countBySenderRead(sender);
 	}
-	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	
-	//=========================================================
 
 	
-	//=========================================================
 	// 임시 보관에 있는 메일 전체 수
-	public long countByD(StoreDto store){
-		return dao.countByTemp(store);
+	public long countBySenderTemp(String sender){
+		return dao.countByTemp(sender);
 	}
 	
 	// 임시 보관에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByDelRe(StoreDto store){
-		return dao.countByTempRead(store);
+	public long countBySenderTempRead(String sender){
+		return dao.countByTempRead(sender);
 	}
-	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
-	
-	//=========================================================
 	
 	
-	//=========================================================
+	
 	// 휴지통에 있는 메일 전체 수
-	public long countByDel(StoreDto store){
-		return dao.countByDelcheck(store);
+	public long countByDel(String receiver){
+		return dao.countByDel(receiver);
 	}
 	
 	// 휴지통에 있는 메일 중에서 읽지 않은 메일 수
-	public long countBybyDelReads(StoreDto store){
-		return dao.countByDelRead(store);
+	public long countByDelRead(String receiver){
+		return dao.countByDelRead(receiver);
 	}
 	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	
-	//=========================================================
 	
 	
 	

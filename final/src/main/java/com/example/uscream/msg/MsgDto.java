@@ -28,10 +28,8 @@ public class MsgDto {
 	private Date msgdate;
 	private String content;
 	
-	private File msgfile;
+	private String msgfile;
 	private MultipartFile mfile;
-	private String msgimg;
-	private MultipartFile mimg;
 	
 	private int reply;			
 	private boolean mark;		

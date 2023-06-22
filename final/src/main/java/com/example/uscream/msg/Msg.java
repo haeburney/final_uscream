@@ -1,6 +1,6 @@
 package com.example.uscream.msg;
 
-import java.io.File;
+import java.io.File; 
 import java.util.Date;
 
 import org.hibernate.annotations.OnDelete;
@@ -51,21 +51,19 @@ public class Msg {
 	private String content;
 	
 	@Column(nullable = true)
-	private File msgfile;
-	@Column(nullable = true)
-	private String msgimg;
+	private String msgfile;
 	
 	@Column(columnDefinition = "number default 0")
 	private int reply;			// 답장
 	
 	@Column(columnDefinition = "number default 0")
-	private boolean mark;			// 즐겨찾기 확인용
+	private boolean mark;			// 즐겨찾기 			0=기본 1=즐찾
 	@Column(columnDefinition = "number default 0")
-	private boolean tempcheck;		// 임시보관 
+	private boolean tempcheck;		// 임시보관 			0=기본 1=임시보관
 	@Column(columnDefinition = "number default 0")
-	private boolean readcheck;		// 읽었는지 안읽었는지
+	private boolean readcheck;		// 읽었는지 안읽었는지	0=기본 1=읽음
 	@Column(columnDefinition = "number default 0")
-	private boolean delcheck;		//휴지통으로 보낼지 진짜 삭제할지 
+	private boolean delcheck;		//	휴지통으로 			0=기본 1=휴지통
 	
 	
 	@PrePersist
