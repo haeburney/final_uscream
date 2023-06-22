@@ -31,7 +31,7 @@ public class NoticeController {
 	private NoticeService service;
 	
 	@Value("${spring.servlet.multipart.location}")
-	private String path;  //C:/img/shop
+	private String path;  
 	
 	@PostMapping()
 	public Map add(NoticeDto dto) {
@@ -77,13 +77,13 @@ public class NoticeController {
 	}
 	
 	//수정
-	@PutMapping("")
-	public Map edit(int noticenum, NoticeDto dto) {
+	@PutMapping("/{noticenum}")
+	public Map edit(@PathVariable("noticenum") int noticenum, NoticeDto dto) {
 		NoticeDto n = service.getById(noticenum);
-		dto.setCategory(n.getCategory());
-		dto.setTitle(n.getTitle());
-		dto.setContent(n.getContent());
-		NoticeDto n2 = service.save(dto);
+		n.setCategory(dto.getCategory());
+		n.setTitle(dto.getTitle());
+		n.setContent(dto.getContent());
+		NoticeDto n2 = service.save(n);
 		Map map = new HashMap();
 		map.put("Notice", n2);
 	      
