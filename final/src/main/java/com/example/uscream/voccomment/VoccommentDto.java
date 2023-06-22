@@ -1,8 +1,9 @@
-package com.example.uscream.voc;
+package com.example.uscream.voccomment;
 
 import java.util.Date;
 
 import com.example.uscream.store.Store;
+import com.example.uscream.voc.Voc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,15 +16,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class VocDto {
+public class VoccommentDto {
 
-	private int vocnum;
-	private int category;
-	private String title;
-	private String content;
-	private int voccheck;
+	private int voccomnum;
+	private String storecomment;
+	private Voc vocnum;
 	private Date wdate;
 	private Store storeid;
-	
-	private String img1;
 }
