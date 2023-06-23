@@ -2,6 +2,7 @@ package com.example.uscream.porder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,10 +26,11 @@ public class PorderController {
 	private PorderService service;
 	
 	@PostMapping()
-	public Map order(PorderDto dto,@PathVariable("num") int num) {
-		PorderDto d = service.save(dto);
+	public Map order(@RequestBody List<PorderDto> listdto) {
+		System.out.println(listdto);
+		int ordercnt= service.save(listdto);
 		Map map = new HashMap();
-		map.put("order",d);
+		map.put("ordercnt",ordercnt);
 		
 		return map;
 	}
@@ -57,7 +62,7 @@ public class PorderController {
 		dto.setOrderdate(d.getOrderdate());
 		dto.setConfirmdate(d.getConfirmdate());
 		dto.setConfirm(d.isConfirm());
-		PorderDto d2 = service.save(dto);
+		PorderDto d2 = service.edit(dto);
 		Map map = new HashMap();
 		map.put("order", d2);
 		return map;

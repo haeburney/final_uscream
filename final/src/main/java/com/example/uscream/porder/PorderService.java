@@ -1,6 +1,7 @@
 package com.example.uscream.porder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ public class PorderService {
 	private ArrayList<PorderDto> change(ArrayList<Porder> list){
 		ArrayList<PorderDto> dlist = new ArrayList<PorderDto>();
 		for(Porder entity:list) {
-			dlist.add(new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProduct(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isConfirm()));
+			dlist.add(new PorderDto(null,entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProduct(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isConfirm()));
 		}
 		return dlist;
 	}
 	
-	public PorderDto save(PorderDto dto) {
+	public PorderDto edit(PorderDto dto) {
 		Porder entity = dao.save(new Porder(dto.getTempnum(),dto.getOrdernum(),dto.getStoreid(),dto.getProduct(),dto.getAmount(),dto.getOrderdate(),dto.getConfirmdate(),dto.getOrdercost(),dto.isConfirm()));
 		dto.setTempnum(entity.getTempnum());
 		dto.setOrdernum(entity.getOrdernum());
@@ -35,9 +36,19 @@ public class PorderService {
 	
 	}
 	
+	public int save(List<PorderDto> dto) {
+		
+		for(PorderDto d: dto) {
+			 dao.save(new Porder(d.getTempnum(),d.getOrdernum(),d.getStoreid(),d.getProduct(),d.getAmount(),d.getOrderdate(),d.getConfirmdate(),d.getOrdercost(),d.isConfirm()));
+			
+		}
+		
+		return dto.size();
+	}
+	
 	public PorderDto getById(int tempnum) {
 		Porder entity = dao.findById(tempnum).orElse(null);
-		PorderDto dto = new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProduct(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isConfirm());
+		PorderDto dto = new PorderDto(null,entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProduct(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isConfirm());
 		return dto;
 		
 	}

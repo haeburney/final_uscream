@@ -1,22 +1,26 @@
 package com.example.uscream.porder;
 
 import java.util.Date;
+import java.util.List;
 
 import com.example.uscream.product.Product;
 import com.example.uscream.store.Store;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @ToString
 public class PorderDto {
+	List<PorderDto> listdto;
 	private int tempnum;
 	private String ordernum;
 	private Store storeid;
@@ -26,4 +30,5 @@ public class PorderDto {
 	private Date confirmdate;
 	private int ordercost;
 	private boolean confirm;
+	
 }
