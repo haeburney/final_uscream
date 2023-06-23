@@ -129,5 +129,14 @@ public class SellingController {
 		map.put("list", list);
 		return map;
 	}
+	
+	
+	@GetMapping("/monthlysales/{storeid}/{year}/{month}")
+	public Map getByYearAndMonthSales(@PathVariable("storeid") String storeid, @PathVariable("year") int year, @PathVariable("month") int month) {
+		ArrayList<Object[]> list = service.getByStoreYearlySales(storeid, year, month);
+		Map map = new HashMap();
+		map.put("list", list);
+		return map;
+	}
 }
 

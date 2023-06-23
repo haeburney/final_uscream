@@ -95,5 +95,16 @@ public class SellingService {
 		return list;
 	}
 	
+	// 전체 월매출 조회
+	public ArrayList<Object[]> getByMonthSales(){
+		ArrayList<Object[]> list = dao.findTotalPriceByAllMonth();
+		return list;
+	}
+	
+	// 연도, 월별 지점 매출 조회
+	public ArrayList<Object[]> getByYearAndMonthSales(String storeid, int year, int month){
+		ArrayList<Object[]> list = dao.findTotalPriceByYearAndMonth(storeid, year, month);
+		return list;
+	}
 }
 
