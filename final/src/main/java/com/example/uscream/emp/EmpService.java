@@ -57,4 +57,6 @@ public class EmpService {
 	public void delete(int empnum) {
 		dao.deleteById(empnum);
 	}
+	
+	// 수정 
 }

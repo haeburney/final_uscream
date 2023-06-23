@@ -61,10 +61,17 @@ public class WorklogsService {
 	}
 
 	// 달별로 리스트 불러오기
-	// 될지 안될지 모르겠어...
+	// 될지 안될지 모르겠어...되네..?응응..
 	public ArrayList<Object[]> getByYearAndMonth(int year, int month) {
 		ArrayList<Object[]> list = dao.findByYearAndMonth(year, month);
-		
+
+		return list;
+	}
+
+	// 달별 & storeid 별로 리스트 불러오기
+	public ArrayList<Object[]> getByMonthAndStoreid(int year, int month, String storeid) {
+		ArrayList<Object[]> list = dao.findByMonthAndStoreid(year, month, storeid);
+
 		return list;
 	}
 }

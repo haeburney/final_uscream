@@ -22,11 +22,13 @@ public class BasicscheduleController {
 	BasicscheduleService service;
 
 	// 기본 스케줄 추가
+	// 완!!
 	@PostMapping("")
 	public Map addBasicschedule(BasicscheduleDto dto) {
 		Map map = new HashMap();
 		boolean flag = true;
 		try {
+			dto.setStoreid(dto.getEmp().getStoreid());		// storeid는 emp를 참고해서 넣었다.
 			service.save(dto);
 		} catch (Exception e) {
 			flag = false;
@@ -39,6 +41,7 @@ public class BasicscheduleController {
 	}
 
 	// 지점별로 스케줄 가져오기
+	// 완!
 	@GetMapping("/storeid/{storeid}")
 	public Map getByStoreid(@PathVariable("storeid") String storeid) {
 		Map map = new HashMap();
@@ -58,6 +61,7 @@ public class BasicscheduleController {
 	}
 
 	// pk로 가져오기
+	// 완!!
 	@GetMapping("/{bsnum}")
 	public Map getByBsnum(@PathVariable("bsnum") int bsnum) {
 		Map map = new HashMap();
@@ -77,6 +81,7 @@ public class BasicscheduleController {
 	}
 
 	// 직원별로 가져오기
+	// 완!!
 	@GetMapping("/emp/{empnum}")
 	public Map getByEmpnum(@PathVariable("empnum") int empnum) {
 		Map map = new HashMap();
@@ -96,6 +101,7 @@ public class BasicscheduleController {
 	}
 
 	// 기본 스케줄 수정하기 → 날짜, 시작시간, 끝나는시간 수정
+	// 완!!
 	@PutMapping("")
 	public Map edit(BasicscheduleDto dto) {
 		Map map = new HashMap();
@@ -105,6 +111,7 @@ public class BasicscheduleController {
 			originalDto.setBsdate(dto.getBsdate());
 			originalDto.setStarttime(dto.getStarttime());
 			originalDto.setEndtime(dto.getEndtime());
+			service.save(originalDto);
 		} catch (Exception e) {
 			flag = false;
 			e.printStackTrace();
@@ -115,8 +122,9 @@ public class BasicscheduleController {
 	}
 
 	// 삭제
+	// 완!!
 	@DeleteMapping("/{bsnum}")
-	public Map del(int bsnum) {
+	public Map del(@PathVariable("bsnum") int bsnum) {
 		Map map = new HashMap();
 		boolean flag = true;
 

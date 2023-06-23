@@ -1,6 +1,6 @@
 package com.example.uscream.emp;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -39,7 +39,7 @@ public class Emp {
 	private Store storeid;	// 지점
 	
 	private String empname;	// 직원 이름
-	private Date joindate;	// 입사 날짜
+	private LocalDate joindate;	// 입사 날짜
 	
 	@ManyToOne
 	@JoinColumn(name="grade", nullable=false)

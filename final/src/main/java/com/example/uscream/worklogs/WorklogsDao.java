@@ -26,5 +26,13 @@ public interface WorklogsDao extends JpaRepository<Worklogs, Integer> {
 			, nativeQuery = true)
 	ArrayList<Object[]> findByYearAndMonth(@Param("year") int year, @Param("month") int month);
 	
-	
+	// 달별 + 스토어별로 불러오기 
+	@Transactional
+	@Query(value = "select sum(alltime), emp from worklogs "
+			+ "where extract(year from endtime) = :year "
+			+ "and extract(month from endtime) = :month "
+			+ "and storeid = :storeid "
+			+ "group by emp"
+			, nativeQuery = true)
+	ArrayList<Object[]> findByMonthAndStoreid(@Param("year") int year, @Param("month") int month,  @Param("storeid") String storeid);
 }

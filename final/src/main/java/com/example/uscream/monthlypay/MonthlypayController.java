@@ -1,85 +1,215 @@
 package com.example.uscream.monthlypay;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.uscream.emp.Emp;
+import com.example.uscream.emp.EmpDto;
+import com.example.uscream.emp.EmpService;
+import com.example.uscream.worklogs.WorklogsService;
+
 @RestController
 @CrossOrigin(origins = "*")
+@EnableScheduling
 @RequestMapping("/monthlypay")
 public class MonthlypayController {
 
-//	@Autowired
-//	MonthlypayService mpService;
-//
-//	@Autowired
-//	EmpService eService;
-//	
-//	@Autowired
-//	WorklogsService wlService;
-//
-//	@Scheduled(cron = "0 0 0 1 * ?") // 매달 1일 00:00:00에 실행
-//	public void myScheduledFunction() {
-//		// 원하는 동작을 수행하는 함수 코드 작성
-//
-//	}
-//
-//	// 테스트함수 테이블에 값 넣어보려고~
-//	@GetMapping("/test")
-//	public Map getMonthlypay() {
-//		Map map = new HashMap();
-//		boolean flag = true;
-//		MonthlypayDto mpDto = new MonthlypayDto();
-//		
-//		LocalDate today = LocalDate.now();
-//		int year = today.getYear();
-//		int month = today.getMonthValue();
-//
-//		System.out.println("year :" + year);
-//		System.out.println("month :" + month);
-//
-//		ArrayList<Object[]> monthList = wlService.getByYearAndMonth(year, month);
-//		
-//		for(Object[] row:monthList) {
-//			int sumAlltime = (int) row[0];
-//			int emp = (int) row[1];
-//			EmpDto newEmp = eService.getById(emp);
-//			
-//			mpDto.setEmp(new Emp(emp, null, "", null, null, ""));
-//			mpDto.setStoreid(newEmp.getStoreid());
-//			
-//			
-//			int pay = (int)(sumAlltime/60*newEmp.getGrade().getSalary());
-//			
-//			mpDto.setMpsalary(pay);
-//			
-//			DateTimeFormatter formatter;
-//			LocalDate date;
-//			if(month<10) {
-//				formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-//				date = LocalDate.parse(String.valueOf(year) + "/0" + String.valueOf(month) + "/01", formatter);
-//				
-//			} else {
-//				formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-//				date = LocalDate.parse(String.valueOf(year) + "/" + String.valueOf(month) + "/01", formatter);
-//			}
-//			
-//			
-//			//LocalDate date = LocalDate.parse(year + "/" + month, formatter);
-//			System.out.println(date);
-//			System.out.println(date.format(formatter));
-//			
-//			mpDto.setMpmonth(date);
-//			
-//			System.out.println(sumAlltime + " / " + emp);
-//			System.out.println(pay);
-//			System.out.println(mpDto);
-//			
-//			
-//		}
-//		
-//		
-//		map.put("flag", flag);
-//		return map;
-//	}
+	@Autowired
+	MonthlypayService mpService;
+
+	@Autowired
+	EmpService eService;
+
+	@Autowired
+	WorklogsService wlService;
+
+	public boolean sumF(int year, int month, String storeid) {
+		// group by emp & 년 & 월별로 합계 계산하기
+
+		ArrayList<Object[]> monthList = new ArrayList<Object[]>();
+
+		if (storeid.equals("0")) {
+			System.out.println("storeid = 0");
+			// 자동 insert 할 때
+			monthList = wlService.getByYearAndMonth(year, month);
+		} else {
+			System.out.println("storeid " + storeid);
+			// 지점마다 원하는 년, 월을 넣고 싶을 때 (그냥..혹시 몰라서 넣어둔것.. 꼭필요한거 노노..)
+			monthList = wlService.getByMonthAndStoreid(year, month, storeid);
+		}
+		System.out.println("monthList : " + monthList);
+		MonthlypayDto mpDto = new MonthlypayDto();
+		boolean flag = true;
+		try {
+			for (Object[] row : monthList) { // 위 리스트만큼 for문 돌리기
+				int sumAlltime = (int) row[0];
+				int emp = (int) row[1];
+				EmpDto newEmp = eService.getById(emp);
+
+				mpDto.setEmp(new Emp(emp, null, "", null, null, ""));
+				mpDto.setStoreid(newEmp.getStoreid());
+				
+				float hour = (float) sumAlltime / 60;
+				int pay = (int) (hour * newEmp.getGrade().getSalary());
+				
+				System.out.println("hour :" + hour);
+				System.out.println("sumAlltime : " + sumAlltime);
+				System.out.println("등급별 시급 :" + newEmp.getGrade().getSalary());
+				System.out.println("sumAlltime / 60 :" + (sumAlltime / 60));
+				System.out.println("pay : " + pay);
+				mpDto.setMpsalary(pay);
+
+				DateTimeFormatter formatter;
+				LocalDate date;
+
+				if (month < 10) { // 만약 month 가 10 미만이면 앞에 0 붙여주기 ..
+					formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+					date = LocalDate.parse(String.valueOf(year) + "/0" + String.valueOf(month) + "/01", formatter);
+
+				} else { // 아니라면 그냥 가기~
+					formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+					date = LocalDate.parse(String.valueOf(year) + "/" + String.valueOf(month) + "/01", formatter);
+				}
+
+				mpDto.setMpmonth(date); // 년월등록
+				System.out.println(mpDto);
+				mpService.save(mpDto);
+
+			}
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+
+		return flag;
+	}
+
+	// 매달 월급 계산해주기
+	@Scheduled(cron = "0 0 0 1 * ?") // 매달 1일 00:00:00에 실행
+	public Map myScheduledFunction() {
+		Map map = new HashMap();
+		MonthlypayDto mpDto = new MonthlypayDto();
+
+		LocalDate today = LocalDate.now();
+		int year = today.getYear(); // 해당 년도 가져오기
+		int month = today.getMonthValue(); // 해당 월 가져오기
+
+		if (month == 1) {
+			month = 12;
+		}
+
+		boolean result = sumF(year, month, "0");
+
+		System.out.println("MonthlyPay 업데이트 성공? :" + result);
+		map.put("flag", result);
+		return map;
+	}
+
+	// 데이터 나중에 계산하고 싶을 수 있으니까 일단 넣어놓기
+	// 자동 계산 말고 수동 계산 하는 곳 (클릭해서 계산할 수 있게?)
+	@PostMapping("/sum/{storeid}/{year}/{month}")
+	public Map getSumMonth(@PathVariable("storeid") String storeid, @PathVariable("year") int year,
+			@PathVariable("month") int month) {
+		Map map = new HashMap();
+		System.out.println("year : " + year + " / month : " + month);
+		boolean result = sumF(year, month, storeid);
+
+		map.put("flag", result);
+		return map;
+	}
+
+	// list 스토어 & 년 & 월
+	@GetMapping("/{storeid}/{year}/{month}")
+	public Map getStoreAndMonth(@PathVariable("storeid") String storeid, @PathVariable("year") int year,
+			@PathVariable("month") int month) {
+		Map map = new HashMap();
+		ArrayList<MonthlypayDto> list = new ArrayList<MonthlypayDto>();
+		boolean flag = true;
+
+		try {
+			list = mpService.getByStoreAndMonth(storeid, year, month);
+			if(!list.isEmpty()) {
+				System.out.println("list.get(0).getEmp() :" + list.get(0).getEmp());
+			}
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
+
+	// list 스토어 & 년별로 보기
+	// 완!!
+	@GetMapping("/{storeid}/{year}")
+	public Map getStoreAndYear(@PathVariable("storeid") String storeid, @PathVariable("year") int year) {
+		Map map = new HashMap();
+		ArrayList<MonthlypayDto> list = new ArrayList<MonthlypayDto>();
+		boolean flag = true;
+		try {
+			list = mpService.getByStoreAndYear(storeid, year);
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
+
+	// list all
+	// 완!!
+	@GetMapping("")
+	public Map getAll() {
+		Map map = new HashMap();
+		ArrayList<MonthlypayDto> list = new ArrayList<MonthlypayDto>();
+		boolean flag = true;
+
+		try {
+			list = mpService.getByAll();
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
+
+	// 삭제하기
+	// 완!!
+	@DeleteMapping("/{mpnum}")
+	public Map del(@PathVariable("mpnum") int mpnum) {
+		Map map = new HashMap();
+		boolean flag = true;
+
+		try {
+			mpService.delete(mpnum);
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+
+		map.put("flag", flag);
+		return map;
+	}
+
 }

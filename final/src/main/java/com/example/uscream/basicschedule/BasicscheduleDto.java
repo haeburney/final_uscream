@@ -1,19 +1,11 @@
 package com.example.uscream.basicschedule;
 
-import java.util.Date;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.example.uscream.emp.Emp;
 import com.example.uscream.store.Store;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +21,7 @@ public class BasicscheduleDto {
 	private int bsnum;
 	private Store storeid;
 	private Emp emp;
-	private Date bsdate;
-	private Date starttime;
-	private Date endtime;
+	private LocalDate bsdate;
+	private LocalDateTime starttime;
+	private LocalDateTime endtime;
 }
