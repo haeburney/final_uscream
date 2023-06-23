@@ -29,6 +29,7 @@ public class ScheduleController {
 		Map map = new HashMap();
 		boolean flag = true;
 		try {
+			dto.setStoreid(dto.getEmp().getStoreid());
 			service.save(dto);
 		} catch (Exception e) {
 			flag = false;

@@ -1,6 +1,7 @@
 package com.example.uscream.basicschedule;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -43,7 +44,7 @@ public class Basicschedule {
 	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Emp emp;		// 직원 
 	
-	private Date bsdate;	// 일하는 날짜
-	private Date starttime;	// 출근 시간
-	private Date endtime;	// 퇴근 시간
+	private LocalDate bsdate;	// 일하는 날짜
+	private LocalDateTime starttime;	// 출근 시간
+	private LocalDateTime endtime;	// 퇴근 시간
 }
