@@ -2,12 +2,18 @@ package com.example.uscream.msg;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,38 +45,74 @@ public class MsgController {
 		this.storeservice = storeservice;
 	}
 	
-	//글 작성
+	//메일 작성
 	@PostMapping("")
 	public Map sendMsg(MsgDto dto) {
+		File dir = new File(path+"/"+"msgfile");
+		dir.mkdir();										
 		
-		
-		
-		File dir = new File(path+"/"+"msgfile"+"/");		// 파일들을 저장할 디렉토리 '주소'를 생성한다.
-		dir.mkdir();										// 생성한 주소에 디렉토리를 생성한다.
-		MultipartFile f = dto.getMfile();					// 올린 파일의 정보를 갖는 멀티파트 객체를 생성한다.
+		MultipartFile f = dto.getMfile();					
 		
 		if(f != null) {
-		String fname = f.getOriginalFilename();				// 클라이언트에 저장된 오리지날 파일명을 가져온다.
-		String newpath = dir.getAbsolutePath()+"/"+fname; 	//실제 경로
-		File uploadfile = new File(newpath);
+		String fname = f.getOriginalFilename();				
+		String newpath = path+"/"+"msgfile/"+fname; 		  
+		File uploadfile = new File(newpath);		
 		
 		try {
-			f.transferTo(uploadfile);					// 파일을 복사한다.
-			dto.setMsgfile(fname);
+			f.transferTo(uploadfile);					
+			dto.setMsgfile(newpath);
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		}
 		
 		service.save(dto);
+		
+		
 		Map map = new HashMap();
-		map.put(dto, dto);
+		map.put("dto", dto);
 		return map;
 	}
+	
+	// 답장 페이지에 정보 주기 
+	@PostMapping("/reply")
+	public Map sendReply(MsgDto redto) {
+		//num, title, receiver, sender, date, content, file ......... 
+		MsgDto dto = new MsgDto();
+		
+		dto.setSender(redto.getReceiver());
+		dto.setReceiver(redto.getSender());
+		dto.setReply(redto.getMsgnum());
+		
+	
+		
+		Map map = new HashMap();
+		map.put("dto", dto);
+		
+		return map;
+	}
+	
+	// 파일 다운로드 ??
+	@GetMapping("/down/{fname}")
+	public ResponseEntity<byte[]> down(@PathVariable("fname") String fname) {
+		File f = new File(path+"/"+"msgfile/"+fname);		
+		HttpHeaders header = new HttpHeaders();
+		ResponseEntity<byte[]> result = null;
+		try {		
+			header.add("Content-Type", Files.probeContentType(f.toPath()));// 마임타입
+			header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + URLEncoder.encode(fname, "UTF-8") + "\"");
+			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(f), header, HttpStatus.OK);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}			
+		return result;
+	}	
 		
 	//인덱스 페이지 , 수신자로 검색
 	@GetMapping("/{storeid}")

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.example.uscream.store.Store;
 import com.example.uscream.store.StoreDto;
 
-
-
 @Service
 public class MsgService {
 
@@ -42,7 +40,6 @@ public class MsgService {
 			
 			return null;						
 		}
-		
 		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
 				msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
 				msg.isReadcheck(),msg.isDelcheck());
@@ -106,8 +103,6 @@ public class MsgService {
 		return dtolist;
 		
 	}
-	
-	
 	
 	//임시보관 기능
 	public void changeTempcheck(int num) {
