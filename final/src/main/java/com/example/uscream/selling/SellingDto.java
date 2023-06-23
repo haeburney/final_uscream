@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
+ 
 public class SellingDto {
 	private int sellingnum;
 	private SellProduct sellproduct;

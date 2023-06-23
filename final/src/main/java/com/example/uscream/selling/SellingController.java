@@ -119,7 +119,7 @@ public class SellingController {
 		Map map = new HashMap();
 		map.put("list", list);
 		return map;
-	}
+	} 
 	
 	// 설정 기간 동안의 특정지점 연매출 조회
 	@GetMapping("/yearlysales/{storeid}/{year1}/{year2}")

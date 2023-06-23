@@ -18,7 +18,7 @@ import com.example.uscream.selling.SellingService;
 import com.example.uscream.store.Store;
 import com.example.uscream.store.StoreDto;
 import com.example.uscream.store.StoreService;
-
+ 
 @RestController
 @RequestMapping("/netsales")
 @CrossOrigin(origins = "*")

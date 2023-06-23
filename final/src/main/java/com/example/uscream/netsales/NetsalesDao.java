@@ -12,6 +12,6 @@ public interface NetsalesDao extends JpaRepository<Netsales, Integer> {
 	// 2. 1번으로 순매출 계산
 	// 3. 특정 지점의 월별 순매출 산출
 	// 4. 특정 지점의 연도별 순매출 산출
-	
+	 
 
 }

@@ -21,4 +21,4 @@ public class NetsalesService {
 		return dto;
 	}
 
-}
+} 

@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
+ 
 public class NetsalesDto {
 	private int netsalesnum;
 	private LocalDate netsalesdate;
