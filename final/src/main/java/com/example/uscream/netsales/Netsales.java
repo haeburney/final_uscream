@@ -1,22 +1,24 @@
 package com.example.uscream.netsales;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.example.uscream.store.Store;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
+ 
 @Entity
 @Setter
 @Getter
@@ -29,29 +31,34 @@ public class Netsales {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_netsales")
 	private int netsalesnum;
 	
-	// 월이 없다..
-	private Date netsalesdate;
+	@Column(nullable=false)
+	private LocalDate netsalesdate;
 	
 	@ManyToOne
 	@JoinColumn(name="storeid", nullable=false)
 	private Store storeid;
 	
+	private int msellingprice;
+	private int mpsalary;
+	private int mordercost;
+	private int mnetsales;
+	
 //	@ManyToOne
 //	@JoinColumn(name="sellingprice", nullable=false)
 //	private Selling sellingprice;
-	
-	private int sellingprice;
-	
+
 //	@ManyToOne
 //	@JoinColumn(name="mpsalary", nullable=false)
 //	private Monthlypay mpsalary;
-	
-	private int mpsalary;
 	
 //	@ManyToOne
 //	@JoinColumn(name="ordernum", nullable=false)
 //	private Porder ordernum;
 
-	private int ordercost;
 	
+	@PrePersist	// netsales 자동 계산: '월별 매출 - (월 급여 + 월 발주금액)'
+	public void calculateNetsales() {
+		mnetsales = msellingprice - (mpsalary + mordercost);
+	}
+
 }

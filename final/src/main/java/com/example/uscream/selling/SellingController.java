@@ -119,12 +119,21 @@ public class SellingController {
 		Map map = new HashMap();
 		map.put("list", list);
 		return map;
-	}
+	} 
 	
 	// 설정 기간 동안의 특정지점 연매출 조회
 	@GetMapping("/yearlysales/{storeid}/{year1}/{year2}")
 	public Map getByStoreYearlySales(@PathVariable("storeid") String storeid, @PathVariable("year1") int year1, @PathVariable("year2") int year2) {
 		ArrayList<Object[]> list = service.getByStoreYearlySales(storeid, year1, year2);
+		Map map = new HashMap();
+		map.put("list", list);
+		return map;
+	}
+	
+	
+	@GetMapping("/monthlysales/{storeid}/{year}/{month}")
+	public Map getByYearAndMonthSales(@PathVariable("storeid") String storeid, @PathVariable("year") int year, @PathVariable("month") int month) {
+		ArrayList<Object[]> list = service.getByStoreYearlySales(storeid, year, month);
 		Map map = new HashMap();
 		map.put("list", list);
 		return map;

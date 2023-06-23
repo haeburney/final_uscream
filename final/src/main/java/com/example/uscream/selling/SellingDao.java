@@ -46,7 +46,7 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 	        @Param("year") int year);
 	
 	
-	// 모든 월 매출 검색하여 표출 *** 수정중
+	// 모든 월 매출 검색하여 표출
 	@Transactional
 	@Query(value = "SELECT EXTRACT(YEAR FROM se.sellingdate) AS year, EXTRACT(MONTH FROM se.sellingdate) AS month, se.storeid, st.storename, SUM(se.sellingprice) AS totalprice " 
 	        + "FROM selling se "
@@ -55,6 +55,21 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 	ArrayList<Object[]> findTotalPriceByAllMonth();
 	
 	
+	// 연도, 월 선택하면 스토어의 월별 매출 조회
+	@Transactional
+	@Query(value = "SELECT EXTRACT(YEAR FROM se.sellingdate) AS year, EXTRACT(MONTH FROM se.sellingdate) AS month, se.storeid, st.storename, SUM(se.sellingprice) AS totalprice " +
+	        "FROM Selling se " +
+	        "JOIN Store st ON se.storeid = st.storeid " +
+	        "WHERE se.storeid = :storeid " +
+	        "  AND EXTRACT(YEAR FROM se.sellingdate) = :year " +
+	        "  AND EXTRACT(MONTH FROM se.sellingdate) = :month " +
+	        "GROUP BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate), se.storeid, st.storename", nativeQuery = true)
+	ArrayList<Object[]> findTotalPriceByYearAndMonth(
+			@Param("storeid") String storeid,
+	        @Param("year") int year,
+	        @Param("month") int month);
+	
+	 
 	// 연도 선택하면 특정 지점의 모든 월 매출 검색하여 표출 *
 	@Transactional
 	@Query(value = "SELECT se.storeid, st.storename, EXTRACT(MONTH FROM se.sellingdate) AS month, SUM(se.sellingprice) AS totalprice "

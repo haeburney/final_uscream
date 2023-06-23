@@ -13,15 +13,12 @@ public class NetsalesService {
 	@Autowired
 	private NetsalesDao dao;
 	
-	// 각 테이블 참조 컬럼 저장(매출 페이지 로딩 시)
+	// 테이블에 값 update (매월 1일에 전월 데이터 가져옴)
 	public NetsalesDto save(NetsalesDto dto) {
-//		dao.save(new Netsales(dto.getNetsalesnum(), dto.getStoreid(), dto.getSellingprice(), 
-//				dto.getMpsalary(), dto.getOrdernum()));
 		dao.save(new Netsales(dto.getNetsalesnum(), dto.getNetsalesdate(), dto.getStoreid(), 
-				dto.getSellingprice(), dto.getMpsalary(),dto.getOrdercost()));
+				dto.getMsellingprice(), dto.getMpsalary(),dto.getMordercost(), dto.getMnetsales()));
 		
 		return dto;
 	}
-	
 
-}
+} 

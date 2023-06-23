@@ -26,7 +26,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Selling {
-	
+	 
 	@Id
 	@SequenceGenerator(name = "seq_selling", sequenceName = "seq_selling", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_selling") 
