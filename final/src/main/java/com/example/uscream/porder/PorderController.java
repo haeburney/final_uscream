@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,9 +24,9 @@ public class PorderController {
 	private PorderService service;
 	
 	@PostMapping()
-	public Map order(@RequestBody List<PorderDto> listdto) {
-		System.out.println(listdto);
-		int ordercnt= service.save(listdto);
+	public Map order(@RequestBody PorderDto[] dto) {
+		System.out.println(dto);
+		int ordercnt= service.save(dto);
 		Map map = new HashMap();
 		map.put("ordercnt",ordercnt);
 		
@@ -40,6 +38,7 @@ public class PorderController {
 		ArrayList<PorderDto> dlist = service.getAll();
 		Map map = new HashMap();
 		map.put("orderlist", dlist);
+		System.out.println(dlist);
 		return map;
 		
 	}
@@ -48,7 +47,9 @@ public class PorderController {
 	public Map getByOrdernum(@PathVariable("ordernum") String ordernum) {
 		ArrayList<PorderDto> dlist = service.getByOrderNum(ordernum);
 		Map map = new HashMap();
+		System.out.println(dlist);
 		map.put("Storeoder",dlist);
+		System.out.println(map);
 		return map;
 		
 	}
@@ -71,6 +72,17 @@ public class PorderController {
 	@PatchMapping("/confirm/{num}")
 	public void confirm(@PathVariable("num") int tempnum) {
 		service.confirm(tempnum);
+	}
+	
+	@GetMapping("/orderlist")
+	public Map getOrderLsit() {
+		ArrayList<Map<String, String>> orderlist = service.getOrdernum();
+		System.out.println("orderlist:" +orderlist);
+		Map<String, Object> map = new HashMap();
+		map.put("orderlist", orderlist);
+		System.out.println("map"+map);
+		return map;
+		
 	}
 
 }

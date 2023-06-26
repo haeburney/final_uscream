@@ -2,10 +2,12 @@ package com.example.uscream.porder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.uscream.product.Product;
 import com.example.uscream.store.Store;
 
 @Service
@@ -17,38 +19,40 @@ public class PorderService {
 	private ArrayList<PorderDto> change(ArrayList<Porder> list){
 		ArrayList<PorderDto> dlist = new ArrayList<PorderDto>();
 		for(Porder entity:list) {
-			dlist.add(new PorderDto(null,entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProduct(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isConfirm()));
+			dlist.add(new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProductnum(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isCheckconfirm(),"",0));
 		}
 		return dlist;
 	}
 	
 	public PorderDto edit(PorderDto dto) {
-		Porder entity = dao.save(new Porder(dto.getTempnum(),dto.getOrdernum(),dto.getStoreid(),dto.getProduct(),dto.getAmount(),dto.getOrderdate(),dto.getConfirmdate(),dto.getOrdercost(),dto.isConfirm()));
+		Porder entity = dao.save(new Porder(dto.getTempnum(),dto.getOrdernum(),dto.getStoreid(),dto.getProductnum(),dto.getAmount(),dto.getOrderdate(),dto.getConfirmdate(),dto.getOrdercost(),dto.isConfirm()));
 		dto.setTempnum(entity.getTempnum());
 		dto.setOrdernum(entity.getOrdernum());
 		dto.setStoreid(entity.getStoreid());
-		dto.setProduct(entity.getProduct());
+		dto.setProductnum(entity.getProductnum());
 		dto.setAmount(entity.getAmount());
 		dto.setOrderdate(entity.getOrderdate());
 		dto.setConfirmdate(entity.getConfirmdate());
-		dto.setConfirm(entity.isConfirm());
+		dto.setConfirm(entity.isCheckconfirm());
 		return dto;
 	
 	}
 	
-	public int save(List<PorderDto> dto) {
+	public int save(PorderDto[] dto) {
 		
 		for(PorderDto d: dto) {
-			 dao.save(new Porder(d.getTempnum(),d.getOrdernum(),d.getStoreid(),d.getProduct(),d.getAmount(),d.getOrderdate(),d.getConfirmdate(),d.getOrdercost(),d.isConfirm()));
+			Store storeid = new Store(d.getStore(), "", "", "", 0, "", 0, 0);
+			Product productnum = new Product(d.getProduct(), "", "", "", 0, true);
+			 dao.save(new Porder(d.getTempnum(),d.getOrdernum(),storeid,productnum,d.getAmount(),d.getOrderdate(),d.getConfirmdate(),d.getOrdercost(),d.isConfirm()));
 			
 		}
 		
-		return dto.size();
+		return dto.length;
 	}
 	
 	public PorderDto getById(int tempnum) {
 		Porder entity = dao.findById(tempnum).orElse(null);
-		PorderDto dto = new PorderDto(null,entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProduct(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isConfirm());
+		PorderDto dto = new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProductnum(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isCheckconfirm(),"",0);
 		return dto;
 		
 	}
@@ -61,7 +65,7 @@ public class PorderService {
 	public ArrayList<PorderDto> getByOrderNum(String ordernum){
 		ArrayList<Porder> list = dao.findByOrdernum(ordernum);
 		return change(list);
-	}
+	}	
 	
 	public ArrayList<PorderDto> getStoreOrder(String ordernum, String storeid){
 		Store store = new Store(storeid,"","","",0,"", 0,0);
@@ -76,6 +80,10 @@ public class PorderService {
 	
 	public void delete(int tempnum) {
 		dao.deleteById(tempnum);
+	}
+	
+	public ArrayList<Map<String, String>> getOrdernum(){
+		return dao.findDistinctOrdernums();
 	}
 
 }
