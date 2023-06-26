@@ -78,8 +78,10 @@ public class ProductController {
 	@GetMapping()
 	public Map getAll() {
 		ArrayList<ProductDto> dlist = service.getAll();
+		System.out.println(dlist);
 		Map map = new HashMap<>();
 		map.put("list", dlist);
+		System.out.println(map);
 		return map;
 	}
 	
