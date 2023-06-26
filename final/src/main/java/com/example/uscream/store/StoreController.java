@@ -82,7 +82,7 @@ public class StoreController {
 	public Map login(String storeid, String pwd){
 		Map map = new HashMap();
 		boolean flag = false;
-		StoreDto  dto = service.getById(path);
+		StoreDto  dto = service.getById(storeid);
 		if (dto != null && pwd.equals(dto.getPwd())) {
 			flag=true;
 			map.put("type", dto.getAccounttype());
