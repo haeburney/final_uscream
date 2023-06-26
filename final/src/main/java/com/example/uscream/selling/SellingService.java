@@ -21,7 +21,7 @@ public class SellingService {
 		return dto;
 	}
 	
-	// 판매내역 전체 검색
+	// 판매내역 전체 검색 
 	public ArrayList<SellingDto> getAll() {
 		ArrayList<Selling> list = (ArrayList<Selling>) dao.findAll();
 		ArrayList<SellingDto> list2 = new ArrayList<SellingDto>();

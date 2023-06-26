@@ -91,7 +91,7 @@ public class SellingController {
 		ArrayList<Map<String, Object[]>> list = service.getByMonthlyRank3();
 		Map map = new HashMap();
 		map.put("list", list);
-		return map;
+		return map; 
 	}
 
 	// 일간 전체 매출

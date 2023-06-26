@@ -83,7 +83,7 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
             "   GROUP BY EXTRACT(MONTH FROM se.sellingdate), EXTRACT(DAY FROM se.sellingdate), se.storeid, st.storename" +
             ") r " +
             "WHERE r.rank <= 3 " +
-            "ORDER BY r.sellingmonth, r.sellingday, r.rank", nativeQuery = true)
+            "ORDER BY r.sellingmonth, r.sellingday, r.rank", nativeQuery = true) 
 	ArrayList<Map<String, Object[]>> findByDayRank3Store();
 	
 	

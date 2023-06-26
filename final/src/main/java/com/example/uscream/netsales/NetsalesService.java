@@ -17,7 +17,7 @@ public class NetsalesService {
 				dto.getMsellingprice(), dto.getMpsalary(),dto.getMordercost(), dto.getMnetsales()));
 		
 		return dto;
-	}
+	} 
 
 	// 전체 검색
 	public ArrayList<NetsalesDto> getAll() {

@@ -46,7 +46,7 @@ public class NetsalesController {
 	@Scheduled(cron = "0 44 18 24 * ?") // 매월 첫째 날 자정에 메서드 실행 실행 (cron = "초 분 시 일")
 	public Map addNetsales() {
 
-		LocalDate today = LocalDate.now();
+		LocalDate today = LocalDate.now(); 
 		int year = today.getYear();
 		int month = today.getMonthValue();
 

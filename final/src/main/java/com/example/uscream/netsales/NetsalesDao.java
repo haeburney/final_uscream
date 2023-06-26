@@ -24,7 +24,7 @@ public interface NetsalesDao extends JpaRepository<Netsales, Integer> {
 	ArrayList<Map<String, Object[]>> findNetsalesYear(
 	        @Param("storeid") String storeid,
 	        @Param("year") int year);
-	
+	 
 	
 	// 연도 및 월 선택하면 특정 지점의 월 매출, 인건비, 발주금액, 순매출 검색하여 표출
 	@Transactional
