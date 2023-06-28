@@ -1,7 +1,6 @@
 package com.example.uscream.msg;
 
-import java.io.File;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +24,7 @@ public class MsgDto {
 	private Store receiver;		
 	
 	private String title;
-	private Date msgdate;
+	private String msgdate;
 	private String content;
 	
 	private String msgfile;
