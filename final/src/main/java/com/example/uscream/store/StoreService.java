@@ -21,6 +21,7 @@ public class StoreService {
 	}
 	
 	
+	
 	// 2. 지점(아이디) 생성, 수정
 		public StoreDto save(StoreDto dto) {
 		Store entity = dao.save(new Store(dto.getStoreid(), dto.getStorename(), dto.getPwd(), dto.getManagername(), dto.getAccounttype(),dto.getStoreimg(), dto.getX(), dto.getY()));
