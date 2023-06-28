@@ -119,9 +119,12 @@ public class MsgController {
 	public Map getIndex(@PathVariable("storeid") String id) {
 		
 		StoreDto store = storeservice.getById(id);
+		
 		long CountByReceiver = service.countAllReceiver(store.getStoreid());
 		long CountByReceiverAndRead = service.countAllReadReceiver(store.getStoreid());
 		ArrayList<MsgDto> msglist = service.getByReceiver(store);
+		
+		
 		Map map = new HashMap();
 		map.put("CountByReceiver",CountByReceiver);
 		map.put("CountByReceiverAndRead",CountByReceiverAndRead);
@@ -202,6 +205,22 @@ public class MsgController {
 		return map;
 	}	
 	
+	//사이드 바 
+	@GetMapping("/sidebar/{storeid}")
+	public Map getSideBar(@PathVariable("storeid") String storeid) {
+		System.out.println(storeid);
+		StoreDto store = storeservice.getById(storeid);
+
+		long CountAllRead= service.countAllReadReceiver(storeid) ;
+		long CountByMark = service.countByMark(storeid);
+		
+		Map map = new HashMap();
+		map.put("CountAllRead", CountAllRead);
+		map.put("CountByMark", CountByMark);
+		
+		
+		return map;
+	}
 	
 	// 보낸 메세지 인덱스 페이지
 		@GetMapping("/sender/{storeid}")
