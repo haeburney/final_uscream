@@ -63,9 +63,12 @@ public class Porder {
 	public void sysdate() {
 		orderdate = new Date();
 		confirmdate = null;
-		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyymmdd");
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMdd");
+		System.out.println(simpleDate);
 		Date sysdate = new Date();
+		System.out.println(sysdate);
 		String date = simpleDate.format(sysdate);
+		System.out.println(date);
 		ordernum = date +"#"+storeid.getStoreid();
 	}
 	
