@@ -1,7 +1,7 @@
 package com.example.uscream.msg;
 
-import java.io.File;  
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -47,7 +47,7 @@ public class Msg {
 	private Store receiver;		// 수신자
 	
 	private String title;
-	private Date msgdate;
+	private String msgdate;
 	private String content;
 	
 	@Column(nullable = true)
@@ -68,7 +68,13 @@ public class Msg {
 	
 	@PrePersist
 	public void updateDate() {
-		msgdate = new Date();
+        
+		LocalDateTime ldt = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
+        msgdate = ldt.format(dtf);
+        
+        
+        
 	}
 	
 }

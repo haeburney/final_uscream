@@ -24,6 +24,7 @@ public class ScheduleController {
 	ScheduleService service;
 
 	// 스케줄 추가
+	// 완!
 	@PostMapping("")
 	public Map addSchedule(ScheduleDto dto) {
 		Map map = new HashMap();
@@ -42,6 +43,7 @@ public class ScheduleController {
 	}
 
 	// 지점별로 스케줄 가져오기
+	// 완!!
 	@GetMapping("/storeid/{storeid}")
 	public Map getByStoreid(@PathVariable("storeid") String storeid) {
 		Map map = new HashMap();
@@ -61,6 +63,7 @@ public class ScheduleController {
 	}
 
 	// pk로 가져오기
+	// 완! 
 	@GetMapping("/{snum}")
 	public Map getBySnum(@PathVariable("snum") int snum) {
 		Map map = new HashMap();
@@ -69,6 +72,9 @@ public class ScheduleController {
 
 		try {
 			dto = service.getBySnum(snum);
+			if(dto == null) {
+				flag = false;
+			}
 		} catch (Exception e) {
 			flag = false;
 			e.printStackTrace();
@@ -80,6 +86,7 @@ public class ScheduleController {
 	}
 
 	// 직원별로 가져오기
+	// 완!
 	@GetMapping("/emp/{empnum}")
 	public Map getByEmpnum(@PathVariable("empnum") int empnum) {
 		Map map = new HashMap();
@@ -99,6 +106,7 @@ public class ScheduleController {
 	}
 
 	// 기본 스케줄 수정하기 → 날짜, 시작시간, 끝나는시간 수정
+	// 완!!
 	@PutMapping("")
 	public Map edit(ScheduleDto dto) {
 		Map map = new HashMap();
@@ -108,6 +116,7 @@ public class ScheduleController {
 			originalDto.setSdate(dto.getSdate());
 			originalDto.setStarttime(dto.getStarttime());
 			originalDto.setEndtime(dto.getEndtime());
+			service.save(originalDto);
 		} catch (Exception e) {
 			flag = false;
 			e.printStackTrace();
@@ -118,8 +127,9 @@ public class ScheduleController {
 	}
 
 	// 삭제
+	// 완!!
 	@DeleteMapping("/{snum}")
-	public Map del(int snum) {
+	public Map del(@PathVariable("snum") int snum) {
 		Map map = new HashMap();
 		boolean flag = true;
 

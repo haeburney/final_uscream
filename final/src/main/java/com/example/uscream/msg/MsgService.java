@@ -22,6 +22,7 @@ public class MsgService {
 	// 생성 및 수정 
 	public MsgDto save(MsgDto msgdto) {
 		
+		
 		Msg msg = dao.save(new Msg(msgdto.getMsgnum(),msgdto.getSender(),msgdto.getReceiver(),msgdto.getTitle(),msgdto.getMsgdate(),
 				msgdto.getContent(),msgdto.getMsgfile(),msgdto.getReply(),msgdto.isMark(),msgdto.isTempcheck(),
 				msgdto.isReadcheck(),msgdto.isDelcheck())); 

@@ -49,24 +49,27 @@ public class Porder {
 	@ManyToOne
 	@JoinColumn(name="product", nullable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Product product;
+	private Product productnum;
 	
 	private int amount;
 	private Date orderdate;
 	@Column(nullable = true)
 	private Date confirmdate;
 	private int ordercost;
-	private boolean confirm;
+	private boolean checkconfirm;
 	
 	
 	@PrePersist
 	public void sysdate() {
 		orderdate = new Date();
 		confirmdate = null;
-		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyymmdd");
+		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMdd");
+		System.out.println(simpleDate);
 		Date sysdate = new Date();
+		System.out.println(sysdate);
 		String date = simpleDate.format(sysdate);
-		ordernum = date + storeid.getStoreid();
+		System.out.println(date);
+		ordernum = date +"#"+storeid.getStoreid();
 	}
 	
 	

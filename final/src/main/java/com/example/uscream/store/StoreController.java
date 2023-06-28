@@ -41,6 +41,8 @@ public class StoreController {
 		StoreDto s = service.save(dto);
 		File dir = new File(path+"/"+"store");
 					
+		System.out.println("1. 언제냐");
+		
 		dir.mkdir();							// 폴더 생성  name= path + store
 		String img = dto.getStoreimg();		 
 		MultipartFile F = dto.getSimg();
@@ -68,11 +70,12 @@ public class StoreController {
 			img = "noimg";
 		}
 		
+		//
 		dto.setStoreimg(img);		// 데이터를 storeimg 쏜다. 
 		
-		service.save(dto);
+		service.save(dto);			// 수정
 		Map map = new HashMap<>();
-		map.put("store", s);
+		map.put("dto", s);
 		return map;
 	}
 	
@@ -82,10 +85,11 @@ public class StoreController {
 	public Map login(String storeid, String pwd){
 		Map map = new HashMap();
 		boolean flag = false;
-		StoreDto  dto = service.getById(path);
+		StoreDto  dto = service.getById(storeid);
 		if (dto != null && pwd.equals(dto.getPwd())) {
 			flag=true;
 			map.put("type", dto.getAccounttype());
+			map.put("dto", dto);
 		}
 		map.put("flag", flag);
 		return map;
@@ -98,24 +102,28 @@ public class StoreController {
 		ArrayList<StoreDto> list = service.getAll();
 		Map map = new HashMap();
 		map.put("storelist", list);
+		System.out.println(list);
 		return map;
 	}
 	
 	//3.1 지점하나만 조회
-		@GetMapping("{storeid}")
+		@GetMapping("/{storeid}")
 		public Map getByid(@PathVariable("storeid") String storeid) {
 			StoreDto dto = service.getById(storeid);
+			System.out.println("니가 사람이야");
+			System.out.println(storeid);
+			System.out.println(dto);
 			Map map = new HashMap();
-			System.out.println("오나?");
+			
 			map.put("dto", dto);
 			return map;
 		}
 		
 	//3.2 지점하나만 조회(지점명으로 검색)
-		
+
 	
 	//4. 삭제
-	@DeleteMapping("{storeid}")
+	@DeleteMapping("/{storeid}")
 	public Map delStore(@PathVariable("storeid") String storeid) {
 		boolean flag = true;
 		try {
