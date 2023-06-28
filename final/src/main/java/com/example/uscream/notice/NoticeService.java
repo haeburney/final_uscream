@@ -45,6 +45,17 @@ public class NoticeService {
 		return dto; 
 	}
 	
+	//제목으로 검색
+	public ArrayList<NoticeDto> getByTitle(String title){
+		ArrayList<Notice> list = (ArrayList<Notice>) dao.findByTitleLike(title);
+		ArrayList<NoticeDto> list2 = new ArrayList<NoticeDto>();
+		
+		for(Notice n : list) {
+			list2.add(new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3()));
+		}
+		return list2;
+	}
+	
 	//카테고리로 검색
 	public ArrayList<NoticeDto> getByCategory(int category) {
 		ArrayList<Notice> list = dao.findByCategory(category);

@@ -20,4 +20,7 @@ public interface NoticeDao extends JpaRepository<Notice, Integer> {
 	
 	//카테고리로 검색
 	ArrayList<Notice> findByCategory(int category);
+	
+	//제목으로 검색
+	ArrayList<Notice> findByTitleLike(String title);
 }
