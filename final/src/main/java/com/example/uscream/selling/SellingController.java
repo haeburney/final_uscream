@@ -41,7 +41,7 @@ public class SellingController {
 	}
 		
 	// 일별 전체 매출
-	@GetMapping("dailysales/{year}/{month}") //
+	@GetMapping("/dailysales/{year}/{month}") //
 	public Map getByDaySales(@PathVariable("year") int year, @PathVariable("month") int month) {
 		ArrayList<Map<String, Object[]>> list = service.getByDailySales(year, month);
 		Map map = new HashMap();
@@ -50,7 +50,7 @@ public class SellingController {
 	}
 	
 	// 일별 특정지점 매출
-	@GetMapping("dailysales/{storeid}/{year}/{month}") //
+	@GetMapping("/dailysales/{storeid}/{year}/{month}") //
 	public Map getByStoreDaySales(@PathVariable("storeid") String storeid, @PathVariable("year") int year, @PathVariable("month") int month) {
 		ArrayList<Map<String, Object[]>> list = service.getByStoreDailySales(storeid, year, month);
 		Map map = new HashMap();
@@ -59,7 +59,7 @@ public class SellingController {
 	}
 	
 	// 1년 단위 전체 월별 매출
-	@GetMapping("monthlysales/{year}") // * year 나오게 추가
+	@GetMapping("/monthlysales/{year}") // * year 나오게 추가
 	public Map getByMonthSales(@PathVariable("year") int year) {
 		ArrayList<Map<String, Object[]>> list = service.getByMonthlySales(year);
 		Map map = new HashMap();
@@ -68,7 +68,7 @@ public class SellingController {
 	}
 	
 	// 1년 단위 특정지점 월별 매출
-	@GetMapping("monthlysales/{storeid}/{year}") // * year 나오게 추가 
+	@GetMapping("/monthlysales/{storeid}/{year}") // * year 나오게 추가 
 	public Map getByStoreMonthSales(@PathVariable("storeid") String storeid, @PathVariable("year") int year) {
 		ArrayList<Map<String, Object[]>> list = service.getByStoreMonthlySales(storeid, year);
 		Map map = new HashMap();
