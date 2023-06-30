@@ -41,7 +41,12 @@ public class ProductController {
 	
 	@PostMapping()
 	public Map addProduct(ProductDto dto) {
+		int num = dto.getProductnum();
+		String tempDir = System.getProperty("java.io.tmpdir");
+		System.out.println("임시 파일이 생성되는 경로: " + tempDir);
 		File dir = new File(path);
+		dir.mkdir();
+		System.out.println(dir);
 		MultipartFile F = dto.getPimg();
 		String img = "";
 		String fname = F.getOriginalFilename();
@@ -53,26 +58,21 @@ public class ProductController {
 			System.out.println(newpath);
 			try {
 				F.transferTo(newfile);
-				img= newpath;
-				System.out.println(img);
-			} catch (IllegalStateException e) {
+				img=newpath;
+			} catch (IllegalStateException | IOException e) {
 				// TODO Auto-generated catch block
-				System.out.println(111111);
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.out.println(222222);
 				e.printStackTrace();
 			}
-		}else {
-			img = "noimg";
-		}
-		dto.setProductimg(img);
-		ProductDto d = service.save(dto);
-		System.out.println(d);
-		Map map = new HashMap<>();
-		map.put("product", d);
-		return map;
+			
+			} else {
+			    img = "noimg";
+			}
+			dto.setProductimg(img);
+			ProductDto d = service.save(dto);
+			System.out.println(d);
+			Map map = new HashMap<>();
+			map.put("product", d);
+			return map;
 	}
 	
 	@GetMapping()

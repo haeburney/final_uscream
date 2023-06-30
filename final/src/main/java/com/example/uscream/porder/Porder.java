@@ -56,12 +56,13 @@ public class Porder {
 	@Column(nullable = true)
 	private Date confirmdate;
 	private int ordercost;
-	private boolean checkconfirm;
+	private int checkconfirm;
 	
 	
 	@PrePersist
 	public void sysdate() {
 		orderdate = new Date();
+		checkconfirm=0;
 		confirmdate = null;
 		SimpleDateFormat simpleDate = new SimpleDateFormat("yyyyMMdd");
 		System.out.println(simpleDate);

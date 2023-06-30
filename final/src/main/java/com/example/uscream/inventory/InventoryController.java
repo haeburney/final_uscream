@@ -38,17 +38,9 @@ public class InventoryController {
 		
 	}
 	
-	@PatchMapping()
-	public Map editAmount(InventoryDto dto, int inventorynum) {
-		InventoryDto temp = service.getById(inventorynum);
-		dto.setInventorynum(inventorynum);
-		dto.setProductname(temp.getProductname());
-		dto.setStoreid(temp.getStoreid());
-		InventoryDto d = service.save(dto);
-		Map map = new HashMap();
-		map.put("invnetory",d);
-		return map;
-		
+	@PatchMapping("{storeid}/{inventorynum}/{amount}")
+	public void editAmount(@PathVariable("storeid") String storeid, @PathVariable("inventorynum") int inventorynum, @PathVariable("amount") int amount) {
+		service.updateAmount(amount, inventorynum,storeid);
 	}
 	
 	@GetMapping("/{storeid}")
