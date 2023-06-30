@@ -35,7 +35,7 @@ public class EmpService {
 	// 지점아이디별 검색 
 	public ArrayList<EmpDto> getByStoreId(String storeid) {
 		Store store = new Store(storeid,"","","",0,"",0,0);
-		ArrayList<Emp> list = dao.findByStoreid(store);
+		ArrayList<Emp> list = dao.findByStoreidOrderByJoindateDesc(store);
 		ArrayList<EmpDto> listDto = new ArrayList<>();
 		for(Emp e:list) {
 			listDto.add(new EmpDto(e.getEmpnum(),e.getStoreid(),e.getEmpname(),e.getJoindate(), e.getGrade(), e.getColor()));

@@ -112,6 +112,9 @@ public class MonthlypayController {
 
 		if (month == 1) {
 			month = 12;
+			year -= 1;
+		} else {
+			month -=1;
 		}
 
 		boolean result = sumF(year, month, "0");
