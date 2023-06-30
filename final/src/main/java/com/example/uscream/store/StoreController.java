@@ -41,7 +41,7 @@ public class StoreController {
 		StoreDto s = service.save(dto);
 		File dir = new File(path+"/"+"store");
 					
-		System.out.println("1. 언제냐");
+	System.out.println("1. Cont 왔어?");
 		
 		dir.mkdir();							// 폴더 생성  name= path + store
 		String img = dto.getStoreimg();		 
@@ -158,4 +158,5 @@ public class StoreController {
 		}
 		return result;
 	}
+	
 }
