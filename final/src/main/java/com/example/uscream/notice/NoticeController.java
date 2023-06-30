@@ -66,18 +66,38 @@ public class NoticeController {
 		return map;
 	}
 	
+	//아이디로 검색
+	@GetMapping("/schid/{noticenum}")
+	public Map getById(@PathVariable("noticenum") int noticenum) {
+		NoticeDto dto = service.getById(noticenum);
+		Map map = new HashMap<>();
+		map.put("notice", dto);
+		
+		return map;
+	}
+	
 	//카테고리로 검색
-	@GetMapping("/{category}")
+	@GetMapping("/schctg/{category}")
 	public Map getByCategory(@PathVariable("category") int category) {
 		ArrayList<NoticeDto> flist = service.getByCategory(category);
 		Map map = new HashMap<>();
-		map.put("Notice", flist);
+		map.put("list", flist);
+		
+		return map;
+	}
+	
+	//제목으로 검색
+	@GetMapping("/schtit/{title}")
+	public Map getByTitleLike(@PathVariable("title") String title) {
+		ArrayList<NoticeDto> list = service.getByTitle(title);
+		Map map = new HashMap<>();
+		map.put("list", list);
 		
 		return map;
 	}
 	
 	//수정
-	@PutMapping("/{noticenum}")
+	@PutMapping("/edit/{noticenum}")
 	public Map edit(@PathVariable("noticenum") int noticenum, NoticeDto dto) {
 		NoticeDto n = service.getById(noticenum);
 		n.setCategory(dto.getCategory());
@@ -91,7 +111,7 @@ public class NoticeController {
 	}
 	
 	//삭제
-	@DeleteMapping("/{num}")
+	@DeleteMapping("/del/{num}")
 	public Map del(@PathVariable("num") int noticenum) {
 		Map map = new HashMap();
 		boolean flag = true;

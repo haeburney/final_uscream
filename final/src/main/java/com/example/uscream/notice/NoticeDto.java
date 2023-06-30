@@ -18,7 +18,7 @@ public class NoticeDto {
 	private int noticenum;
 	private int category;
 	private String title;
-	private String content;
+	private String content; //0= 칭찬 1= 불만
 	private Date wdate;
 	private int cnt;
 	
