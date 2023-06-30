@@ -45,7 +45,7 @@ public class WorklogsService {
 	// 지점 아이디로 검색
 	public ArrayList<WorklogsDto> getByStoreid(String storeid) {
 		Store s = new Store(storeid, "", "", "", 0, "", 0, 0);
-		ArrayList<Worklogs> list = dao.findByStoreid(s);
+		ArrayList<Worklogs> list = dao.findByStoreidOrderByWdateDesc(s);
 		ArrayList<WorklogsDto> dtoList = new ArrayList<WorklogsDto>();
 		for (Worklogs vo : list) {
 			dtoList.add(new WorklogsDto(vo.getWnum(), vo.getEmp(), vo.getStoreid(), vo.getWdate(), vo.getStarttime(),

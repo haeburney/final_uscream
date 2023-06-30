@@ -149,6 +149,23 @@ public class WorklogsContoller {
 		map.put("flag", flag);
 		return map;
 	}
+	
+	// 직원 아이디로 가져오기
+	@GetMapping("empnum/{empnum}")
+	public Map getByEmpnum(@PathVariable("empnum") int empnum) {
+		Map map = new HashMap();
+		boolean flag = true;
+		ArrayList<WorklogsDto> list = new ArrayList<WorklogsDto>();
+		try {
+			list = wlService.getByEmp(empnum);
+		}catch(Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
 
 	// 지점별로 가져오기
 	// 아마 완!!
