@@ -33,7 +33,7 @@ public class InventoryService {
 	}
 	
 	public ArrayList<InventoryDto> getAll(){
-		ArrayList<Inventory> list = (ArrayList<Inventory>) dao.findAll();
+		ArrayList<Inventory> list = (ArrayList<Inventory>) dao.findAllByOrderByInventorynumAsc();
 		return change(list);
 	}
 	
@@ -48,5 +48,9 @@ public class InventoryService {
 		Store store = new Store(stroeid, "", "", "", 0, "", 0, 0);
 		ArrayList<Inventory> list = dao.findByStoreid(store);
 		return change(list);
+	}
+	
+	public void updateAmount(int amount,int inventorynum, String storeid) {
+		dao.addAmount(amount, inventorynum, storeid);
 	}
 }

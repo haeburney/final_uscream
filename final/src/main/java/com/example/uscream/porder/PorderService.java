@@ -19,13 +19,13 @@ public class PorderService {
 	private ArrayList<PorderDto> change(ArrayList<Porder> list){
 		ArrayList<PorderDto> dlist = new ArrayList<PorderDto>();
 		for(Porder entity:list) {
-			dlist.add(new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProductnum(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isCheckconfirm(),"",0));
+			dlist.add(new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProductnum(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.getCheckconfirm(),"",0));
 		}
 		return dlist;
 	}
 	
 	public PorderDto edit(PorderDto dto) {
-		Porder entity = dao.save(new Porder(dto.getTempnum(),dto.getOrdernum(),dto.getStoreid(),dto.getProductnum(),dto.getAmount(),dto.getOrderdate(),dto.getConfirmdate(),dto.getOrdercost(),dto.isConfirm()));
+		Porder entity = dao.save(new Porder(dto.getTempnum(),dto.getOrdernum(),dto.getStoreid(),dto.getProductnum(),dto.getAmount(),dto.getOrderdate(),dto.getConfirmdate(),dto.getOrdercost(),dto.getConfirm()));
 		dto.setTempnum(entity.getTempnum());
 		dto.setOrdernum(entity.getOrdernum());
 		dto.setStoreid(entity.getStoreid());
@@ -33,7 +33,7 @@ public class PorderService {
 		dto.setAmount(entity.getAmount());
 		dto.setOrderdate(entity.getOrderdate());
 		dto.setConfirmdate(entity.getConfirmdate());
-		dto.setConfirm(entity.isCheckconfirm());
+		dto.setConfirm(entity.getCheckconfirm());
 		return dto;
 	
 	}
@@ -43,7 +43,7 @@ public class PorderService {
 		for(PorderDto d: dto) {
 			Store storeid = new Store(d.getStore(), "", "", "", 0, "", 0, 0);
 			Product productnum = new Product(d.getProduct(), "", "", "", 0, true);
-			 dao.save(new Porder(d.getTempnum(),d.getOrdernum(),storeid,productnum,d.getAmount(),d.getOrderdate(),d.getConfirmdate(),d.getOrdercost(),d.isConfirm()));
+			 dao.save(new Porder(d.getTempnum(),d.getOrdernum(),storeid,productnum,d.getAmount(),d.getOrderdate(),d.getConfirmdate(),d.getOrdercost(),d.getConfirm()));
 			
 		}
 		
@@ -52,7 +52,7 @@ public class PorderService {
 	
 	public PorderDto getById(int tempnum) {
 		Porder entity = dao.findById(tempnum).orElse(null);
-		PorderDto dto = new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProductnum(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.isCheckconfirm(),"",0);
+		PorderDto dto = new PorderDto(entity.getTempnum(),entity.getOrdernum(),entity.getStoreid(),entity.getProductnum(),entity.getAmount(),entity.getOrderdate(),entity.getConfirmdate(),entity.getOrdercost(),entity.getCheckconfirm(),"",0);
 		return dto;
 		
 	}
@@ -78,16 +78,27 @@ public class PorderService {
 		
 	}
 	
-	public void confirm(int tempnum) {
-		dao.confirm(tempnum);
+	public void confirm(int tempnum,int num) {
+		dao.confirm(tempnum,num);
 	}
 	
 	public void delete(int tempnum) {
 		dao.deleteById(tempnum);
 	}
 	
+	public void updateAmount(int amount,int ordercost, int tempnum) {
+		dao.updateamount(tempnum, amount, ordercost);
+	}
+	
 	public ArrayList<Map<String, String>> getOrdernum(){
 		return dao.findDistinctOrdernums();
 	}
+	
+	public ArrayList<Map<String, String>> getMonthlyOrderCost(String storeid,int year,int month){
+		
+		return dao.findMonthlyOrderCost(storeid,year,month);
+	}
+	
+	
 
 }

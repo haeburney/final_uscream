@@ -27,7 +27,7 @@ public class PorderDto {
 	private Date orderdate;
 	private Date confirmdate;
 	private int ordercost;
-	private boolean confirm;
+	private int confirm;
 	private String store;
 	private int product;
 	
