@@ -21,7 +21,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 
 	@Query(value="select * from msg where sender=:StoreDto.storeid", nativeQuery=true)
 	ArrayList<Msg> findBySender(@Param("StoreDto.storeid") String sender);		//보낸 사람으로 검색 (내가 보낸 메세지)
-
+	
 	@Query(value="select * from msg where receiver=:StoreDto.storeid", nativeQuery=true)
 	ArrayList<Msg> findByReceiver(@Param("StoreDto.storeid") String receiver);
 	
