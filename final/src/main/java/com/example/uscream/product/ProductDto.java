@@ -18,6 +18,7 @@ public class ProductDto {
 	private String productname;
 	private String productimg;
 	private String productinfo;
+	private String productcategory;
 	private int cost;
 	private boolean orderble;
 	private MultipartFile pimg;

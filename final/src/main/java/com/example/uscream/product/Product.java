@@ -26,6 +26,7 @@ public class Product {
 	private String productname;
 	private String productimg;
 	private String productinfo;
+	private String productcategory;
 	private int cost;
 	private boolean orderble;
 	

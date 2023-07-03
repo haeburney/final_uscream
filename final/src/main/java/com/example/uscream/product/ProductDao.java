@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface ProductDao extends JpaRepository<Product,Integer>{
 	ArrayList<Product> findByProductname(String productname);
 	
+	ArrayList<Product> findByProductcategory(String productcategory);
+	
 }
