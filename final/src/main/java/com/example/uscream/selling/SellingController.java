@@ -49,7 +49,7 @@ public class SellingController {
 		return map;
 	}
 	
-	// 일별 특정지점 매출
+	// 특정지점 특정월의 일 매출
 	@GetMapping("/dailysales/{storeid}/{year}/{month}") //
 	public Map getByStoreDaySales(@PathVariable("storeid") String storeid, @PathVariable("year") int year, @PathVariable("month") int month) {
 		ArrayList<Map<String, Object[]>> list = service.getByStoreDailySales(storeid, year, month);
@@ -57,6 +57,16 @@ public class SellingController {
 		map.put("list", list);
 		return map;
 	}
+	
+	// 특정지점의 전체 기간 일 매출
+	@GetMapping("dailysales/{storeid}")
+	public Map getByStoreAllDaySales(@PathVariable("storeid") String storeid) {
+		ArrayList<Map<String, Object[]>> list = service.getByStoreAllDaySales(storeid);
+		Map map = new HashMap();
+		map.put("list", list);
+		return map;
+	}
+	
 	
 	// 1년 단위 전체 월별 매출
 	@GetMapping("/monthlysales/{year}") // * year 나오게 추가
@@ -137,6 +147,13 @@ public class SellingController {
 		Map map = new HashMap();
 		map.put("list", list);
 		return map;
+	}
+	
+	
+	@GetMapping("/dailysales")
+	public ArrayList<Map<String, Object[]>> getByDailySales(){
+		ArrayList<Map<String, Object[]>> list = service.getByDailySales();
+		return list;
 	}
 }
 

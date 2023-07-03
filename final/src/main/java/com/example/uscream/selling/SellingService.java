@@ -1,10 +1,13 @@
 package com.example.uscream.selling;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.uscream.store.Store;
 
@@ -40,8 +43,14 @@ public class SellingService {
 		return list;
 	}
 	
+	// 특정지점의 전체 기간 일 매출
+	public ArrayList<Map<String, Object[]>> getByStoreAllDaySales(String storeid) {
+		ArrayList<Map<String, Object[]>> list = dao.findTotalPriceByStoreAndAllDay(storeid);
+		return list;
+	}
+			
 
-	// 일별 특정지점 매출
+	// 특정지점 특정월의 일 매출
 	public ArrayList<Map<String, Object[]>> getByStoreDailySales(String storeid, int year, int month) {
 		ArrayList<Map<String, Object[]>> list = dao.findTotalPriceByStoreAndDay(storeid, year, month);
 		return list;
@@ -105,6 +114,12 @@ public class SellingService {
 	// 연도, 월별 지점 매출 조회
 	public ArrayList<Map<String, Object[]>> getByYearAndMonthSales(String storeid, int year, int month){
 		ArrayList<Map<String, Object[]>> list = dao.findTotalPriceByYearAndMonth(storeid, year, month);
+		return list;
+	}
+	
+	// 일별 전체 매출 조회
+	public ArrayList<Map<String, Object[]>> getByDailySales(){
+		ArrayList<Map<String, Object[]>> list = dao.findTotalPriceByAllDay();
 		return list;
 	}
 }

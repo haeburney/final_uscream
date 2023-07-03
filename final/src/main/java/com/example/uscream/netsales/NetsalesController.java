@@ -43,7 +43,7 @@ public class NetsalesController {
 	@Autowired
 	StoreService StoreService;
 
-	@Scheduled(cron = "0 44 18 24 * ?") // 매월 첫째 날 자정에 메서드 실행 실행 (cron = "초 분 시 일")
+	@Scheduled(cron = "0 47 15 28 * ?") // 매월 첫째 날 자정에 메서드 실행 실행 (cron = "초 분 시 일")
 	public Map addNetsales() {
 
 		LocalDate today = LocalDate.now(); 
@@ -56,6 +56,8 @@ public class NetsalesController {
 		} else {
 			month -= 1;
 		}
+		
+		month = 6;
 
 		Map map = new HashMap();
 
@@ -83,6 +85,7 @@ public class NetsalesController {
 
 			dto.setMsellingprice(msellingprice);
 
+			
 			// storeid별 총급여 추가
 			int mpsalary = 0;
 			ArrayList<MonthlypayDto> salaryList = MonthlypayService.getByStoreAndMonth(vo.getStoreid(), year, month);
@@ -93,26 +96,44 @@ public class NetsalesController {
 
 			dto.setMpsalary(mpsalary);
 
+			
 			// storeid별 월별 총 발주금액 추가
-//			int mordercost = 0;
-//			ArrayList<Object[]> orderList = PorderService.서비스명();
+			int mordercost = 0;
+//			ArrayList<Map<String, String>> orderList = PorderService.getMonthlyOrderCost(vo.getStoreid(), year, month);
 //			if(!orderList.isEmpty()) {
-//				Object[] orderData = orderList.get(0);
-//				if(orderData[0]) instanceof Number) {
-//					mordercost = ((Number) orderData[0]).intValue();
+//				Map <String, String> orderData = orderList.get(0);
+//				if (orderData.containsKey("MONTHLY_TOTAL")) {
+//					String monthlyTotalValue = orderData.get("MONTHLY_TOTAL");
+//					if(monthlyTotalValue !=null) {
+//						mordercost = Integer.parseInt(monthlyTotalValue);			
+//					}
+//				}
+//			}
+//			ArrayList<Map<String, String>> orderList = PorderService.getMonthlyOrderCost(vo.getStoreid(), year, month);
+//			if(!orderList.isEmpty()) {
+//				Map <String, String> orderData = orderList.get(0);
+//				if(orderData.get("orderData")[3] instanceof Number {
+//					mordercos = ((Number) orderData.get("orderData")[3]).intValue();
 //				}
 //				
 //			}
-//			
-//			dto.setMordercost(mordercost);
+
+			dto.setMordercost(mordercost);
 
 			System.out.println(dto);
 			NetsalesService.save(dto);
-		}
 
+		}
+		
 		return map;
 	}
 	
+	
+	private String parseInt(int year) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	// 전체 검색
 	@GetMapping("")
 	public Map getAll() {
