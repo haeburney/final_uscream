@@ -85,7 +85,7 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
             "WHERE r.rank <= 3 " +
             "ORDER BY r.sellingyear, r.sellingmonth, r.sellingday, r.rank", nativeQuery = true) 
 	ArrayList<Map<String, Object[]>> findByDayRank3Store();
-	
+	 
 	
 	// 월간 매출 TOP3 지점 (매출액, 지점명 함께 표출) *
 	@Transactional

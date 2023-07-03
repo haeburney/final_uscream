@@ -17,7 +17,7 @@ public class SellingService {
 	@Autowired
 	private SellingDao dao;
  
-	
+	 
 	// 판매내역 저장  
 	public SellingDto save(String sotreid,int sellproductnum,int cnt) {
 		Store store = new Store(sotreid, "", "", "", 0, "", 0, 0);

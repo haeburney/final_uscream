@@ -28,7 +28,7 @@ public class SellingController {
 		SellingDto list = service.save(storeid,sellproduct,cnt);
 		Map map = new HashMap();
 		map.put("list", list);
-		return map;
+		return map; 
 	}
 	
 	// 전체 판매내역 검색
