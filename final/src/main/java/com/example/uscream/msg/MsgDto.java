@@ -35,5 +35,7 @@ public class MsgDto {
 	private boolean tempcheck;
 	private boolean readcheck;		
 	private boolean delcheck;		
+	private boolean real;		
+	
 }	
 	
