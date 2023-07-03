@@ -1,6 +1,6 @@
 package com.example.uscream.msg;
 
-import java.io.File; 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -80,6 +80,43 @@ public class MsgController {
 		return map;
 	}
 	
+	// 임시보관 메일 작성
+		@PostMapping("/temp")
+		public Map sendTempMsg(MsgDto dto) {
+			File dir = new File(path+"/"+"msgfile");
+			dir.mkdir();										
+			
+			MultipartFile f = dto.getMfile();					
+			
+			if(f != null) {
+			String fname = f.getOriginalFilename();				
+			String newpath = path+"/"+"msgfile/"+fname; 		  
+			File uploadfile = new File(newpath);		
+			
+			try {
+				f.transferTo(uploadfile);					
+				dto.setMsgfile(newpath);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			}
+			
+			service.saveTemp(dto);
+			
+			
+			Map map = new HashMap();
+			map.put("dto", dto);
+			return map;
+		}
+		
+	
+	
 	// 답장 페이지에 정보 주기 
 	@GetMapping("/reply/{num}")
 	public Map sendReply(@PathVariable("num") int num) {
@@ -148,14 +185,10 @@ public class MsgController {
 	}
 	
 	//받은 메세지에서 보낸 사람으로 검색 
-	@GetMapping("/receivemsg/{receiver}/{sender}")
-	public Map getMsgBySender(@PathVariable("receiver") String receiver,@PathVariable("sender") String sender) {
+	@GetMapping("/receivemsg/{sender}/{receiver}")
+	public Map getMsgBySender(@PathVariable("sender") String sender,@PathVariable("receiver") String receiver) {
 		
-		ArrayList<MsgDto> msglist = service.selectBySender(sender, receiver);
-		
-		
-		
-		
+		ArrayList<MsgDto> msglist = service.selectBySender(sender,receiver);
 		Map map = new HashMap();
 		map.put("msglist", msglist);
 		
@@ -294,13 +327,23 @@ public class MsgController {
 			return map;
 		}	
 		
+		//보낸 메세지 받은 사람으로 검색
+		@GetMapping("/sendermsg/{sender}/{receiver}")
+		public Map getMsgByReceiver(@PathVariable("sender") String sender,@PathVariable("receiver") String receiver) {
+		ArrayList<MsgDto> msglist = service.selectByReceiver(sender,receiver);
+			Map map = new HashMap();
+			map.put("msglist", msglist);
+			
+			return map;
+		}
+		
+		
 	//	임시보관 인덱스 페이지
 	@GetMapping("/temp/{sender}")
 	public Map getTempPage(@PathVariable("sender") String storeid) {
 			
 		StoreDto store = storeservice.getById(storeid);
 		ArrayList<MsgDto> msglist = service.selectAllTempMsg(store.getStoreid());
-		
 		
 		Map countmap = service.countAllSendMsg(store.getStoreid());
 
@@ -323,6 +366,19 @@ public class MsgController {
 		map.put("countAllByTempMsg", countAllByTempMsg);
 		map.put("msglist", msglist);
 			
+		return map;
+	}
+	
+	//임시보관에서 받을 사람으로 검색
+	@GetMapping("/sendertempmsg/{sender}/{receiver}")
+	public Map getMsgByReceiverAndTemp(@PathVariable("sender") String sender,@PathVariable("receiver") String receiver) {
+	ArrayList<MsgDto> msglist = service.selectByReceiverTemp(sender,receiver);
+		System.out.println("컨트롤러 ="+ sender);
+		System.out.println("컨트롤러 ="+ receiver);
+		System.out.println("컨트롤러 ="+ msglist);
+		Map map = new HashMap();
+		map.put("msglist", msglist);
+		
 		return map;
 	}
 	
@@ -367,6 +423,17 @@ public class MsgController {
 		map.put("flag", flag);
 			
 		return map;
+	}
+	
+	
+	//완전 삭제
+	@DeleteMapping("/del/{msgnum}")
+	public void deleteReal(@PathVariable("msgnum") int num) {
+		service.deleteReal(num);
+		
+		
+		
+		
 	}
 	
 	

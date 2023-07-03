@@ -112,8 +112,8 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	ArrayList<Msg> findAllByReadReceiveMsg(@Param("StoreDto.storeid") String receiver);
 	
 	// sender로 검색 ((((( 실험해보기 )))))
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and receiver=:StoreDto.storeid and real=0 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
-	ArrayList<Msg> findBySender(@Param("StoreDto.storeid") String sender,@Param("StoreDto.storeid") String receiver);
+	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=0 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	ArrayList<Msg> findBySender(@Param("StoreDto.storei") String sender,@Param("StoreDto.storeid") String receiver);
 	
 	
 	// SendMsg
@@ -125,12 +125,12 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	long countAllByReadSendMsg(@Param("StoreDto.storeid") String sender);
 	
 	// 보낸 메세지 행 전체 조회
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and delcheck=0 and tempcheck =0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
 	ArrayList<Msg> findAllByReadSendMsg(@Param("StoreDto.storeid") String sender);
 	
-	// receiver로 검색 ((((( 실험해보기 )))))
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and receiver=:StoreDto.storeid and real=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
-	ArrayList<Msg> findByReceiver(@Param("StoreDto.storeid") String sender,@Param("StoreDto.storeid") String receiver);
+	// receiver로 검색 
+	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	ArrayList<Msg> findByReceiver(@Param("StoreDto.storei") String sender,@Param("StoreDto.storeid") String receiver);
 	
 	
 	// TempMsg
@@ -146,9 +146,9 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and tempcheck=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
 	ArrayList<Msg> findAllByTempMsg(@Param("StoreDto.storeid") String sender);
 	
-	// 임시보관에서 받는 사람으로 검색 ((((( 실험해보기 )))))
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and receiver=:StoreDto.storeid and real=1 and tempcheck=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
-	ArrayList<Msg> findByReceiverTemp(@Param("StoreDto.storeid") String sender,@Param("StoreDto.storeid") String receiver);
+	// 임시보관에서 받는 사람으로 검색 
+	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=1 and tempcheck=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	ArrayList<Msg> findByReceiverTemp(@Param("StoreDto.storei") String sender,@Param("StoreDto.storeid") String receiver);
 	
 	
 	// MarkMsg
