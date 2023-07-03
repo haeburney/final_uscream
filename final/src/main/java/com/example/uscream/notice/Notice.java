@@ -28,13 +28,13 @@ public class Notice {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_notice")
 	private int noticenum;
 	
-	private int category; //0= 칭찬 1= 불만
+	private int category; //1= 칭찬 2= 불만
 	private String title;
 	private String content;
 	
 	private Date wdate;
 	@PrePersist
-	public void sysdate() {
+	public void preprocess() {
 		wdate = new Date(); //현재 날짜 생성
 	}
 	

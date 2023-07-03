@@ -25,4 +25,9 @@ public class NoticeDto {
 	private String img1;
 	private String img2;
 	private String img3;
+	
+//	public int getCategory() {
+//        // 필요에 따라 category 값을 정수로 변환하여 반환하는 로직 추가
+//        return Integer.parseInt(category);
+//    }
 }
