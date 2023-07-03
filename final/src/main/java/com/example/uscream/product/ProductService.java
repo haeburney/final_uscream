@@ -1,5 +1,6 @@
 package com.example.uscream.product;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class ProductService {
 	private ArrayList<ProductDto> change(ArrayList<Product> list){
 		ArrayList<ProductDto> dlist = new ArrayList<ProductDto>();
 		for(Product entity:list) {
-			dlist.add(new ProductDto(entity.getProductnum(),entity.getProductname(),entity.getProductimg(),entity.getProductinfo(),entity.getCost(),entity.isOrderble(),null));
+			dlist.add(new ProductDto(entity.getProductnum(),entity.getProductname(),entity.getProductimg(),entity.getProductinfo(),entity.getProductcategory(),entity.getCost(),entity.isOrderble(),null));
 		}
 		return dlist;
 		
@@ -22,7 +23,7 @@ public class ProductService {
 	
 	
 	public ProductDto save(ProductDto dto) {
-		Product entity = dao.save(new Product(dto.getProductnum(),dto.getProductname(),dto.getProductimg(),dto.getProductinfo(),dto.getCost(),dto.isOrderble()));
+		Product entity = dao.save(new Product(dto.getProductnum(),dto.getProductname(),dto.getProductimg(),dto.getProductinfo(),dto.getProductcategory(),dto.getCost(),dto.isOrderble()));
 		dto.setProductnum(entity.getProductnum());
 		dto.setProductname(entity.getProductname());
 		dto.setProductimg(entity.getProductimg());
@@ -35,7 +36,7 @@ public class ProductService {
 	
 	public ProductDto getById(int num) {
 		Product entity = dao.findById(num).orElse(null);
-		ProductDto dto = new ProductDto(entity.getProductnum(),entity.getProductname(),entity.getProductimg(),entity.getProductinfo(),entity.getCost(),entity.isOrderble(),null);
+		ProductDto dto = new ProductDto(entity.getProductnum(),entity.getProductname(),entity.getProductimg(),entity.getProductinfo(),entity.getProductcategory(),entity.getCost(),entity.isOrderble(),null);
 		return dto;
 		
 	}
@@ -55,5 +56,10 @@ public class ProductService {
 		dao.deleteById(num);
 	}
 	
+	public ArrayList<ProductDto> getByProductcategory(String productcategory){
+		ArrayList<Product> list = (ArrayList<Product>)dao.findByProductcategory(productcategory);
+		
+		return change(list);
+	}
 	
 }

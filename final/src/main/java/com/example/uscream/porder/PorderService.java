@@ -42,7 +42,7 @@ public class PorderService {
 		
 		for(PorderDto d: dto) {
 			Store storeid = new Store(d.getStore(), "", "", "", 0, "", 0, 0);
-			Product productnum = new Product(d.getProduct(), "", "", "", 0, true);
+			Product productnum = new Product(d.getProduct(), "", "","", "", 0, true);
 			 dao.save(new Porder(d.getTempnum(),d.getOrdernum(),storeid,productnum,d.getAmount(),d.getOrderdate(),d.getConfirmdate(),d.getOrdercost(),d.getConfirm()));
 			
 		}

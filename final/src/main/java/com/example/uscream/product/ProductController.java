@@ -94,6 +94,15 @@ public class ProductController {
 		
 	}
 	
+	@GetMapping("/{productcategory}")
+	public Map getById(@PathVariable("productcategory") String productcategory) {
+		ArrayList<ProductDto> dlist = service.getByProductcategory(productcategory);
+		Map map = new HashMap<>();
+		map.put("categorylist",dlist);
+		return map;
+		
+	}
+	
 	
 	@PatchMapping()
 	public Map edit(ProductDto dto) {
