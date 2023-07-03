@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.uscream.sellproduct.SellProduct;
 import com.example.uscream.store.Store;
 
 @Service
@@ -16,11 +17,14 @@ public class SellingService {
 	@Autowired
 	private SellingDao dao;
  
-	
+	 
 	// 판매내역 저장  
-	public SellingDto save(SellingDto dto) {
-		dao.save(new Selling(dto.getSellingnum(), dto.getSellproduct(), dto.getStoreid(), 
-				dto.getSellingdate(), dto.getSellingcnt(), dto.getSellingprice()));
+	public SellingDto save(String sotreid,int sellproductnum,int cnt) {
+		Store store = new Store(sotreid, "", "", "", 0, "", 0, 0);
+		SellProduct sellproduct = new SellProduct(sellproductnum,"",0);
+		Selling entity = dao.save(new Selling(0, sellproduct,store, 
+				null,cnt, 0));
+		SellingDto dto = new SellingDto(entity.getSellingnum(),entity.getSellproduct(),entity.getStoreid(),entity.getSellingdate(),entity.getSellingcnt(),entity.getSellingprice());
 		return dto;
 	}
 	

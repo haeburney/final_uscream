@@ -24,11 +24,11 @@ public class SellingController {
 	
 	// 판매내역 추가
 	@PostMapping("/add") //
-	public Map add(SellingDto dto) {
-		SellingDto list = service.save(dto);
+	public Map add(String storeid,int sellproduct,int cnt) {
+		SellingDto list = service.save(storeid,sellproduct,cnt);
 		Map map = new HashMap();
 		map.put("list", list);
-		return map;
+		return map; 
 	}
 	
 	// 전체 판매내역 검색

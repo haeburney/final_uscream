@@ -72,20 +72,20 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 	
 	// 일간 매출 TOP3 지점 (매출액, 지점명 함께 표출) *
 	@Transactional
-	@Query(value = "SELECT r.sellingmonth, r.sellingday, r.storeid, r.storename, r.totalprice, r.rank " +
+	@Query(value = "SELECT r.sellingyear, r.sellingmonth, r.sellingday, r.storeid, r.storename, r.totalprice, r.rank " +
             "FROM (" +
-            "   SELECT EXTRACT(MONTH FROM se.sellingdate) AS sellingmonth, EXTRACT(DAY FROM se.sellingdate) AS sellingday, se.storeid, st.storename, " +
+            "   SELECT EXTRACT(YEAR FROM se.sellingdate) AS sellingyear, EXTRACT(MONTH FROM se.sellingdate) AS sellingmonth, EXTRACT(DAY FROM se.sellingdate) AS sellingday, se.storeid, st.storename, " +
             "          SUM(se.sellingprice) AS totalprice, " +
-            "          ROW_NUMBER() OVER (PARTITION BY EXTRACT(MONTH FROM se.sellingdate), EXTRACT(DAY FROM se.sellingdate) " +
+            "          ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate), EXTRACT(DAY FROM se.sellingdate) " +
             "                             ORDER BY SUM(se.sellingprice) DESC) AS rank " +
             "   FROM Selling se " +
             "   JOIN Store st ON se.storeid = st.storeid " +
-            "   GROUP BY EXTRACT(MONTH FROM se.sellingdate), EXTRACT(DAY FROM se.sellingdate), se.storeid, st.storename" +
+            "   GROUP BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate), EXTRACT(DAY FROM se.sellingdate), se.storeid, st.storename" +
             ") r " +
             "WHERE r.rank <= 3 " +
-            "ORDER BY r.sellingmonth, r.sellingday, r.rank", nativeQuery = true) 
+            "ORDER BY r.sellingyear, r.sellingmonth, r.sellingday, r.rank", nativeQuery = true) 
 	ArrayList<Map<String, Object[]>> findByDayRank3Store();
-	
+	 
 	
 	// 월간 매출 TOP3 지점 (매출액, 지점명 함께 표출) *
 	@Transactional
