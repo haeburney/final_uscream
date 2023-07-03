@@ -14,6 +14,7 @@ public class NoticeService {
 	//글 추가
 	public NoticeDto save(NoticeDto dto) {
 		Notice entity = dao.save(new Notice(dto.getNoticenum(), dto.getCategory(), dto.getTitle(), dto.getContent(), dto.getWdate(), dto.getCnt(), dto.getImg1(), dto.getImg2(), dto.getImg3()));
+		//int category = parseInt.Integer(dto.getCategory());
 		dto.setNoticenum(entity.getNoticenum());
 		dto.setCategory(entity.getCategory());
 		dto.setTitle(entity.getTitle());

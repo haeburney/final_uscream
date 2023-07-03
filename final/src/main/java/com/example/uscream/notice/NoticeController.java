@@ -33,11 +33,12 @@ public class NoticeController {
 	@Value("${spring.servlet.multipart.location}")
 	private String path;  
 	
-	@PostMapping()
+	@PostMapping("")
 	public Map add(NoticeDto dto) {
 		Map map = new HashMap();
 		boolean flag = true;
 		NoticeDto dto2 = null;
+		System.out.println(dto);
 		try {
 			dto2 = service.save(dto);
 		} catch(Exception e) {
@@ -111,8 +112,8 @@ public class NoticeController {
 	}
 	
 	//삭제
-	@DeleteMapping("/del/{num}")
-	public Map del(@PathVariable("num") int noticenum) {
+	@DeleteMapping("/del/{noticenum}")
+	public Map del(@PathVariable("noticenum") int noticenum) {
 		Map map = new HashMap();
 		boolean flag = true;
 		try {
