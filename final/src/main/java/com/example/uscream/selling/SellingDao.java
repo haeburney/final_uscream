@@ -174,6 +174,27 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 			@Param("storeid") String storeid,
 	        @Param("year") int year,
 	        @Param("month") int month);
+	
+	// 특정지점의 전체 기간 일 매출
+	@Transactional
+    @Query(value="SELECT se.storeid, st.storename, se.sellingdate, SUM(se.sellingprice) AS totalprice " 
+            + "FROM Selling se " 
+            + "JOIN Store st ON se.storeid = st.storeid " 
+            + "WHERE se.storeid = :storeid " 
+            + "GROUP BY se.sellingdate, st.storename, se.storeid", nativeQuery=true)
+	ArrayList<Map<String, Object[]>> findTotalPriceByStoreAndAllDay(
+	        @Param("storeid") String storeid);
+	
+	// 전체 기간 일 매출
+	@Transactional
+    @Query(value="SELECT sellingdate, SUM(sellingprice) AS totalprice " 
+            + "FROM Selling "
+            + "GROUP BY sellingdate", nativeQuery=true)
+	ArrayList<Map<String, Object[]>> findTotalPriceByAllDay();
+
 }
+	
+
+
 
 
