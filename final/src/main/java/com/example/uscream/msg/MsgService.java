@@ -50,6 +50,19 @@ public class MsgService {
 
 		return real;
 	}
+	
+	public MsgDto saveTemp(MsgDto msgdto) {
+		msgdto.setTempcheck(true);
+		msgdto.setReal(true);
+		
+		Msg msg = dao.save(new Msg(msgdto.getMsgnum(), msgdto.getSender(), msgdto.getReceiver(), msgdto.getTitle(),
+				msgdto.getMsgdate(), msgdto.getContent(), msgdto.getMsgfile(), msgdto.getReply(), msgdto.isMark(),
+				msgdto.isTempcheck(), msgdto.isReadcheck(), msgdto.isDelcheck(), msgdto.isReal()));
+	
+		return  new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(), msg.getMsgdate(),
+				msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(), msg.isTempcheck(),
+				msg.isReadcheck(), msg.isDelcheck(), msg.isReal());
+	}
 
 	// 메일 하나 조회
 	public MsgDto getMsg(int num) {
@@ -184,7 +197,6 @@ public class MsgService {
 	public ArrayList<MsgDto> selectBySender(String sender, String receiver) {
 		ArrayList<Msg> msglist = dao.findBySender(sender, receiver);
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
 					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
@@ -222,7 +234,7 @@ public class MsgService {
 
 	// 보낸 메세지에서 받은 사람으로 검색
 	public ArrayList<MsgDto> selectByReceiver(String sender, String receiver) {
-		ArrayList<Msg> msglist = dao.findBySender(sender, receiver);
+		ArrayList<Msg> msglist = dao.findByReceiver(sender, receiver);
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
 
 		for (Msg msg : msglist) {
@@ -264,7 +276,9 @@ public class MsgService {
 	public ArrayList<MsgDto> selectByReceiverTemp(String sender, String receiver) {
 		ArrayList<Msg> msglist = dao.findByReceiverTemp(sender, receiver);
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-
+		System.out.println("서비스="+sender);
+		System.out.println("서비스="+receiver);
+		System.out.println("서비스="+msglist);
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
 					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
@@ -361,6 +375,17 @@ public class MsgService {
 			return dtolist;
 		}
 	
+		//휴지통 완전 삭제
+		public void deleteReal(int num) {
+			Msg msg = dao.findById(num).orElse(null);
+			
+			if(msg!=null && msg.isDelcheck()==true) {
+				dao.deleteById(num);
+			}
+			
+			
+			
+		}
 		
 
 }
