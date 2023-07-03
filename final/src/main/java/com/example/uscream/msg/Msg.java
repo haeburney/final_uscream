@@ -38,13 +38,13 @@ public class Msg {
 	
 	@ManyToOne
 	@JoinColumn(name="sender", nullable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Store sender;			// 발신자
 	
 	@ManyToOne
 	@JoinColumn(name="receiver", nullable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Store receiver;		// 수신자
+	@OnDelete(action = OnDeleteAction.SET_NULL)
+	private Store receiver;			// 수신자
 	
 	private String title;
 	private String msgdate;
@@ -57,14 +57,15 @@ public class Msg {
 	private int reply;			// 답장
 	
 	@Column(columnDefinition = "number default 0")
-	private boolean mark;			// 즐겨찾기 			0=기본 1=즐찾
+	private boolean mark;				// 즐겨찾기 			0=기본 1=즐찾
 	@Column(columnDefinition = "number default 0")
-	private boolean tempcheck;		// 임시보관 			0=기본 1=임시보관
+	private boolean tempcheck;			// 임시보관 			0=기본 1=임시보관
+	@Column(columnDefinition = "number default 1")
+	private boolean readcheck;			// 읽었는지 안읽었는지	0=읽음 1=읽지 않음 
 	@Column(columnDefinition = "number default 0")
-	private boolean readcheck;		// 읽었는지 안읽었는지	0=기본 1=읽음
+	private boolean delcheck;			//	휴지통으로 			0=기본 1=휴지통
 	@Column(columnDefinition = "number default 0")
-	private boolean delcheck;		//	휴지통으로 			0=기본 1=휴지통
-	
+	private boolean real;				// 내가 보낸 메세지 1 내가 받은 메세지는 0이 되도록 설계
 	
 	@PrePersist
 	public void updateDate() {

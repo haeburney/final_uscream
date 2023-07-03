@@ -1,234 +1,366 @@
 package com.example.uscream.msg;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
-import com.example.uscream.store.Store;
 import com.example.uscream.store.StoreDto;
 
 @Service
 public class MsgService {
 
 	private MsgDao dao;
-	
+
 	@Autowired
 	public MsgService(MsgDao dao) {
 		super();
 		this.dao = dao;
 	}
-	
-	// 생성 및 수정 
-	public MsgDto save(MsgDto msgdto) {
-		
-		
-		Msg msg = dao.save(new Msg(msgdto.getMsgnum(),msgdto.getSender(),msgdto.getReceiver(),msgdto.getTitle(),msgdto.getMsgdate(),
-				msgdto.getContent(),msgdto.getMsgfile(),msgdto.getReply(),msgdto.isMark(),msgdto.isTempcheck(),
-				msgdto.isReadcheck(),msgdto.isDelcheck())); 
-		
-		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-				msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-				msg.isReadcheck(),msg.isDelcheck());
-	}
-	
-	//메일 하나 조회
-	public MsgDto getMsg(int num) {
-		
-		Msg msg = dao.findById(num).orElse(null);
-		System.out.println(msg);
-		if(msg==null) {
-			
-			return null;						
-		}
-		return new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-				msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-				msg.isReadcheck(),msg.isDelcheck());
-	}
-	
-//	 발신자로 검색(내가 받은 메세지에서 검색) 
-	public ArrayList<MsgDto> getByName(StoreDto sender) {
-		
-		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySenderLike(sender);
-		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-		
-		for (Msg msg : msglist) {
-			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-					msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-					msg.isReadcheck(),msg.isDelcheck()));
-		}
-		return dtolist;
-	}
-	
-	 //발신자로 검색 (내가 보낸)
-		public ArrayList<MsgDto> getBySender(StoreDto store) {
-		
-		String id = store.getStoreid();
-			
-		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findBySender(id);
-		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-		
-		for (Msg msg : msglist) {
-			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-					msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-					msg.isReadcheck(),msg.isDelcheck()));
-		}
-		return dtolist;
-	}
-		
-	// 수신자로 검색
-		public ArrayList<MsgDto> getByReceiver(StoreDto Store) {
-			String id = Store.getStoreid();
-			ArrayList<Msg> msglist = dao.findByReceiver(id);
-			ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-			
-			for (Msg msg : msglist) {
-				dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-						msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-						msg.isReadcheck(),msg.isDelcheck()));
-			}
-			return dtolist;
-		}
-		
-	// 제목으로 검색 
-	public ArrayList<MsgDto> getByTitle(String title) {
 
-		ArrayList<Msg> msglist = (ArrayList<Msg>)dao.findByTitleLike(title);
-		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-			
-		for (Msg msg : msglist) {
-			dtolist.add(new MsgDto(msg.getMsgnum(),msg.getSender(),msg.getReceiver(),msg.getTitle(),msg.getMsgdate(),
-					msg.getContent(),msg.getMsgfile(),null,msg.getReply(),msg.isMark(),msg.isTempcheck(),
-					msg.isReadcheck(),msg.isDelcheck()));
+	// 생성 및 수정
+	public ArrayList<MsgDto> save(MsgDto msgdto) {
+
+		ArrayList<MsgDto> real = new ArrayList<MsgDto>();
+
+		msgdto.setReal(true);
+		Msg msg = dao.save(new Msg(msgdto.getMsgnum(), msgdto.getSender(), msgdto.getReceiver(), msgdto.getTitle(),
+				msgdto.getMsgdate(), msgdto.getContent(), msgdto.getMsgfile(), msgdto.getReply(), msgdto.isMark(),
+				msgdto.isTempcheck(), msgdto.isReadcheck(), msgdto.isDelcheck(), msgdto.isReal()));
+
+		msgdto.setReal(false);
+		Msg msg2 = dao.save(new Msg(msgdto.getMsgnum(), msgdto.getSender(), msgdto.getReceiver(), msgdto.getTitle(),
+				msgdto.getMsgdate(), msgdto.getContent(), msgdto.getMsgfile(), msgdto.getReply(), msgdto.isMark(),
+				msgdto.isTempcheck(), msgdto.isReadcheck(), msgdto.isDelcheck(), msgdto.isReal()));
+
+		MsgDto dto = new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(), msg.getMsgdate(),
+				msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(), msg.isTempcheck(),
+				msg.isReadcheck(), msg.isDelcheck(), msg.isReal());
+
+		MsgDto dto2 = new MsgDto(msg2.getMsgnum(), msg2.getSender(), msg2.getReceiver(), msg2.getTitle(),
+				msg2.getMsgdate(), msg2.getContent(), msg2.getMsgfile(), null, msg2.getReply(), msg2.isMark(),
+				msg2.isTempcheck(), msg2.isReadcheck(), msg2.isDelcheck(), msg2.isReal());
+
+		real.add(dto);
+		real.add(dto2);
+
+		return real;
+	}
+
+	// 메일 하나 조회
+	public MsgDto getMsg(int num) {
+		Msg msg = dao.findById(num).orElse(null);
+		if (msg == null) {
+
+			return null;
 		}
-		return dtolist;
+		return new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(), msg.getMsgdate(),
+				msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(), msg.isTempcheck(),
+				msg.isReadcheck(), msg.isDelcheck(), msg.isReal());
+	}
+
+	// 이름을 두 개 받아 메일 하나를 조회하는 메서드 
+	public MsgDto getMsges(String sender, String receiver) {
 		
+		
+		
+		return null;
 	}
 	
-	//임시보관 기능
+
+	
+
+//	============ boolean 값 변경하는 서비스=============================
+
+	// 임시보관
 	public void changeTempcheck(int num) {
-		
 		Msg msg = dao.findById(num).orElse(null);
-		
-		int temp = (msg.isTempcheck()) ? 1:0 ;			
-		if(temp==1) {
+		int temp = (msg.isTempcheck()) ? 1 : 0;
+
+		if (temp == 1) {
 			dao.minusTemp(num);
-		}else {
+		} else {
 			dao.plusTemp(num);
 		}
 	}
-	
-	//즐겨찾기 기능
+
+	// 즐겨찾기 기능
 	public void changeMark(int num) {
-		Msg msg = dao.findById(num).orElse(null);	
-		int mark = (msg.isMark()) ? 1:0 ;			
-		if(mark==1) {
+		Msg msg = dao.findById(num).orElse(null);
+		int mark = (msg.isMark()) ? 1 : 0;
+		if (mark == 1) {
 			dao.minusMark(num);
-		}else {
+		} else {
 			dao.plusMark(num);
 		}
 	}
-	
+
 	// 읽음 기능
 	public void changeReadcheck(int num) {
-	
-		Msg msg = dao.findById(num).orElse(null);	
-		int read = (msg.isReadcheck()) ? 1:0 ;			
-		if(read==1) {
+
+		Msg msg = dao.findById(num).orElse(null);
+		int read = (msg.isReadcheck()) ? 1 : 0;
+		if (read == 1) {
 			dao.minusRead(num);
-		}else {
+		} else {
 			dao.plusRead(num);
 		}
 	}
 	
-	// 휴지통 기능 
+	// 디테일용 읽음 기능
+		public void fixReadcheck(int num) {
+
+			Msg msg = dao.findById(num).orElse(null);
+			dao.minusRead(num);
+		}
+		
+
+	// 휴지통 기능
 	public void changeDelcheck(int num) {
-			
-		Msg msg = dao.findById(num).orElse(null);	
-		int del = (msg.isDelcheck()) ? 1:0 ;			
-		if(del==1) {
+
+		Msg msg = dao.findById(num).orElse(null);
+		int del = (msg.isDelcheck()) ? 1 : 0;
+		if (del == 1) {
 			dao.minusDel(num);
-		}else {
+		} else {
 			dao.plusDel(num);
 		}
-	}	
-	
-	// 글 번호로 완전 삭제
-	public void delete(int num) {
-		dao.deleteById(num);
 	}
-	
-	
-	// 즐찾에 있는 메일 전체 수
-	public long countByMark(String receiver){
-		return dao.countByMark(receiver);
-	}
-	
-	// 즐찾에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByMarkRead(String receiver){
-		return dao.countByMarkRead(receiver);
-	}
-	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
-	
-	
-	
-	
-	// 받은 메일함에 있는 메일 전체 수
-	public long countAllReceiver(String store){
-		return dao.countAll(store);
-	}
-	
-	// 받은 메일함에 있는 메일 중에서 읽지 않은 메일 수
-	public long countAllReadReceiver(String receiver){
-		return dao.countAllRead(receiver);
-	}
-	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
-	
-	
-	
-	// 보낸 메일에 있는 메일 전체 수
-	public long countBySender(String sender){
-		return dao.countBySender(sender);
-	}
-	
-	// 보낸 메일에 있는 메일 중에서 읽지 않은 메일 수
-	public long countBySenderRead(String sender){
-		return dao.countBySenderRead(sender);
-	}
-	
 
+// ==================메세지 조회하는 기능=====================================
+
+	// SideBar
+
+	// 보낸 메세지, 받은 메세지, 임시보관 메세지에서 읽지 않은 수 조회
+	public long countSideBarReadMsg(String name) {
+		long number1 = dao.countByReadReceiveMsg(name);
+		long number2 = dao.countByReadSendMsg(name);
+		long number3 = dao.countByReadTempMsg(name);
+		long result = number1 + number2 + number3;
 	
-	// 임시 보관에 있는 메일 전체 수
-	public long countBySenderTemp(String sender){
-		return dao.countByTemp(sender);
+		return result;
+	}
+
+	public long countSideBarMarkMsg(String name) {
+		long number1 = dao.countByMarkReceiveMsg(name);
+		long number2 = dao.countByMarkSendMsg(name);
+		long number3 = dao.countByMarkTempMsg(name);
+		long result = number1 + number2 + number3;
+
+		return result;
+	}
+
+	// ReceiveMsg
+
+	// 받은 메세지 전체 수 조회
+	public Map countAllReceiverMsg(String receiver) {
+		long number1 = dao.countByReadReceiveMsg(receiver);
+		long number2 = dao.countAllByReadReceiveMsg(receiver);
+		Map map = new HashMap();
+		map.put("countByReadReceiveMsg", number1);
+		map.put("countAllByReadReceiveMsg", number2);
+
+		return map;
+	}
+
+	// 받은 메세지 전체 행 조회
+	public ArrayList<MsgDto> selectAllReceiveMsg(String receiver) {
+		ArrayList<Msg> msglist = dao.findAllByReadReceiveMsg(receiver);
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+
+		for (Msg msg : msglist) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		return dtolist;
+	}
+
+	// 받은 메세지에서 보낸 사람으로 검색
+	public ArrayList<MsgDto> selectBySender(String sender, String receiver) {
+		ArrayList<Msg> msglist = dao.findBySender(sender, receiver);
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+
+		for (Msg msg : msglist) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		return dtolist;
+	}
+
+	// SendMsg
+
+	// 보낸 메세지 전체 수 조회
+	public Map countAllSendMsg(String sender) {
+		long number1 = dao.countByReadSendMsg(sender);
+		long number2 = dao.countAllByReadSendMsg(sender);
+		Map map = new HashMap();
+
+		map.put("countByReadSendMsg", number1);
+		map.put("countAllByReadSendMsg", number2);
+
+		return map;
+	}
+
+	// 보낸 메세지 전체 행 조회
+	public ArrayList<MsgDto> selectAllSendMsg(String sender) {
+		ArrayList<Msg> msglist = dao.findAllByReadSendMsg(sender);
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+
+		for (Msg msg : msglist) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		return dtolist;
+	}
+
+	// 보낸 메세지에서 받은 사람으로 검색
+	public ArrayList<MsgDto> selectByReceiver(String sender, String receiver) {
+		ArrayList<Msg> msglist = dao.findBySender(sender, receiver);
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+
+		for (Msg msg : msglist) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		return dtolist;
+	}
+
+	// TempMsg
+
+	// 보낸 메세지에서 temp 전체 수 조회
+	public Map countAllByTempMsg(String sender) {
+		long number1 = dao.countByReadTempMsg(sender);
+		long number2 = dao.countAllByTempMsg(sender);
+		Map map = new HashMap();
+
+		map.put("countByReadTempMsg", number1);
+		map.put("countAllByTempMsg", number2);
+
+		return map;
+	}
+
+	// 보낸 메세지 temp 전체 행 조회
+	public ArrayList<MsgDto> selectAllTempMsg(String sender) {
+		ArrayList<Msg> msglist = dao.findAllByTempMsg(sender);
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+
+		for (Msg msg : msglist) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		return dtolist;
+	}
+
+	// 임시보관 메세지에서 받을 사람으로 검색
+	public ArrayList<MsgDto> selectByReceiverTemp(String sender, String receiver) {
+		ArrayList<Msg> msglist = dao.findByReceiverTemp(sender, receiver);
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+
+		for (Msg msg : msglist) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		return dtolist;
 	}
 	
-	// 임시 보관에 있는 메일 중에서 읽지 않은 메일 수
-	public long countBySenderTempRead(String sender){
-		return dao.countByTempRead(sender);
+	//MarkMsg
+	
+	// 즐찾에서 읽지 않은 메세지 수
+	public long countByReadAndMarkRead (String name) {
+		
+		long number1 = dao.countByMarkAndReadReceiveMsg(name);
+		long number2 = dao.countByMarkAndReadSendMsg(name);
+		long number3 = dao.countByMarkAndReadTempMsg(name);
+		long result = number1 + number2 + number3;
+		
+		return result;
+	}
+	
+	// 즐찾에 있는 모든 메세지 조회 
+	public ArrayList<MsgDto> selectAllMark(String name){
+		ArrayList<Msg> list1 = dao.findAllByMarkReceiveMsg(name);
+		ArrayList<Msg> list2 = dao.findAllByMarkSendMsg(name);
+		ArrayList<Msg> list3 = dao.findAllByMarkTempMsg(name);
+
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+		
+		for (Msg msg : list1) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		for (Msg msg : list2) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		for (Msg msg : list3) {
+			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+		}
+		
+		return dtolist;
 	}
 	
 	
 	
-	// 휴지통에 있는 메일 전체 수
-	public long countByDel(String receiver){
-		return dao.countByDel(receiver);
+	//DelMsg
+	
+	// 휴지통에서 읽지 않은 메세지 수와 전체 메세지 수 조회
+	public Map countAllByDelMsg (String sender, String receiver) {
+		
+		long number1 = dao.countByDelReceiverAndReadMsg(receiver);
+		long number2 = dao.countByDelSenderAndReadMsg(sender);
+
+		long countAllByDelAndReadMsg = number1 + number2;
+		
+		long number3 =dao.countAllByDelReceiverMsg(receiver);
+		long number4 =dao.countAllByDelSenderMsg(sender);
+		
+		long countAllByDelMsg = number3 + number4;
+		
+		Map map = new HashMap();
+		map.put("countAllByDelAndReadMsg", countAllByDelAndReadMsg);
+		map.put("countAllByDelMsg", countAllByDelMsg);
+		
+		return map;
 	}
 	
-	// 휴지통에 있는 메일 중에서 읽지 않은 메일 수
-	public long countByDelRead(String receiver){
-		return dao.countByDelRead(receiver);
-	}
-	// 메일 이름과 날짜가 나오는 폼은 findall + for if문으로 해결 
 	
+	// 휴지통에서 전체 행 조회
+		public ArrayList<MsgDto> selectAllDelMsg(String sender, String receiver) {
+		ArrayList<Msg> msglist = dao.findAllByDelAndReceiveMsg(receiver);
+		ArrayList<Msg> msglist2 = dao.findAllByDelAndSendMsg(sender);
+		
 	
+		
+		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+			for (Msg msg : msglist) {
+				dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+						msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+						msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+			}
+			for (Msg msg : msglist2) {
+				dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+						msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+						msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+			}
+			
+			
+			return dtolist;
+		}
 	
-	
-	
-	
-	 
-	
-	
-	
-	
+		
+
 }

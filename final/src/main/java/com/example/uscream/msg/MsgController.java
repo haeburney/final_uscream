@@ -1,6 +1,6 @@
 package com.example.uscream.msg;
 
-import java.io.File;
+import java.io.File; 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -81,19 +81,22 @@ public class MsgController {
 	}
 	
 	// 답장 페이지에 정보 주기 
-	@PostMapping("/reply")
-	public Map sendReply(MsgDto redto) {
-		//num, title, receiver, sender, date, content, file ......... 
-		MsgDto dto = new MsgDto();
+	@GetMapping("/reply/{num}")
+	public Map sendReply(@PathVariable("num") int num) {
+
 		
-		dto.setSender(redto.getReceiver());
-		dto.setReceiver(redto.getSender());
-		dto.setReply(redto.getMsgnum());
+		MsgDto dto = service.getMsg(num);
+		MsgDto msgdto = new MsgDto();
 		
-	
+		msgdto.setSender(dto.getReceiver());
+		msgdto.setReceiver(dto.getSender());
+		msgdto.setReply(dto.getMsgnum());
+		msgdto.setTitle(dto.getTitle());
+		
+		
 		
 		Map map = new HashMap();
-		map.put("dto", dto);
+		map.put("msgdto", msgdto);
 		
 		return map;
 	}
@@ -120,18 +123,47 @@ public class MsgController {
 		
 		StoreDto store = storeservice.getById(id);
 		
-		long CountByReceiver = service.countAllReceiver(store.getStoreid());
-		long CountByReceiverAndRead = service.countAllReadReceiver(store.getStoreid());
-		ArrayList<MsgDto> msglist = service.getByReceiver(store);
+		Map countmap =service.countAllReceiverMsg(store.getStoreid());
+		
+		Long countByReadReceiveMsg= (Long)countmap.get("countByReadReceiveMsg");;
+		if(countByReadReceiveMsg == null) {
+			countByReadReceiveMsg=	0L;
+		}
+		
+		Long countAllByReadReceiveMsg=(Long)countmap.get("countAllByReadReceiveMsg");
+		if(countAllByReadReceiveMsg==null) {
+			countAllByReadReceiveMsg=0L;
+		}
+	
+		
+		ArrayList<MsgDto> msglist = service.selectAllReceiveMsg(store.getStoreid());
 		
 		
 		Map map = new HashMap();
-		map.put("CountByReceiver",CountByReceiver);
-		map.put("CountByReceiverAndRead",CountByReceiverAndRead);
+		map.put("countByReadReceiveMsg",countByReadReceiveMsg);
+		map.put("countAllByReadReceiveMsg",countAllByReadReceiveMsg);
 		map.put("msglist",msglist);
 		
 		return map;
 	}
+	
+	//받은 메세지에서 보낸 사람으로 검색 
+	@GetMapping("/receivemsg/{receiver}/{sender}")
+	public Map getMsgBySender(@PathVariable("receiver") String receiver,@PathVariable("sender") String sender) {
+		
+		ArrayList<MsgDto> msglist = service.selectBySender(sender, receiver);
+		
+		
+		
+		
+		Map map = new HashMap();
+		map.put("msglist", msglist);
+		
+		return map;
+		
+		
+	}
+	
 	
 	// 디테일 정보
 	@GetMapping("/detail/{msgnum}")
@@ -160,6 +192,11 @@ public class MsgController {
 	public void changeRead(@PathVariable("msgnum") int num) {
 		service.changeReadcheck(num);
 	}
+	// 디테일용 읽음 처리
+	@PatchMapping("/read/detail/check/{msgnum}")
+	public void fixRead(@PathVariable("msgnum") int num) {
+		service.fixReadcheck(num);
+	}
 	
 	// 휴지통으로 보내기
 	@PatchMapping("/del/check/{msgnum}")
@@ -167,56 +204,62 @@ public class MsgController {
 		service.changeDelcheck(num);
 	}
 	
-	// 완전 삭제 
-	@DeleteMapping("{msgnum}")
-	public void deleteReal(@PathVariable("msgnum") int num) {
-		ArrayList<Integer> intlist = new ArrayList<Integer>();
 	
-		for(int i=0;i<=intlist.size();i++) {
-			
-			service.delete(num);
-		}
-	}
 	
-	//즐겨찾기 인덱스 페이지
+	// 즐겨찾기 인덱스 페이지
 	@GetMapping("/mark/{storeid}")
 	public Map getMarkPage(@PathVariable("storeid") String storeid) {
 		
 		StoreDto store = storeservice.getById(storeid);
-		ArrayList<MsgDto> list = service.getByReceiver(store);
-		ArrayList<MsgDto> msglist = new ArrayList<MsgDto>();
 		
-		//전체 조회를 하고 안에서 mark 표시가 된 객체만 리스트에 담는다.
-		for(MsgDto markMsg : list) {
-			if(markMsg.isMark()==true) {
-					msglist.add(new MsgDto(markMsg.getMsgnum(),markMsg.getSender(),markMsg.getReceiver(),markMsg.getTitle(),markMsg.getMsgdate(),
-							markMsg.getContent(),markMsg.getMsgfile(),null,markMsg.getReply(),markMsg.isMark(),markMsg.isTempcheck(),
-							markMsg.isReadcheck(),markMsg.isDelcheck()));
-			}
+		ArrayList<MsgDto> msglist = service.selectAllMark(store.getStoreid());
+		
+		//전체 수
+		Long CountByMark =(Long)service.countSideBarMarkMsg(store.getStoreid());
+		
+		if(CountByMark ==null) {
+			CountByMark=0L;
 		}
-		// 카운트 
-		long CountByMark = service.countByMark(store.getStoreid());
-		long CountByMarkRead = service.countByMarkRead(store.getStoreid());
+		Long CountByMarkAndRead =(Long)service.countByReadAndMarkRead(store.getStoreid());
+		
+		if(CountByMarkAndRead ==null) {
+			CountByMarkAndRead=0L;
+		}
+	
 		
 		Map map = new HashMap();
 		map.put("msglist", msglist);
+		map.put("CountByMarkAndRead", CountByMarkAndRead);
 		map.put("CountByMark", CountByMark);
-		map.put("CountByMarkRead", CountByMarkRead);
 		return map;
 	}	
 	
 	//사이드 바 
 	@GetMapping("/sidebar/{storeid}")
 	public Map getSideBar(@PathVariable("storeid") String storeid) {
-		System.out.println(storeid);
 		StoreDto store = storeservice.getById(storeid);
-
-		long CountAllRead= service.countAllReadReceiver(storeid) ;
-		long CountByMark = service.countByMark(storeid);
+		
+		System.out.println("msg controller" + store);
+		
+		
+		Long countSideBarReadMsg = (Long)service.countSideBarReadMsg(store.getStoreid());;
+		
+		if(countSideBarReadMsg == null) {
+			
+			countSideBarReadMsg=0L;
+		}
+		
+		
+		Long countSideBarMarkMsg =  (Long)service.countSideBarMarkMsg(store.getStoreid());
+		if(countSideBarMarkMsg == null) {
+			countSideBarMarkMsg=0L;
+		}
+	
 		
 		Map map = new HashMap();
-		map.put("CountAllRead", CountAllRead);
-		map.put("CountByMark", CountByMark);
+		
+		map.put("countSideBarReadMsg", countSideBarReadMsg);
+		map.put("countSideBarMarkMsg", countSideBarMarkMsg);
 		
 		
 		return map;
@@ -227,73 +270,107 @@ public class MsgController {
 		public Map getSendPage(@PathVariable("storeid") String storeid) {
 			
 			StoreDto store = storeservice.getById(storeid);
-			ArrayList<MsgDto> msglist = service.getBySender(store);
-			// 카운트 
-			long CountBySender = service.countBySender(store.getStoreid());
-			long CountBySenderRead = service.countBySenderRead(store.getStoreid());
+			ArrayList<MsgDto> msglist = service.selectAllSendMsg(store.getStoreid());
+			
+			Map countmap = service.countAllSendMsg(store.getStoreid());
+			
+			Long countByReadSendMsg= (Long)countmap.get("countByReadSendMsg"); ;
+			if(countByReadSendMsg ==null) {
+				countByReadSendMsg =0L;					
+			}
+			
+			Long countAllByReadSendMsg= (Long)countmap.get("countAllByReadSendMsg"); ;
+			if(countAllByReadSendMsg ==null) {
+				countAllByReadSendMsg =0L;	
+				
+			}
+			
+
 			
 			Map map = new HashMap();
 			map.put("msglist", msglist);
-			map.put("CountBySender", CountBySender);
-			map.put("CountBySenderRead", CountBySenderRead);
+			map.put("countByReadSendMsg", countByReadSendMsg);
+			map.put("countAllByReadSendMsg", countAllByReadSendMsg);
 			return map;
 		}	
 		
-	//	임시보관 인덱스 페이지 , 발신자로 조회 
+	//	임시보관 인덱스 페이지
 	@GetMapping("/temp/{sender}")
 	public Map getTempPage(@PathVariable("sender") String storeid) {
 			
 		StoreDto store = storeservice.getById(storeid);
-		ArrayList<MsgDto> list = service.getBySender(store);
-		ArrayList<MsgDto> msglist = new ArrayList<MsgDto>();
+		ArrayList<MsgDto> msglist = service.selectAllTempMsg(store.getStoreid());
 		
-		//	보낸 사람으로 전체 조회를 하고 안에서 temp 표시가 된 객체만 리스트에 담는다.
-		for(MsgDto markMsg : list) {
-			if(markMsg.isTempcheck()==true) {
-					msglist.add(new MsgDto(markMsg.getMsgnum(),markMsg.getSender(),markMsg.getReceiver(),markMsg.getTitle(),markMsg.getMsgdate(),
-							markMsg.getContent(),markMsg.getMsgfile(),null,markMsg.getReply(),markMsg.isMark(),markMsg.isTempcheck(),
-							markMsg.isReadcheck(),markMsg.isDelcheck()));
-			}
-		}
+		
+		Map countmap = service.countAllSendMsg(store.getStoreid());
 
-		long CountBySenderTemp = service.countBySenderTemp(store.getStoreid());
-		long CountBySenderTempRead = service.countBySenderTempRead(store.getStoreid());
+		Long countByReadTempMsg= (Long)countmap.get("countByReadTempMsg"); ;
+		if(countByReadTempMsg ==null) {
+			countByReadTempMsg =0L;	
+			
+		}
+				
+		Long countAllByTempMsg= 	(Long)countmap.get("countAllByTempMsg");
+		if(countAllByTempMsg ==null) {
+			countAllByTempMsg = 0L;
+			
+		}
+		
+
 		
 		Map map = new HashMap();
-		map.put("CountBySenderTemp", CountBySenderTemp);
-		map.put("CountBySenderTempRead", CountBySenderTempRead);
+		map.put("countByReadTempMsg", countByReadTempMsg);
+		map.put("countAllByTempMsg", countAllByTempMsg);
 		map.put("msglist", msglist);
 			
 		return map;
 	}
 	
-	//	휴지통 인덱스 페이지 , 발신자로 조회 
-	@GetMapping("/del/{sender}")
-	public Map getDelPage(@PathVariable("sender") String storeid) {
-			
-		StoreDto store = storeservice.getById(storeid);
-		ArrayList<MsgDto> list = service.getByReceiver(store);
-		ArrayList<MsgDto> msglist = new ArrayList<MsgDto>();
+	//	휴지통 인덱스 페이지  (( 객체 확인 작업이 필요 )) 
+	@GetMapping("/del/{sender}/{receiver}")
+	public Map getDelPage(@PathVariable("sender") String sender, @PathVariable("receiver") String receiver ) {
 		
-		//	보낸 사람으로 전체 조회를 하고 안에서 del 표시가 된 객체만 리스트에 담는다.
-		for(MsgDto markMsg : list) {
-			if(markMsg.isDelcheck()==true) {
-					msglist.add(new MsgDto(markMsg.getMsgnum(),markMsg.getSender(),markMsg.getReceiver(),markMsg.getTitle(),markMsg.getMsgdate(),
-							markMsg.getContent(),markMsg.getMsgfile(),null,markMsg.getReply(),markMsg.isMark(),markMsg.isTempcheck(),
-							markMsg.isReadcheck(),markMsg.isDelcheck()));
-			}
+		StoreDto store1 = storeservice.getById(sender);
+		StoreDto store2 = storeservice.getById(receiver);
+		boolean flag = false;
+		
+		if(store1 !=null) {
+			flag=true;
 		}
 		
-		long CountByDel = service.countByDel(store.getStoreid());
-		long CountByDelRead = service.countByDelRead(store.getStoreid());
+		if(store2 !=null) {
+			flag=true;
+		}
+		
+		ArrayList<MsgDto> msglist = service.selectAllDelMsg(sender,receiver);
+
+		Map countmap = service.countAllByDelMsg(sender,receiver);
+		
+	
+		Long countAllByDelAndReadMsg= (Long)countmap.get("countAllByDelAndReadMsg");
+		if(countAllByDelAndReadMsg == null ) {
+			
+			countAllByDelAndReadMsg=0L;	
+		}
+		
+		Long countAllByDelMsg= (Long)countmap.get("countAllByDelMsg");
+		if(countAllByDelMsg == null ) {
+			countAllByDelMsg=0L; 
+		}
+		
+		
 		
 		Map map = new HashMap();
-		map.put("CountByDel", CountByDel);
-		map.put("CountByDelRead", CountByDelRead);
+		map.put("countAllByDelAndReadMsg", countAllByDelAndReadMsg);
+		map.put("countAllByDelMsg", countAllByDelMsg);
 		map.put("msglist", msglist);
+		map.put("flag", flag);
 			
 		return map;
 	}
+	
+	
+	
 	
 
 }
