@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -99,17 +100,18 @@ public class NoticeController {
 	
 	//수정
 	@PutMapping("/edit/{noticenum}")
-	public Map edit(@PathVariable("noticenum") int noticenum, NoticeDto dto) {
-		NoticeDto n = service.getById(noticenum);
-		n.setCategory(dto.getCategory());
-		n.setTitle(dto.getTitle());
-		n.setContent(dto.getContent());
-		NoticeDto n2 = service.save(n);
-		Map map = new HashMap();
-		map.put("Notice", n2);
+	public Map<String, Object> edit(@PathVariable("noticenum") int noticenum, @RequestBody NoticeDto dto) {
+	    NoticeDto n = service.getById(noticenum);
+	    n.setTitle(dto.getTitle());
+	    n.setContent(dto.getContent());
+	    NoticeDto n2 = service.save(n);
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("Notice", n2);
 	      
-		return map;
+	    return map;
 	}
+
+
 	
 	//삭제
 	@DeleteMapping("/del/{noticenum}")
