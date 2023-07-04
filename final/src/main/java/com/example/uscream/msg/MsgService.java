@@ -163,7 +163,7 @@ public class MsgService {
 		long number2 = dao.countByMarkSendMsg(name);
 		long number3 = dao.countByMarkTempMsg(name);
 		long result = number1 + number2 + number3;
-
+		
 		return result;
 	}
 
@@ -212,7 +212,7 @@ public class MsgService {
 		long number1 = dao.countByReadSendMsg(sender);
 		long number2 = dao.countAllByReadSendMsg(sender);
 		Map map = new HashMap();
-
+		
 		map.put("countByReadSendMsg", number1);
 		map.put("countAllByReadSendMsg", number2);
 
@@ -276,9 +276,9 @@ public class MsgService {
 	public ArrayList<MsgDto> selectByReceiverTemp(String sender, String receiver) {
 		ArrayList<Msg> msglist = dao.findByReceiverTemp(sender, receiver);
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-		System.out.println("서비스="+sender);
-		System.out.println("서비스="+receiver);
-		System.out.println("서비스="+msglist);
+		System.out.println("서비스 센더= "+sender);
+		System.out.println("서비스 리시버= "+receiver);
+		System.out.println("서비스 = "+msglist);
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
 					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
@@ -378,12 +378,23 @@ public class MsgService {
 		//휴지통 완전 삭제
 		public void deleteReal(int num) {
 			Msg msg = dao.findById(num).orElse(null);
-			
+			// 임시보관 메세지에서 보낸 메세지로 변경될 떄
+			if(msg.isTempcheck()==true) {
+				dao.deleteById(num);
+			}
+			// 휴지통에서 진짜로 삭제될 때 
 			if(msg!=null && msg.isDelcheck()==true) {
 				dao.deleteById(num);
 			}
+		}
+		
+		// 휴지통 비우기 
+		public int deleteAll(String name) {
+			int number1 =dao.deleteAllByReceiveMsg(name);
+			int number2 =dao.deleteAllBySendMsg(name);
 			
 			
+			return number1+number2;
 			
 		}
 		
