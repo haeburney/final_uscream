@@ -94,7 +94,7 @@ public class ProductController {
 		
 	}
 	
-	@GetMapping("/{productcategory}")
+	@GetMapping("/category/{productcategory}")
 	public Map getById(@PathVariable("productcategory") String productcategory) {
 		ArrayList<ProductDto> dlist = service.getByProductcategory(productcategory);
 		Map map = new HashMap<>();
