@@ -38,7 +38,6 @@ public class StoreService {
 	// 3.1 지점정보확인(1개_storeid로 검색)
 		public StoreDto getById(String storeid) {
 			Store s = dao.findById(storeid).orElse(null);
-			System.out.println("service1  " + s);
 			if(s==null) {
 			
 				return null;

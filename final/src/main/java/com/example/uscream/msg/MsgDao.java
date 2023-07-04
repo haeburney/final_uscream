@@ -92,7 +92,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value = "select count(*) from msg where mark = 1 and receiver=:StoreDto.storeid and real=0 and delcheck=0", nativeQuery = true)
 	long countByMarkReceiveMsg(@Param("StoreDto.storeid") String receiver);
 	// 5. 보낸 메세지에서 즐겨 찾기 수 
-	@Query(value = "select count(*) from msg where mark = 1 and sender=:StoreDto.storeid and real=1 and delcheck=0" , nativeQuery = true)
+	@Query(value = "select count(*) from msg where mark = 1 and sender=:StoreDto.storeid and real=1 and delcheck=0 and tempcheck=0" , nativeQuery = true)
 	long countByMarkSendMsg(@Param("StoreDto.storeid") String receiver);
 	// 6. 임시 보관함에서 즐겨 찾기 수
 	@Query(value = "select count(*) from msg where mark = 1 and tempcheck =1 and sender=:StoreDto.storeid and real=1 and delcheck=0", nativeQuery = true)
@@ -121,7 +121,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	
 	// 2. 
 	// 보낸 메세지 전체 수
-	@Query(value = "select count(*) from msg where sender=:StoreDto.storeid and real=1 and delcheck=0", nativeQuery = true)
+	@Query(value = "select count(*) from msg where sender=:StoreDto.storeid and real=1 and delcheck=0 and tempcheck=0", nativeQuery = true)
 	long countAllByReadSendMsg(@Param("StoreDto.storeid") String sender);
 	
 	// 보낸 메세지 행 전체 조회
@@ -216,7 +216,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value = "delete from msg where sender=:StoreDto.storeid and delcheck=1 and real=1", nativeQuery = true)
 	int deleteAllBySendMsg(@Param("StoreDto.storeid") String sender);	
 	
-	// 휴지통에서 검색 기능 
+
 	
 	
 	
