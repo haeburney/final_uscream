@@ -47,4 +47,6 @@ public class Basicschedule {
 	private LocalDate bsdate;	// 일하는 날짜
 	private LocalDateTime starttime;	// 출근 시간
 	private LocalDateTime endtime;	// 퇴근 시간
+	
+	private int status; 		// 스케줄에 추가 했는지 체크
 }
