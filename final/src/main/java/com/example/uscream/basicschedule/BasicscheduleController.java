@@ -29,6 +29,7 @@ public class BasicscheduleController {
 		boolean flag = true;
 		try {
 			dto.setStoreid(dto.getEmp().getStoreid());		// storeid는 emp를 참고해서 넣었다.
+			dto.setStatus(0);
 			service.save(dto);
 		} catch (Exception e) {
 			flag = false;
@@ -89,7 +90,26 @@ public class BasicscheduleController {
 		ArrayList<BasicscheduleDto> list = new ArrayList<BasicscheduleDto>();
 
 		try {
-			list = service.getByEmp(empnum);
+			list = service.getByEmp(empnum,0);
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
+	
+	// 직원별 + 달 별로 가져오기
+	@GetMapping("/emp/{empnum}/{year}/{month}")
+	public Map getByEmpnumAndMonth(@PathVariable("empnum") int empnum, @PathVariable("year") int year, @PathVariable("month") int month) {
+		Map map = new HashMap();
+		boolean flag = true;
+		ArrayList<BasicscheduleDto> list = new ArrayList<BasicscheduleDto>();
+
+		try {
+			list = service.getByEmpAndMonth(year, month, empnum);
 		} catch (Exception e) {
 			flag = false;
 			e.printStackTrace();
@@ -117,6 +137,25 @@ public class BasicscheduleController {
 			e.printStackTrace();
 		}
 		map.put("dto", dto);
+		map.put("flag", flag);
+		return map;
+	}
+	
+	// 등록하면 1로 바꿔주기
+	@PutMapping("/{bsnum}")
+	public Map updateStatus(@PathVariable("bsnum") int bsnum) {
+		Map map = new HashMap();
+		boolean flag = true;
+		try {
+			BasicscheduleDto dto = service.getByBsnum(bsnum);
+			dto.setStatus(1);
+			service.save(dto);
+			System.out.println("등록 : "+dto);
+		}catch(Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		
 		map.put("flag", flag);
 		return map;
 	}

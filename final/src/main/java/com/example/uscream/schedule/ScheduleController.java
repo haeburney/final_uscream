@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.uscream.basicschedule.BasicscheduleDto;
+import com.example.uscream.basicschedule.BasicscheduleService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -22,22 +23,45 @@ import com.example.uscream.basicschedule.BasicscheduleDto;
 public class ScheduleController {
 	@Autowired
 	ScheduleService service;
+	
+	@Autowired
+	BasicscheduleService bsService;
 
-	// 스케줄 추가
+	// 스케줄 직접 추가
 	// 완!
 	@PostMapping("")
 	public Map addSchedule(ScheduleDto dto) {
 		Map map = new HashMap();
 		boolean flag = true;
+		ScheduleDto saveDto = new ScheduleDto();
 		try {
 			dto.setStoreid(dto.getEmp().getStoreid());
-			service.save(dto);
+			saveDto=service.save(dto);
 		} catch (Exception e) {
 			flag = false;
 			e.printStackTrace();
 		}
 
-		map.put("dto", dto);
+		map.put("dto", saveDto);
+		map.put("flag", flag);
+		return map;
+	}
+	
+	// 스케줄 basic으로 등록 
+	@PostMapping("/{snum}")
+	public Map addBasicSchedule(@PathVariable("snum") int snum) {
+		Map map = new HashMap();
+		boolean flag = true;
+		BasicscheduleDto bsDto = bsService.getByBsnum(snum);
+		ScheduleDto saveDto = new ScheduleDto();
+		// 참고해서 넣어버리기 
+		try {
+			saveDto = service.save(new ScheduleDto(0, bsDto.getEmp(), bsDto.getStoreid(), bsDto.getBsdate(), bsDto.getStarttime(), bsDto.getEndtime()));
+		}catch(Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("dto", saveDto);
 		map.put("flag", flag);
 		return map;
 	}

@@ -24,4 +24,5 @@ public class BasicscheduleDto {
 	private LocalDate bsdate;
 	private LocalDateTime starttime;
 	private LocalDateTime endtime;
+	private int status; 
 }

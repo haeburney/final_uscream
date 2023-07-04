@@ -13,28 +13,29 @@ public class BasicscheduleService {
 	@Autowired
 	BasicscheduleDao dao;
 
-	// 추가, 수정
+	// 직접 추가, 수정
 	public BasicscheduleDto save(BasicscheduleDto dto) {
 		Basicschedule entity = dao.save(
-				new Basicschedule(dto.getBsnum(),dto.getStoreid(), dto.getEmp(), dto.getBsdate(), dto.getStarttime(), dto.getEndtime()));
+				new Basicschedule(dto.getBsnum(),dto.getStoreid(), dto.getEmp(), dto.getBsdate(), dto.getStarttime(), dto.getEndtime(), dto.getStatus()));
 		return new BasicscheduleDto(entity.getBsnum(), entity.getStoreid(), entity.getEmp(), entity.getBsdate(), entity.getStarttime(),
-				entity.getEndtime());
+				entity.getEndtime(), entity.getStatus());
 	}
+	
 
 	// num으로 (pk로) 검색 
 	public BasicscheduleDto getByBsnum(int bsnum) {
 		Basicschedule entity = dao.findById(bsnum).orElse(null);
 		return new BasicscheduleDto(entity.getBsnum(), entity.getStoreid(), entity.getEmp(), entity.getBsdate(), entity.getStarttime(),
-				entity.getEndtime());
+				entity.getEndtime(), entity.getStatus());
 	}
 	
 	// 직원 번호로 검색 
-	public ArrayList<BasicscheduleDto> getByEmp(int empnum){
+	public ArrayList<BasicscheduleDto> getByEmp(int empnum, int status){
 		Emp e = new Emp(empnum, null, "" ,null, null, "");
-		ArrayList<Basicschedule> list = dao.findByEmp(e);
+		ArrayList<Basicschedule> list = dao.findByEmpAndStatusOrderByBsdateDesc(e, status);
 		ArrayList<BasicscheduleDto> dtoList =new ArrayList<BasicscheduleDto>();
 		for(Basicschedule vo:list) {
-			dtoList.add(new BasicscheduleDto(vo.getBsnum(), vo.getStoreid(), vo.getEmp(), vo.getBsdate(), vo.getStarttime(), vo.getEndtime()));
+			dtoList.add(new BasicscheduleDto(vo.getBsnum(), vo.getStoreid(), vo.getEmp(), vo.getBsdate(), vo.getStarttime(), vo.getEndtime(), vo.getStatus()));
 		}
 		return dtoList;
 	}
@@ -45,7 +46,18 @@ public class BasicscheduleService {
 		ArrayList<Basicschedule> list = dao.findByStoreid(s);
 		ArrayList<BasicscheduleDto> dtoList =new ArrayList<BasicscheduleDto>();
 		for(Basicschedule vo:list) {
-			dtoList.add(new BasicscheduleDto(vo.getBsnum(), vo.getStoreid(), vo.getEmp(), vo.getBsdate(), vo.getStarttime(), vo.getEndtime()));
+			dtoList.add(new BasicscheduleDto(vo.getBsnum(), vo.getStoreid(), vo.getEmp(), vo.getBsdate(), vo.getStarttime(), vo.getEndtime(), vo.getStatus()));
+		}
+		return dtoList;
+	}
+	
+	// new
+	// 직원 번호 + 달별로 검색
+	public ArrayList<BasicscheduleDto> getByEmpAndMonth(int year, int month, int empnum){
+		ArrayList<Basicschedule> list = dao.findByEmpAndMonth(year, month, empnum);
+		ArrayList<BasicscheduleDto> dtoList =new ArrayList<BasicscheduleDto>();
+		for(Basicschedule vo:list) {
+			dtoList.add(new BasicscheduleDto(vo.getBsnum(), vo.getStoreid(), vo.getEmp(), vo.getBsdate(), vo.getStarttime(), vo.getEndtime(), vo.getStatus()));
 		}
 		return dtoList;
 	}
