@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -100,12 +99,16 @@ public class NoticeController {
 	
 	//수정
 	@PutMapping("/edit/{noticenum}")
-	public Map<String, Object> edit(@PathVariable("noticenum") int noticenum, @RequestBody NoticeDto dto) {
+	public Map edit(@PathVariable("noticenum") int noticenum, NoticeDto dto) {
 	    NoticeDto n = service.getById(noticenum);
 	    n.setTitle(dto.getTitle());
 	    n.setContent(dto.getContent());
+	    n.setCategory(dto.getCategory());
+	    
 	    NoticeDto n2 = service.save(n);
-	    Map<String, Object> map = new HashMap<>();
+	    System.out.println("dto :"+dto);
+	    System.out.println("n2 :"+n2);
+	    Map map = new HashMap<>();
 	    map.put("Notice", n2);
 	      
 	    return map;
