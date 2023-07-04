@@ -94,7 +94,7 @@ public class ProductController {
 		
 	}
 	
-	@GetMapping("/{productcategory}")
+	@GetMapping("/category/{productcategory}")
 	public Map getById(@PathVariable("productcategory") String productcategory) {
 		ArrayList<ProductDto> dlist = service.getByProductcategory(productcategory);
 		Map map = new HashMap<>();
@@ -122,10 +122,12 @@ public class ProductController {
 	public ResponseEntity<byte[]> read_img(@PathVariable("num") int num){
 		String fname= "";
 		ProductDto dto= service.getById(num);
+		System.out.println(dto);
 		fname=dto.getProductimg();
 		ResponseEntity<byte[]> result = null; //선언
 		try {
 			fname = URLDecoder.decode(fname, "utf-8");
+			System.out.println(fname);
 			File f = new File(fname);
 			HttpHeaders header = new HttpHeaders(); //HttpHeaders 객체 생성
 			header.add("Content-Type", Files.probeContentType(f.toPath()));//응답 데이터의 종류를 설정
