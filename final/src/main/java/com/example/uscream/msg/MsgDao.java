@@ -16,7 +16,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	
 	// 이름 두 개를 받아 찾는 메서드 
 
-	@Query(value = "select * from msg where sender=:StroeDto.storeid and receiver=:StoreDto.storeid and real=1", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StroeDto.storeid and receiver=:StoreDto.storeid and real=1 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	Msg findByNames(@Param("StoreDto.storeid") String sender,@Param("StoreDto.storeid") String receiver);
 	
 	
@@ -108,11 +108,11 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	long countAllByReadReceiveMsg(@Param("StoreDto.storeid") String receiver);
 	
 	// 받은 메세지 행 전체 조회
-	@Query(value = "select * from msg where receiver=:StoreDto.storeid and real=0 and delcheck=0 order by substr(msgdate, 1, 8) desc ", nativeQuery = true)
+	@Query(value = "select * from msg where receiver=:StoreDto.storeid and real=0 and delcheck=0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	ArrayList<Msg> findAllByReadReceiveMsg(@Param("StoreDto.storeid") String receiver);
 	
-	// sender로 검색 ((((( 실험해보기 )))))
-	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=0 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	// sender로 검색 
+	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=0 and delcheck=0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	ArrayList<Msg> findBySender(@Param("StoreDto.storei") String sender,@Param("StoreDto.storeid") String receiver);
 	
 	
@@ -125,11 +125,11 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	long countAllByReadSendMsg(@Param("StoreDto.storeid") String sender);
 	
 	// 보낸 메세지 행 전체 조회
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and delcheck=0 and tempcheck =0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and delcheck=0 and tempcheck =0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	ArrayList<Msg> findAllByReadSendMsg(@Param("StoreDto.storeid") String sender);
 	
 	// receiver로 검색 
-	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=1 and delcheck=0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	ArrayList<Msg> findByReceiver(@Param("StoreDto.storei") String sender,@Param("StoreDto.storeid") String receiver);
 	
 	
@@ -143,11 +143,11 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	long countAllByTempMsg(@Param("StoreDto.storeid") String sender);
 	
 	// 임시보관 행 전체 조회
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and tempcheck=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and tempcheck=1 and delcheck=0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	ArrayList<Msg> findAllByTempMsg(@Param("StoreDto.storeid") String sender);
 	
 	// 임시보관에서 받는 사람으로 검색 
-	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=1 and tempcheck=1 and delcheck=0 order by substr(msgdate, 1, 8) desc", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storei and receiver=:StoreDto.storeid and real=1 and tempcheck=1 and delcheck=0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	ArrayList<Msg> findByReceiverTemp(@Param("StoreDto.storei") String sender,@Param("StoreDto.storeid") String receiver);
 	
 	
@@ -193,10 +193,10 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value = "select count(*) from msg where sender=:StoreDto.storeid and real=1 and delcheck=1", nativeQuery = true)
 	long countAllByDelSenderMsg(@Param("StoreDto.storeid") String sender);
 	
-	// 휴지통 행 전체 조회 
-	@Query(value = "select * from msg where receiver=:StoreDto.storeid and real=0 and delcheck=1", nativeQuery = true)
+	// 휴지통 행 전체 조회  ((order by 오류날 수도 있음))
+	@Query(value = "select * from msg where receiver=:StoreDto.storeid and real=0 and delcheck=1 ", nativeQuery = true)
 	ArrayList<Msg> findAllByDelAndReceiveMsg(@Param("StoreDto.storeid") String receiver);
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and delcheck=1", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and delcheck=1 ", nativeQuery = true)
 	ArrayList<Msg> findAllByDelAndSendMsg(@Param("StoreDto.storeid") String sender);
 	
 	// 완전삭제
@@ -217,7 +217,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	int deleteAllBySendMsg(@Param("StoreDto.storeid") String sender);	
 	
 
-	
+
 	
 	
 //	========================== boolean 값으로 조회 기능 -끝-
