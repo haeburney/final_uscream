@@ -41,7 +41,6 @@ public class StoreController {
 		StoreDto s = service.save(dto);
 		File dir = new File(path+"/"+"store");
 					
-	System.out.println("1. Cont 왔어?");
 		
 		dir.mkdir();							// 폴더 생성  name= path + store
 		String img = dto.getStoreimg();		 
@@ -51,10 +50,8 @@ public class StoreController {
 			String fname = F.getOriginalFilename();				//원본파일명 -> 클라이언트 컴퓨터에 저장된 찐이름 
 			System.out.println("3 "+fname);
 			
-			String newpa = dir.getAbsolutePath();				// 절대경로
-			
+			String newpa = dir.getAbsolutePath();				// 절대경로			
 			String newpath = dir.getAbsolutePath()+"/"+fname;
-			
 			File newfile = new File(newpath);
 			try {
 				F.transferTo(newfile);				// 실제 업로드 
@@ -110,17 +107,20 @@ public class StoreController {
 		@GetMapping("/{storeid}")
 		public Map getByid(@PathVariable("storeid") String storeid) {
 			StoreDto dto = service.getById(storeid);
-			System.out.println("니가 사람이야");
-			System.out.println(storeid);
-			System.out.println(dto);
 			Map map = new HashMap();
-			
 			map.put("dto", dto);
 			return map;
 		}
 		
 	//3.2 지점하나만 조회(지점명으로 검색)
-
+		@GetMapping("/{storename}")
+		public Map getByStorename(@PathVariable("storename") String storename) {
+		System.out.println("왔냐");
+			ArrayList<StoreDto> list = service.getByStorename(storename);
+			Map map = new HashMap();
+			map.put("list", list);
+			return map;
+		}
 	
 	//4. 삭제
 	@DeleteMapping("/{storeid}")
