@@ -1,15 +1,16 @@
 package com.example.uscream.msg;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-
-import com.example.uscream.store.StoreDto;
 
 @Service
 public class MsgService {
@@ -24,7 +25,7 @@ public class MsgService {
 
 	// 생성 및 수정
 	public ArrayList<MsgDto> save(MsgDto msgdto) {
-
+		
 		ArrayList<MsgDto> real = new ArrayList<MsgDto>();
 
 		msgdto.setReal(true);
@@ -276,9 +277,6 @@ public class MsgService {
 	public ArrayList<MsgDto> selectByReceiverTemp(String sender, String receiver) {
 		ArrayList<Msg> msglist = dao.findByReceiverTemp(sender, receiver);
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
-		System.out.println("서비스 센더= "+sender);
-		System.out.println("서비스 리시버= "+receiver);
-		System.out.println("서비스 = "+msglist);
 		for (Msg msg : msglist) {
 			dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
 					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
@@ -323,6 +321,24 @@ public class MsgService {
 					msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
 					msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
 		}
+		
+		Collections.sort(dtolist, new Comparator<MsgDto>() {
+	        @Override
+	        public int compare(MsgDto msg1, MsgDto msg2) {
+	            try {
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
+	                LocalDateTime dateTime1 = LocalDateTime.parse(msg1.getMsgdate(), formatter);
+	                LocalDateTime dateTime2 = LocalDateTime.parse(msg2.getMsgdate(), formatter);
+	                return dateTime2.compareTo(dateTime1);
+	            } catch (DateTimeParseException e) {
+	               
+	                return 0; 
+	            }
+	        }
+	    });
+	 
+		
+		
 		
 		return dtolist;
 	}
@@ -371,10 +387,27 @@ public class MsgService {
 						msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
 			}
 			
+			 Collections.sort(dtolist, new Comparator<MsgDto>() {
+			        @Override
+			        public int compare(MsgDto msg1, MsgDto msg2) {
+			            try {
+			                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
+			                LocalDateTime dateTime1 = LocalDateTime.parse(msg1.getMsgdate(), formatter);
+			                LocalDateTime dateTime2 = LocalDateTime.parse(msg2.getMsgdate(), formatter);
+			                return dateTime2.compareTo(dateTime1);
+			            } catch (DateTimeParseException e) {
+			               
+			                return 0; 
+			            }
+			        }
+			    });
+			 
 			
 			return dtolist;
 		}
-	
+		
+		
+		
 		//휴지통 완전 삭제
 		public void deleteReal(int num) {
 			Msg msg = dao.findById(num).orElse(null);

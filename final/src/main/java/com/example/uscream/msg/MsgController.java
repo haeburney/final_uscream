@@ -48,23 +48,22 @@ public class MsgController {
 	//메일 작성
 	@PostMapping("")
 	public Map sendMsg(MsgDto dto) {
-		System.out.println("메일작성시작");
 		Map map = new HashMap();
 		File dir = new File(path+"/"+"msgfile");   
 		dir.mkdir();										
 		
-		MultipartFile f = dto.getMfile();	// 멀티파트파일 감자
+		MultipartFile f = dto.getMfile();	
 		
 		if(f != null) {
-		String fname = f.getOriginalFilename();			//감자 
+		String fname = f.getOriginalFilename();			
 		
 		 		  
-		String newpath = path+"/"+"msgfile/"+fname; //실제 파일 경로  
+		String newpath = path+"/"+"msgfile/"+fname; 
 		
 		File uploadfile = new File(newpath);		
 		
 		try {
-			f.transferTo(uploadfile);	// img 폴더에 파일이 들어간다. 				
+			f.transferTo(uploadfile);					
 			dto.setMsgfile(fname);
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
@@ -77,12 +76,13 @@ public class MsgController {
 		}
 		}
 		
-		System.out.println("메일작성끝 + " +dto.getReceiver());
 		if(dto.getReceiver()==null) {
 		
 			
 			map.put("dto",null);
-		}else {
+		}
+		else {
+			
 			service.save(dto);
 			map.put("dto", dto);
 			
@@ -146,9 +146,6 @@ public class MsgController {
 		
 		}
 		
-		
-		
-		
 		return map;
 	}
 		
@@ -161,6 +158,9 @@ public class MsgController {
 		MsgDto dto = service.getMsg(num);
 		MsgDto msgdto = new MsgDto();
 		
+		
+		
+		msgdto.setMsgnum(dto.getMsgnum());
 		msgdto.setSender(dto.getReceiver());
 		msgdto.setReceiver(dto.getSender());
 		msgdto.setReply(dto.getMsgnum());
@@ -435,6 +435,8 @@ public class MsgController {
 		
 		ArrayList<MsgDto> msglist = service.selectAllDelMsg(sender,receiver);
 
+		
+		
 		Map countmap = service.countAllByDelMsg(sender,receiver);
 		
 	
