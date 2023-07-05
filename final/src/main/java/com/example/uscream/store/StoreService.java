@@ -58,10 +58,11 @@ public class StoreService {
 		
 		
 	//지점정보확인(1개_지점명으로 검색)
-//		public StoreDto getById(String storeid) {
-//		Store entity = dao.findById(storeid).orElse(null);
-//		StoreDto dto = new StoreDto(entity.getStoreid(),entity.getStorename(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getX(),entity.getY());
-//		}	
+//		public StoreDto getByStorename(String storename) {
+//		Store entity = dao.findById(storename).orElse(null);
+//		StoreDto dto = new StoreDto(entity.getStoreid(),entity.getStorename(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getStoreimg(),entity.getX(),entity.getY(),null));
+//		return dto;
+//		}		
 	
 	// 5. 지점 삭제
 	public void deleteStore(String storeid) {
