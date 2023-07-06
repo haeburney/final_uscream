@@ -79,14 +79,14 @@ public class ProductController {
 	public Map getAll() {
 		ArrayList<ProductDto> dlist = service.getAll();
 		System.out.println(dlist);
-		Map map = new HashMap<>();
+		Map map = new HashMap<>();	
 		map.put("list", dlist);
 		System.out.println(map);
 		return map;
 	}
 	
 	@GetMapping("/{productnum}")
-	public Map getById(@PathVariable("productunm") int productnum) {
+	public Map getById(@PathVariable("productnum") int productnum) {
 		ProductDto dto = service.getById(productnum);
 		Map map = new HashMap<>();
 		map.put("product",dto);
