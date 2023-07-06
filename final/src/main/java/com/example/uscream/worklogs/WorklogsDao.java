@@ -15,7 +15,7 @@ import jakarta.transaction.Transactional;
 public interface WorklogsDao extends JpaRepository<Worklogs, Integer> {
 	ArrayList<Worklogs> findByStoreidOrderByWdateDesc(Store storeid); // 지점마다 기록 불러오기
 
-	ArrayList<Worklogs> findByEmp(Emp empnum); // 직원별 기록 불러오기
+	ArrayList<Worklogs> findByEmpOrderByWdateDesc(Emp empnum); // 직원별 기록 불러오기
 	
 	// 달별로 불러오기 
 	@Transactional

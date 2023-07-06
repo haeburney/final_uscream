@@ -32,7 +32,7 @@ public class WorklogsService {
 	// 직원 번호로 검색
 	public ArrayList<WorklogsDto> getByEmp(int empnum) {
 		Emp e = new Emp(empnum, null, "", null, null, "");
-		ArrayList<Worklogs> list = dao.findByEmp(e);
+		ArrayList<Worklogs> list = dao.findByEmpOrderByWdateDesc(e);
 		ArrayList<WorklogsDto> dtoList = new ArrayList<WorklogsDto>();
 		for (Worklogs vo : list) {
 			dtoList.add(new WorklogsDto(vo.getWnum(), vo.getEmp(), vo.getStoreid(), vo.getWdate(), vo.getStarttime(),
