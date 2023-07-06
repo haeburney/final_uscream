@@ -133,7 +133,7 @@ public class MsgController {
 			return map;
 		}
 		
-	
+	// 받는 사람으로 행 하나 조회 
 	@GetMapping("/search/{receiver}")
 	public Map getReceiver(@PathVariable("receiver") String receiver) {
 		Map map = new HashMap();
@@ -270,15 +270,12 @@ public class MsgController {
 	public void fixRead(@PathVariable("msgnum") int num) {
 		service.fixReadcheck(num);
 	}
-	
 	// 휴지통으로 보내기
 	@PatchMapping("/del/check/{msgnum}")
 	public void changeDelcheck(@PathVariable("msgnum") int num) {
+		System.out.println("델");
 		service.changeDelcheck(num);
 	}
-	
-	
-	
 	// 즐겨찾기 인덱스 페이지
 	@GetMapping("/mark/{storeid}")
 	public Map getMarkPage(@PathVariable("storeid") String storeid) {
