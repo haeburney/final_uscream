@@ -91,12 +91,12 @@ public class SellingController {
 	
 	
 	// 월별 전체 매출 (전체기간 스토어별)
-	@GetMapping("/monthlysales/{storeid}") 
-	public Map getByStoreAllMonthlySales(@PathVariable("storeid") String storeid, @PathVariable("storename") String storename) {
-		ArrayList<Map<String, Object[]>> list = service.getByStoreAllMonthlySales(storeid, storename);
-		Map map = new HashMap();
-		map.put("list", list);
-		return map;
+	@GetMapping("/monthlysales/{keyword}") 
+	public Map getByStoreAllMonthlySales(@PathVariable("keyword") String keyword) {
+	    ArrayList<Map<String, Object[]>> list = service.getByStoreAllMonthlySales(keyword);
+	    Map map = new HashMap();
+	    map.put("list", list);
+	    return map;
 	}
 
 	

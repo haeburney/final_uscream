@@ -79,22 +79,11 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
 	@Query(value = "SELECT se.storeid, st.storename, EXTRACT(YEAR FROM se.sellingdate) AS year, EXTRACT(MONTH FROM se.sellingdate) AS month, SUM(se.sellingprice) AS totalprice "
 	        + "FROM selling se "
 	        + "JOIN Store st ON se.storeid = st.storeid "
-	        + "WHERE (se.storeid = :storeid OR st.storename = :storename) "
+	        + "WHERE se.storeid = :keyword OR st.storename = :keyword "
 	        + "GROUP BY se.storeid, st.storename, EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate)", nativeQuery = true)
-	ArrayList<Map<String, Object[]>> findTotalPriceByStoreAndAllMonth(
-	        @Param("storeid") String storeid,
-	        @Param("storename") String storename);
+	ArrayList<Map<String, Object[]>> findTotalPriceByStoreAndAllMonth
+			(@Param("keyword") String keyword);
 
-
-//	@Transactional
-//	@Query(value = "SELECT se.storeid, st.storename, EXTRACT(YEAR FROM se.sellingdate) AS year, EXTRACT(MONTH FROM se.sellingdate) AS month, SUM(se.sellingprice) AS totalprice "
-//			+ "FROM selling se "
-//			+ "JOIN Store st ON se.storeid = st.storeid "
-//	        + "WHERE se.storeid = :storeid "
-//	        + "GROUP BY se.storeid, st.storename, EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate)", nativeQuery = true)
-//	ArrayList<Map<String, Object[]>> findTotalPriceByStoreAndAllMonth(
-//	        @Param("storeid") String storeid);
-	
 	
 	// 월별 전체 매출 (연도 설정) 
 	@Transactional
