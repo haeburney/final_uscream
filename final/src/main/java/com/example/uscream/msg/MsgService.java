@@ -27,7 +27,7 @@ public class MsgService {
 	public ArrayList<MsgDto> save(MsgDto msgdto) {
 		
 		ArrayList<MsgDto> real = new ArrayList<MsgDto>();
-
+		msgdto.setReadcheck(true);
 		msgdto.setReal(true);
 		Msg msg = dao.save(new Msg(msgdto.getMsgnum(), msgdto.getSender(), msgdto.getReceiver(), msgdto.getTitle(),
 				msgdto.getMsgdate(), msgdto.getContent(), msgdto.getMsgfile(), msgdto.getReply(), msgdto.isMark(),
