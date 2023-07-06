@@ -38,7 +38,6 @@ public class NoticeController {
 		Map map = new HashMap();
 		boolean flag = true;
 		NoticeDto dto2 = null;
-		System.out.println(dto);
 		try {
 			dto2 = service.save(dto);
 		} catch(Exception e) {
@@ -106,8 +105,6 @@ public class NoticeController {
 	    n.setCategory(dto.getCategory());
 	    
 	    NoticeDto n2 = service.save(n);
-	    System.out.println("dto :"+dto);
-	    System.out.println("n2 :"+n2);
 	    Map map = new HashMap<>();
 	    map.put("Notice", n2);
 	      

@@ -22,7 +22,7 @@ public class VoccommentController {
 	@Autowired
 	private VoccommentService service;
 	
-	@PostMapping()
+	@PostMapping("")
 	public Map add(VoccommentDto dto) {
 		Map map = new HashMap();
 		boolean flag = true;
@@ -55,23 +55,24 @@ public class VoccommentController {
 		
 		return map;
 	}
+
 	
 	
 	//수정
-	@PutMapping("/{voccomnum}")
+	@PutMapping("/edit/{voccomnum}")
 	public Map edit(@PathVariable("voccomnum") int voccomnum, VoccommentDto dto) {
 		VoccommentDto voc = service.getById(voccomnum);
 		voc.setStorecomment(dto.getStorecomment());
 		VoccommentDto voc2 = service.save(voc);
 		Map map = new HashMap();
-		map.put("Voc", voc2);
+		map.put("voc", voc2);
 		
 		return map;
 	}
 	
 	
 	//삭제
-	@DeleteMapping("/{vocomnum}")
+	@DeleteMapping("/del/{vocomnum}")
 	public Map del(@PathVariable("vocomnum") int voccomnum) {
 		Map map = new HashMap();
 		boolean flag = true;
