@@ -79,9 +79,9 @@ public class SellingService {
 	
 	
 	// 월별 전체 매출 (전체기간 스토어별) 
-	public ArrayList<Map<String, Object[]>> getByStoreAllMonthlySales(String storeid, String storename){
-		ArrayList<Map<String, Object[]>> list = dao.findTotalPriceByStoreAndAllMonth(storeid, storename);
-		return list;
+	public ArrayList<Map<String, Object[]>> getByStoreAllMonthlySales(String keyword) {
+	    ArrayList<Map<String, Object[]>> list = dao.findTotalPriceByStoreAndAllMonth(keyword);
+	    return list;
 	}
 
 		
