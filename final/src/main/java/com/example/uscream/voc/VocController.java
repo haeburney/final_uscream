@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.uscream.notice.NoticeDto;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/vocs")
@@ -33,21 +35,21 @@ public class VocController {
 	@Value("${spring.servlet.multipart.location}")
 	private String path;
 	
-	@PostMapping()
+	@PostMapping("")
 	public Map add(VocDto dto) {
-		Map map = new HashMap();
-		boolean flag = true;
-		VocDto dto2 = null;
-		try {
-			dto2 = service.save(dto);
-			System.out.println("dto2:"+dto2);
-		} catch(Exception e) {
-			flag = false;
-		}
-		map.put("flag", flag);
-		map.put("dto", dto2);
-		
-		return map;
+	    Map map = new HashMap<>();
+	    boolean flag = true;
+	    VocDto dto2 = null;
+	    System.out.println(dto2);
+	    try {
+	        dto2 = service.save(dto);
+	    } catch(Exception e) {
+	        flag = false;
+	    }
+	    map.put("dto2", dto2);
+	    map.put("flag", flag);
+	    
+	    return map;
 	}
 	
 	
@@ -69,19 +71,30 @@ public class VocController {
 	}
 	
 	
+	//아이디로 검색
+	@GetMapping("/schid/{vocnum}")
+	public Map getById(@PathVariable("vocnum") int vocnum) {
+		VocDto dto = service.getById(vocnum);
+		Map map = new HashMap<>();
+		map.put("voc", dto);
+		
+		return map;
+	}
+		
+	
 	//카테고리로 검색
-	@GetMapping("/{category}")
+	@GetMapping("/schctg/{category}")
 	public Map getByCategory(@PathVariable("category") int category) {
 		ArrayList<VocDto> flist = service.getByCategory(category);
 		Map map = new HashMap<>();
-		map.put("Voc", flist);
+		map.put("list", flist);
 		
 		return map;
 	}
 	
 	
 	//수정
-	@PutMapping("/{vocnum}")
+	@PutMapping("/edit/{vocnum}")
 	public Map edit(@PathVariable("vocnum") int vocnum, VocDto dto) {
 		VocDto v = service.getById(vocnum);
 		v.setCategory(dto.getCategory());
@@ -89,14 +102,14 @@ public class VocController {
 		v.setContent(dto.getContent());
 		VocDto v2 = service.save(v);
 		Map map = new HashMap();
-		map.put("Voc", v2);
+		map.put("voc", v2);
 		
 		return map;
 	}
 	
 	
 	//삭제
-	@DeleteMapping("/{vocnum}")
+	@DeleteMapping("/del/{vocnum}")
 	public Map del(@PathVariable("vocnum") int vocnum) {
 		Map map = new HashMap();
 		boolean flag = true;
