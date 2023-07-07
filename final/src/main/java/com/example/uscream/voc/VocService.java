@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.uscream.store.Store;
+import com.example.uscream.voccomment.Voccomment;
+import com.example.uscream.voccomment.VoccommentDto;
+
 @Service
 public class VocService {
 
@@ -50,6 +54,17 @@ public class VocService {
 		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
 		
 		for(Voc v : list) {
+			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
+		}
+		return list2;
+	}
+	
+	//storeid
+	public ArrayList<VocDto> getByStoreid(String storeid) {
+		Store schsid = new Store(storeid, "", "", "", 0, "", 0, 0);
+		ArrayList<Voc> list = dao.findByStoreid(schsid);
+		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
+		for (Voc v : list) {
 			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
 		}
 		return list2;

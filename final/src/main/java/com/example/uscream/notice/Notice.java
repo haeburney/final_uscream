@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import lombok.AllArgsConstructor;
@@ -30,9 +29,7 @@ public class Notice {
 	private int noticenum;
 	
 	private String title;
-	
-	@Lob
-	   private String content;
+	private String content;
 	
 	private Date wdate;
 	@PrePersist
