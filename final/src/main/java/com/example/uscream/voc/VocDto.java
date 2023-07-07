@@ -2,6 +2,8 @@ package com.example.uscream.voc;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.uscream.store.Store;
 
 import lombok.AllArgsConstructor;
@@ -26,4 +28,5 @@ public class VocDto {
 	private Store storeid;
 	
 	private String img1;
+	private MultipartFile[] f = new MultipartFile[4];
 }

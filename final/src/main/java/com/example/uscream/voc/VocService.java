@@ -31,7 +31,7 @@ public class VocService {
 		ArrayList<Voc> list = (ArrayList<Voc>) dao.findAll();
 		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
 		for(Voc v : list) {
-			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1()));
+			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
 		}
 		return list2;
 	}
@@ -39,7 +39,7 @@ public class VocService {
 	//Id로 검색
 	public VocDto getById(int vocnum) {
 		Voc v = dao.findById(vocnum).orElse(null);
-		VocDto dto = new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1());
+		VocDto dto = new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null);
 		
 		return dto;
 	}
@@ -50,7 +50,7 @@ public class VocService {
 		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
 		
 		for(Voc v : list) {
-			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1()));
+			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
 		}
 		return list2;
 	}

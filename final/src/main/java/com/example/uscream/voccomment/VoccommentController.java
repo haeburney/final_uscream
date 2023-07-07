@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.uscream.notice.NoticeDto;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/voccomments")
@@ -55,6 +57,24 @@ public class VoccommentController {
 		
 		return map;
 	}
+	
+	
+	//vocnum으로 검색
+	@GetMapping("/schnum/{vocnum}")
+	public Map getByVocnum(@PathVariable("vocnum") int vocnum) {
+		Map map = new HashMap();
+		boolean flag = true;
+		ArrayList<VoccommentDto> list = new ArrayList<VoccommentDto>();
+		try {
+			list = service.getByVocnum(vocnum);
+		} catch(Exception e) {
+			flag = false;
+		}
+		map.put("list", list);
+		map.put("flag", flag);
+		
+		return map;
+	}
 
 	
 	
@@ -72,8 +92,8 @@ public class VoccommentController {
 	
 	
 	//삭제
-	@DeleteMapping("/del/{vocomnum}")
-	public Map del(@PathVariable("vocomnum") int voccomnum) {
+	@DeleteMapping("/del/{voccomnum}")
+	public Map del(@PathVariable("voccomnum") int voccomnum) {
 		Map map = new HashMap();
 		boolean flag = true;
 		try {

@@ -33,7 +33,7 @@ public class NoticeService {
 		ArrayList<Notice> list = (ArrayList<Notice>) dao.findAll();
 		ArrayList<NoticeDto> list2 = new ArrayList<NoticeDto>();
 		for(Notice n : list) {
-			list2.add(new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3()));
+			list2.add(new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3(), null));
 		}
 		return list2;
 	}
@@ -41,7 +41,7 @@ public class NoticeService {
 	//아이디로 검색
 	public NoticeDto getById(int noticenum) {
 		Notice n = dao.findById(noticenum).orElse(null);
-		NoticeDto dto = new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCategory(), n.getImg1(), n.getImg2(), n.getImg3());
+		NoticeDto dto = new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCategory(), n.getImg1(), n.getImg2(), n.getImg3(), null);
 		
 		return dto; 
 	}
@@ -52,7 +52,7 @@ public class NoticeService {
 		ArrayList<NoticeDto> list2 = new ArrayList<NoticeDto>();
 		
 		for(Notice n : list) {
-			list2.add(new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3()));
+			list2.add(new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3(), null));
 		}
 		return list2;
 	}
@@ -63,7 +63,7 @@ public class NoticeService {
 		ArrayList<NoticeDto> list2 = new ArrayList<NoticeDto>();
 		
 		for(Notice n : list) {
-			list2.add(new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3()));
+			list2.add(new NoticeDto(n.getNoticenum(), n.getCategory(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3(), null));
 		}
 		return list2;
 		 
