@@ -39,7 +39,6 @@ public class StoreService {
 		public StoreDto getById(String storeid) {
 			Store s = dao.findById(storeid).orElse(null);
 			if(s==null) {
-			
 				return null;
 			}
 			return new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getStoreimg(),s.getX(),s.getY(), null);
@@ -71,4 +70,3 @@ public class StoreService {
 
 	
 }
-
