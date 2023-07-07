@@ -2,6 +2,7 @@ package com.example.uscream.store;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,10 @@ public class Store {
 	private String pwd;
 	private String managername;
 	private int accounttype;	//본사: 1, 점주:2
+	
+	@JoinColumn(nullable=true)
 	private String storeimg;
+	
 	private float x; 
 	private float y;
 	

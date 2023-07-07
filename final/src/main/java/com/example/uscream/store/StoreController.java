@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 @RequestMapping("/store")
 public class StoreController {
 
@@ -37,17 +37,25 @@ public class StoreController {
 	@Value("${spring.servlet.multipart.location}")
 	private String path; 
 	
-	//1.등록(가입)
+	
+	
+	
+	
+	//1.등록(가입), 수정
 	@PostMapping("")
 	public Map add(StoreDto dto) {
+		System.out.println("1. 수정 왔어? ");
+		
 		StoreDto s = service.save(dto);
+		
+		System.out.println("2. 수정 왔어? ");	
 		File dir = new File(path+"/"+"store");
 					
-		
+		System.out.println("3. 수정 왔어? ");	
 		dir.mkdir();							// 폴더 생성  name= path + store
 		String img = dto.getStoreimg();		 
 		MultipartFile F = dto.getSimg();
-		
+		System.out.println("4. 수정 왔어? ");	
 		if (F != null) {
 			String fname = F.getOriginalFilename();				//원본파일명 -> 클라이언트 컴퓨터에 저장된 찐이름 
 			System.out.println("3 "+fname);
@@ -68,13 +76,14 @@ public class StoreController {
 		}else {
 			img = "noimg";
 		}
+		System.out.println("5. 수정 왔어? ");		
 		
-		//
 		dto.setStoreimg(img);		// 데이터를 storeimg 쏜다. 
 		
 		service.save(dto);			// 수정
 		Map map = new HashMap<>();
 		map.put("dto", s);
+		System.out.println("3. 수정 왔어? ");
 		return map;
 	}
 	
@@ -106,7 +115,7 @@ public class StoreController {
 	}
 	
 	//3.1 지점하나만 조회
-		@GetMapping("/{storeid}")
+		@GetMapping("/storeid/{storeid}")
 		public Map getByid(@PathVariable("storeid") String storeid) {
 			StoreDto dto = service.getById(storeid);
 			Map map = new HashMap();
@@ -117,7 +126,6 @@ public class StoreController {
 	//3.2 지점하나만 조회(지점명으로 검색)
 		@GetMapping("/{storename}")
 		public Map getByStorename(@PathVariable("storename") String storename) {
-		System.out.println("왔냐");
 			ArrayList<StoreDto> list = service.getByStorename(storename);
 			Map map = new HashMap();
 			map.put("list", list);
@@ -146,7 +154,7 @@ public class StoreController {
 		StoreDto dto = service.getById(storeid);
 		fname=dto.getStoreimg();
 		ResponseEntity<byte[]> result = null; //선언
-		try {
+		try {	
 			fname = URLDecoder.decode(fname, "utf-8");
 			File f = new File(fname);
 			HttpHeaders header = new HttpHeaders(); //HttpHeaders 객체 생성
@@ -160,6 +168,10 @@ public class StoreController {
 		}
 		return result;
 	}
+
+
+
 	
 	
 }
+
