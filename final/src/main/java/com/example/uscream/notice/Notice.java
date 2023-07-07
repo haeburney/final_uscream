@@ -32,7 +32,7 @@ public class Notice {
 	private String title;
 	@Lob
 	@Column(name="content" ,columnDefinition = "CLOB")
-  private String content;
+	private long content;
 
 	private Date wdate;
 	@PrePersist
