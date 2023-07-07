@@ -58,17 +58,6 @@ public class VoccommentService {
 		return list2;
 	}
 	
-	//storeid
-	public ArrayList<VoccommentDto> getByStoreid(String storeid) {
-		Store schsid = new Store(storeid, "", "", "", 0, "", 0, 0);
-		ArrayList<Voccomment> list = dao.findByStoreid(schsid);
-		ArrayList<VoccommentDto> list2 = new ArrayList<VoccommentDto>();
-		for (Voccomment voc : list) {
-			list2.add(new VoccommentDto(voc.getVoccomnum(), voc.getStorecomment(), voc.getVocnum(), voc.getWdate(), voc.getStoreid()));
-		}
-		return list2;
-	}
-	
 	//삭제
 	public void delVoccomment(int voccomnum) {
 		dao.deleteById(voccomnum);
