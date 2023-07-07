@@ -32,6 +32,7 @@ public class Notice {
 	private String title;
 	
 	@Lob
+	@Column(name="content" ,columnDefinition = "CLOB")
 	   private String content;
 	
 	private Date wdate;
@@ -53,3 +54,6 @@ public class Notice {
 	private String img3;
 	
 }
+
+
+
