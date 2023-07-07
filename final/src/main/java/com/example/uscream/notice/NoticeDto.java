@@ -2,6 +2,8 @@ package com.example.uscream.notice;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,8 @@ public class NoticeDto {
 	private String img1;
 	private String img2;
 	private String img3;
+	
+	private MultipartFile[] f = new MultipartFile[4];
 	
 //	public int getCategory() {
 //        // 필요에 따라 category 값을 정수로 변환하여 반환하는 로직 추가

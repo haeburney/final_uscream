@@ -55,7 +55,6 @@ public class Msg {
 	
 	@Column(columnDefinition = "number default 0")
 	private int reply;					// 답장
-	
 	@Column(columnDefinition = "number default 0")
 	private boolean mark;				// 즐겨찾기 			0=기본 1=즐찾
 	@Column(columnDefinition = "number default 0")

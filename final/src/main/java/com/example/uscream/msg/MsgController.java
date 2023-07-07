@@ -133,19 +133,18 @@ public class MsgController {
 			return map;
 		}
 		
-	// 받는 사람으로 행 하나 조회 
-	@GetMapping("/search/{receiver}")
-	public Map getReceiver(@PathVariable("receiver") String receiver) {
+	// 아이디로 행 하나 조회 
+	@GetMapping("/search/{id}")
+	public Map getReceiver(@PathVariable("id") String id) {
 		Map map = new HashMap();
 		
-		StoreDto dto = storeservice.getById(receiver);
+		StoreDto dto = storeservice.getById(id);
 		if(dto==null) {
 			map.put("dto", null);
 		}else {
 			map.put("dto", dto);
 		
 		}
-		
 		return map;
 	}
 		
@@ -273,7 +272,6 @@ public class MsgController {
 	// 휴지통으로 보내기
 	@PatchMapping("/del/check/{msgnum}")
 	public void changeDelcheck(@PathVariable("msgnum") int num) {
-		System.out.println("델");
 		service.changeDelcheck(num);
 	}
 	// 즐겨찾기 인덱스 페이지

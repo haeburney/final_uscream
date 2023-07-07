@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface StoreDao extends JpaRepository<Store, String> {
 
 	ArrayList<Store> findByStorenameLike(String storename);
+	ArrayList<Store> findByManagernameContaining(String managername);
 	
 }

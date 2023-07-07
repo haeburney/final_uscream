@@ -43,7 +43,7 @@ public class NetsalesController {
 	@Autowired
 	StoreService StoreService;
 
-	@Scheduled(cron = "0 47 15 28 * ?") // 매월 첫째 날 자정에 메서드 실행 실행 (cron = "초 분 시 일")
+	@Scheduled(cron = "0 0 0 1 * ?") // 매월 첫째 날 자정에 메서드 실행 실행 (cron = "초 분 시 일")
 	public Map addNetsales() {
 
 		LocalDate today = LocalDate.now(); 
@@ -57,7 +57,6 @@ public class NetsalesController {
 			month -= 1;
 		}
 		
-		month = 6;
 
 		Map map = new HashMap();
 
@@ -76,11 +75,16 @@ public class NetsalesController {
 			// storeid별 월별 총매출 추가
 			int msellingprice = 0;
 			ArrayList<Map<String, Object[]>> salesList = SellingService.getByYearAndMonthSales(vo.getStoreid(), year, month);
+			System.out.println(salesList);
 			if (!salesList.isEmpty()) {
-				Map <String,Object[]> salesData = salesList.get(0); // salesList 첫번째 행 가져옴
-				if (salesData.get("salesData")[4] instanceof Number) { // 첫번째 행 5번째 컬럼 가져옴 (연도 | 월 | 스토어ID | 지점명 | 매출총액)
-					msellingprice = ((Number) salesData.get("salesData")[4]).intValue();
-				}
+			    Map<String, Object[]> salesData = salesList.get(0);
+			    Object salesDataArray = salesData.get("TOTALPRICE");
+			    if (salesDataArray instanceof Object) {
+			        Object salesValues = (Object) salesDataArray;
+			        if (salesValues instanceof Integer) {
+			            msellingprice = ((Number) salesValues).intValue();
+			        }
+			    }
 			}
 
 			dto.setMsellingprice(msellingprice);
@@ -99,24 +103,15 @@ public class NetsalesController {
 			
 			// storeid별 월별 총 발주금액 추가
 			int mordercost = 0;
-//			ArrayList<Map<String, String>> orderList = PorderService.getMonthlyOrderCost(vo.getStoreid(), year, month);
-//			if(!orderList.isEmpty()) {
-//				Map <String, String> orderData = orderList.get(0);
-//				if (orderData.containsKey("MONTHLY_TOTAL")) {
-//					String monthlyTotalValue = orderData.get("MONTHLY_TOTAL");
-//					if(monthlyTotalValue !=null) {
-//						mordercost = Integer.parseInt(monthlyTotalValue);			
-//					}
-//				}
-//			}
-//			ArrayList<Map<String, String>> orderList = PorderService.getMonthlyOrderCost(vo.getStoreid(), year, month);
-//			if(!orderList.isEmpty()) {
-//				Map <String, String> orderData = orderList.get(0);
-//				if(orderData.get("orderData")[3] instanceof Number {
-//					mordercos = ((Number) orderData.get("orderData")[3]).intValue();
-//				}
-//				
-//			}
+			ArrayList<Map<String, String>> orderList = PorderService.getMonthlyOrderCost(vo.getStoreid(), year, month);
+			if (!orderList.isEmpty()) {
+			    Map<String, String> orderData = orderList.get(0);
+			    Object monthlyTotalValueObj = orderData.get("MONTHLY_TOTAL");
+			    if (monthlyTotalValueObj instanceof Integer) {
+			        String monthlyTotalValue = monthlyTotalValueObj.toString();
+			        mordercost = Integer.parseInt(monthlyTotalValue);
+			    }
+			}
 
 			dto.setMordercost(mordercost);
 
@@ -127,12 +122,13 @@ public class NetsalesController {
 		
 		return map;
 	}
+
+//	private String parseInt(int year) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
 	
-	
-	private String parseInt(int year) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	// 전체 검색
 	@GetMapping("")
@@ -140,26 +136,26 @@ public class NetsalesController {
 		ArrayList<NetsalesDto> list = NetsalesService.getAll();
 		Map map = new HashMap();
 		map.put("list", list);
-		return map;		
+		return map;
 	}
-	
+
 	// 선택한 연도의 월별 순매출
 	@GetMapping("/{storeid}/{year}")
 	public Map getBySelectYear(@PathVariable("storeid") String storeid, @PathVariable("year") int year) {
 		ArrayList<Map<String, Object[]>> list = NetsalesService.getBySelectYear(storeid, year);
 		Map map = new HashMap();
 		map.put("list", list);
-		return map;		
+		return map;
 	}
-	
+
 	// 선택한 연도 및 월의 매출, 인건비, 발주금액, 순매출
 	@GetMapping("/{storeid}/{year}/{month}")
-	public Map getBySelectYearAndMonth(@PathVariable("storeid") String storeid, @PathVariable("year") int year, @PathVariable("month") int month) {
+	public Map getBySelectYearAndMonth(@PathVariable("storeid") String storeid, @PathVariable("year") int year,
+			@PathVariable("month") int month) {
 		ArrayList<Map<String, Object[]>> list = NetsalesService.getBySelectYearAndMonth(storeid, year, month);
 		Map map = new HashMap();
 		map.put("list", list);
-		return map;		
+		return map;
 	}
-
 
 }
