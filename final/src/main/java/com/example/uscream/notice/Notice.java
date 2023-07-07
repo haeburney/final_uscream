@@ -29,8 +29,10 @@ public class Notice {
 	private int noticenum;
 	
 	private String title;
-	private String content;
-	
+	@Lob
+	@Column(name="content" ,columnDefinition = "CLOB")
+  private String content;
+
 	private Date wdate;
 	@PrePersist
 	public void preprocess() {
@@ -50,3 +52,6 @@ public class Notice {
 	private String img3;
 	
 }
+
+
+
