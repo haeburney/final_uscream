@@ -15,9 +15,9 @@ import com.example.uscream.store.StoreDto;
 public interface MsgDao extends JpaRepository<Msg, Integer> {
 	
 	// 이름 두 개를 받아 찾는 메서드 
-
 	@Query(value = "select * from msg where sender=:StroeDto.storeid and receiver=:StoreDto.storeid and real=1 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	Msg findByNames(@Param("StoreDto.storeid") String sender,@Param("StoreDto.storeid") String receiver);
+	
 	
 	
 //	========================== boolean 값 변경 -시작-
