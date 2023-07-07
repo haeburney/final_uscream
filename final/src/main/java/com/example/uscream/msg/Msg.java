@@ -73,8 +73,5 @@ public class Msg {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
         msgdate = ldt.format(dtf);
         
-        
-        
 	}
-	
 }
