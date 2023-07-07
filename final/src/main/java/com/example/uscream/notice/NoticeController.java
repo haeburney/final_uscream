@@ -49,6 +49,7 @@ public class NoticeController {
 		return map;
 	}
 	
+	
 	//전체 검색
 	@GetMapping("")
 	public Map list() {
@@ -66,6 +67,7 @@ public class NoticeController {
 		return map;
 	}
 	
+	
 	//아이디로 검색
 	@GetMapping("/schid/{noticenum}")
 	public Map getById(@PathVariable("noticenum") int noticenum) {
@@ -76,15 +78,6 @@ public class NoticeController {
 		return map;
 	}
 	
-	//카테고리로 검색
-	@GetMapping("/schctg/{category}")
-	public Map getByCategory(@PathVariable("category") int category) {
-		ArrayList<NoticeDto> flist = service.getByCategory(category);
-		Map map = new HashMap<>();
-		map.put("list", flist);
-		
-		return map;
-	}
 	
 	//제목으로 검색
 	@GetMapping("/schtit/{title}")
@@ -96,13 +89,13 @@ public class NoticeController {
 		return map;
 	}
 	
+	
 	//수정
 	@PutMapping("/edit/{noticenum}")
 	public Map edit(@PathVariable("noticenum") int noticenum, NoticeDto dto) {
 	    NoticeDto n = service.getById(noticenum);
 	    n.setTitle(dto.getTitle());
 	    n.setContent(dto.getContent());
-	    n.setCategory(dto.getCategory());
 	    
 	    NoticeDto n2 = service.save(n);
 	    Map map = new HashMap<>();
@@ -112,7 +105,6 @@ public class NoticeController {
 	}
 
 
-	
 	//삭제
 	@DeleteMapping("/del/{noticenum}")
 	public Map del(@PathVariable("noticenum") int noticenum) {
@@ -127,6 +119,7 @@ public class NoticeController {
 		
 		return map;
 	}
+	
 	
 	//이미지
 	@GetMapping("/imgs/{noticenum}/{idx}")  
