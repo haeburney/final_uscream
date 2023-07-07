@@ -29,7 +29,6 @@ public class Notice {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_notice")
 	private int noticenum;
 	
-	private int category; //1= 칭찬 2= 불만
 	private String title;
 	
 	@Lob

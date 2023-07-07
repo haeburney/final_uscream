@@ -18,9 +18,8 @@ import lombok.ToString;
 public class NoticeDto {
 
 	private int noticenum;
-	private int category;
 	private String title;
-	private String content; //0= 칭찬 1= 불만
+	private String content; 
 	private Date wdate;
 	private int cnt;
 	
@@ -29,9 +28,5 @@ public class NoticeDto {
 	private String img3;
 	
 	private MultipartFile[] f = new MultipartFile[4];
-	
-//	public int getCategory() {
-//        // 필요에 따라 category 값을 정수로 변환하여 반환하는 로직 추가
-//        return Integer.parseInt(category);
-//    }
+
 }

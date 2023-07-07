@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.uscream.store.Store;
 import com.example.uscream.voc.Voc;
+import com.example.uscream.worklogs.Worklogs;
+import com.example.uscream.worklogs.WorklogsDto;
 
 @Service
 public class VoccommentService {
@@ -35,7 +38,7 @@ public class VoccommentService {
 		return list2;
 	}
 	
-	//Id로 검색
+	//Id
 	public VoccommentDto getById(int voccomnum) {
 		Voccomment voc = dao.findById(voccomnum).orElse(null);
 		VoccommentDto dto = new VoccommentDto(voc.getVoccomnum(), voc.getStorecomment(), voc.getVocnum(), voc.getWdate(), voc.getStoreid());
@@ -43,7 +46,7 @@ public class VoccommentService {
 		return dto;
 	}
 	
-	//vocnum로 검색
+	//vocnum
 	public ArrayList<VoccommentDto> getByVocnum(int vocnum) {
 		Voc schvoc = new Voc(vocnum, 0, "", "", 0, null, null, "");
 		ArrayList<Voccomment> list = (ArrayList<Voccomment>) dao.findByVocnum(schvoc);
@@ -52,6 +55,17 @@ public class VoccommentService {
 			list2.add(new VoccommentDto(voc.getVoccomnum(), voc.getStorecomment(), voc.getVocnum(), voc.getWdate(), voc.getStoreid()));
 		}
 		
+		return list2;
+	}
+	
+	//storeid
+	public ArrayList<VoccommentDto> getByStoreid(String storeid) {
+		Store schsid = new Store(storeid, "", "", "", 0, "", 0, 0);
+		ArrayList<Voccomment> list = dao.findByStoreid(schsid);
+		ArrayList<VoccommentDto> list2 = new ArrayList<VoccommentDto>();
+		for (Voccomment voc : list) {
+			list2.add(new VoccommentDto(voc.getVoccomnum(), voc.getStorecomment(), voc.getVocnum(), voc.getWdate(), voc.getStoreid()));
+		}
 		return list2;
 	}
 	

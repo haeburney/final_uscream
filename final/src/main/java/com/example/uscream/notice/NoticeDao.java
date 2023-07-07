@@ -18,9 +18,6 @@ public interface NoticeDao extends JpaRepository<Notice, Integer> {
 	@Query(value="update data set cnt=cnt+1 where noticenum=:noticenum" , nativeQuery=true)
 	void updateCnt(@Param("noticenum") int noticenum);
 	
-	//카테고리로 검색
-	ArrayList<Notice> findByCategory(int category);
-	
 	//제목으로 검색
 	ArrayList<Notice> findByTitleLike(String title);
 }
