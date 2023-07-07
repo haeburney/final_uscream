@@ -19,7 +19,7 @@ public class NoticeDto {
 
 	private int noticenum;
 	private String title;
-	private String content; 
+	private long content; 
 	private Date wdate;
 	private int cnt;
 	
