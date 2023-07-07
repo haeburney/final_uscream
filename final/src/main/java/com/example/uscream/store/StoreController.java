@@ -6,7 +6,6 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +35,6 @@ public class StoreController {
 	
 	@Value("${spring.servlet.multipart.location}")
 	private String path; 
-	
-	
-	
-	
 	
 	//1.등록(가입), 수정
 	@PostMapping("")
@@ -107,6 +102,7 @@ public class StoreController {
 	//3. 전체조회(지점 전체 조회)
 	@GetMapping("")
 	public Map getAll() {
+		System.out.println("Get1");
 		ArrayList<StoreDto> list = service.getAll();
 		Map map = new HashMap();
 		map.put("storelist", list);
