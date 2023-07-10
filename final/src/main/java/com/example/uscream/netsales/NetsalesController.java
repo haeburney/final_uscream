@@ -57,7 +57,6 @@ public class NetsalesController {
 			month -= 1;
 		}
 		
-
 		Map map = new HashMap();
 
 		ArrayList<StoreDto> storeList = StoreService.getAll();
@@ -79,13 +78,11 @@ public class NetsalesController {
 			if (!salesList.isEmpty()) {
 			    Map<String, Object[]> salesData = salesList.get(0);
 			    Object salesDataArray = salesData.get("TOTALPRICE");
-			    if (salesDataArray instanceof Object) {
-			        Object salesValues = (Object) salesDataArray;
-			        if (salesValues instanceof Integer) {
-			            msellingprice = ((Number) salesValues).intValue();
-			        }
+			    if (salesDataArray instanceof Integer) {
+			        msellingprice = (int) salesDataArray;
 			    }
 			}
+
 
 			dto.setMsellingprice(msellingprice);
 
@@ -93,6 +90,7 @@ public class NetsalesController {
 			// storeid별 총급여 추가
 			int mpsalary = 0;
 			ArrayList<MonthlypayDto> salaryList = MonthlypayService.getByStoreAndMonth(vo.getStoreid(), year, month);
+			System.out.println(salaryList);
 			if (!salaryList.isEmpty()) {
 				MonthlypayDto salaryData = salaryList.get(0);
 				mpsalary = salaryData.getMpsalary();
@@ -104,12 +102,12 @@ public class NetsalesController {
 			// storeid별 월별 총 발주금액 추가
 			int mordercost = 0;
 			ArrayList<Map<String, String>> orderList = PorderService.getMonthlyOrderCost(vo.getStoreid(), year, month);
+			System.out.println(orderList);
 			if (!orderList.isEmpty()) {
 			    Map<String, String> orderData = orderList.get(0);
 			    Object monthlyTotalValueObj = orderData.get("MONTHLY_TOTAL");
 			    if (monthlyTotalValueObj instanceof Integer) {
-			        String monthlyTotalValue = monthlyTotalValueObj.toString();
-			        mordercost = Integer.parseInt(monthlyTotalValue);
+			    	mordercost = (Integer) monthlyTotalValueObj;
 			    }
 			}
 
