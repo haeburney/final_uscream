@@ -38,7 +38,7 @@ public class Voc {
 	private int category;
 	private String title;
 	private String content;
-	private int voccheck; //본사 확인
+	private int voccheck; //본사 확인 : 0 = 확인 안함, 1 = 확인함
 	
 	private Date wdate;
 	@PrePersist
