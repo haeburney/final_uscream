@@ -84,7 +84,6 @@ public class StoreController {
 		Map map = new HashMap();
 		map.put("storelist",list);
 		return map;
-		
 	}
 	
 	//2.로그인
