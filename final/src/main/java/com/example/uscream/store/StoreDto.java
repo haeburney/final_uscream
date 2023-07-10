@@ -24,7 +24,3 @@ public class StoreDto {
 	private float y;
 	private MultipartFile simg;
 }
-
-
-
-
