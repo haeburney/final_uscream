@@ -78,7 +78,6 @@ public class MsgController {
 		
 		if(dto.getReceiver()==null) {
 		
-			
 			map.put("dto",null);
 		}
 		else {
@@ -87,10 +86,6 @@ public class MsgController {
 			map.put("dto", dto);
 			
 		}
-		
-		
-		
-		
 		
 		return map;
 	}
@@ -335,10 +330,8 @@ public class MsgController {
 	// 보낸 메세지 인덱스 페이지
 		@GetMapping("/sender/{storeid}")
 		public Map getSendPage(@PathVariable("storeid") String storeid) {
-			
 			StoreDto store = storeservice.getById(storeid);
 			ArrayList<MsgDto> msglist = service.selectAllSendMsg(store.getStoreid());
-			
 			Map countmap = service.countAllSendMsg(store.getStoreid());
 			
 			Long countByReadSendMsg= (Long)countmap.get("countByReadSendMsg"); ;
