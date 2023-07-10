@@ -1,4 +1,3 @@
-
 package com.example.uscream.store;
 
 import java.io.File;
@@ -40,14 +39,18 @@ public class StoreController {
 	//1.등록(가입), 수정
 	@PostMapping("")
 	public Map add(StoreDto dto) {
+		System.out.println("1. 수정 왔어? ");
+		
 		StoreDto s = service.save(dto);
-		System.out.println("2. post"+dto);		
+		
+		System.out.println("2. 수정 왔어? ");	
 		File dir = new File(path+"/"+"store");
 					
+		System.out.println("3. 수정 왔어? ");	
 		dir.mkdir();							// 폴더 생성  name= path + store
-		System.out.println("2. post"+dto);		
 		String img = dto.getStoreimg();		 
 		MultipartFile F = dto.getSimg();
+		System.out.println("4. 수정 왔어? ");	
 		if (F != null) {
 			String fname = F.getOriginalFilename();				//원본파일명 -> 클라이언트 컴퓨터에 저장된 찐이름 
 			System.out.println("3 "+fname);
@@ -68,25 +71,27 @@ public class StoreController {
 		}else {
 			img = "noimg";
 		}
+		System.out.println("5. 수정 왔어? ");		
 		
 		dto.setStoreimg(img);		// 데이터를 storeimg 쏜다. 
 		
 		service.save(dto);			// 수정
 		Map map = new HashMap<>();
 		map.put("dto", s);
+		System.out.println("3. 수정 왔어? ");
 		return map;
 	}
 	
 	
+
 	@GetMapping("/accounttype/{accounttype}")
 	public Map getByAccounttype(@PathVariable("accounttype") int accounttype) {
 		ArrayList<StoreDto> list = service.getAllWithType(accounttype);
 		Map map = new HashMap();
 		map.put("storelist",list);
 		return map;
-		
 	}
-	
+
 	//2.로그인
 	@PostMapping("/login")
 	public Map login(String storeid, String pwd){
@@ -106,9 +111,11 @@ public class StoreController {
 	//3. 전체조회(지점 전체 조회)
 	@GetMapping("")
 	public Map getAll() {
+		System.out.println("Get1");
 		ArrayList<StoreDto> list = service.getAll();
 		Map map = new HashMap();
 		map.put("storelist", list);
+		System.out.println(list);
 		return map;
 	}
 	
@@ -117,7 +124,7 @@ public class StoreController {
 		public Map getByid(@PathVariable("storeid") String storeid) {
 			StoreDto dto = service.getById(storeid);
 			Map map = new HashMap();
-			map.put("storelist", dto);
+			map.put("dto", dto);
 			return map;
 		}
 		
@@ -126,17 +133,7 @@ public class StoreController {
 		public Map getByStorename(@PathVariable("storename") String storename) {
 			ArrayList<StoreDto> list = service.getByStorename(storename);
 			Map map = new HashMap();
-			map.put("storelist", list);
-			return map;
-		}
-		
-		
-		//3.3 지점하나만 조회(지점명으로 검색/Like로 검색)
-		@GetMapping("/storename/{storename}")
-		public Map getByStorename1(@PathVariable("storename") String storename) {
-			ArrayList<StoreDto> list = service.getByStorename(storename);
-			Map map = new HashMap();
-			map.put("storelist", list);
+			map.put("list", list);
 			return map;
 		}
 	
@@ -178,24 +175,8 @@ public class StoreController {
 	}
 
 
-	
-	// 매니저 이름으로 기본키 찾는 메서드
-	 @GetMapping("/manager/{managername}")
-	    public String getStoreIdByManagername(@PathVariable String managername) {
-	        String storeid = service.findStoreIdByManagername(managername);
-	        if (storeid != null) {
-	            return storeid;
-	        } else {
-	            return "전송오류";
-	        }
-	    }
-	 
-	 
-	 
-
 
 	
 	
-
 }
 

@@ -46,16 +46,13 @@ public class ProductController {
 		System.out.println("임시 파일이 생성되는 경로: " + tempDir);
 		File dir = new File(path);
 		dir.mkdir();
-		System.out.println(dir);
 		MultipartFile F = dto.getPimg();
 		String img = "";
 		String fname = F.getOriginalFilename();
 		if (fname != null && !fname.equals("")) {
-			System.out.println(fname);
 			String newpath = dir.getAbsolutePath()+"/"+fname;
 			System.out.println(dir.getAbsolutePath());
 			File newfile = new File(newpath);
-			System.out.println(newpath);
 			try {
 				F.transferTo(newfile);
 				img=newpath;
@@ -81,7 +78,6 @@ public class ProductController {
 		System.out.println(dlist);
 		Map map = new HashMap<>();	
 		map.put("list", dlist);
-		System.out.println(map);
 		return map;
 	}
 	
@@ -122,12 +118,10 @@ public class ProductController {
 	public ResponseEntity<byte[]> read_img(@PathVariable("num") int num){
 		String fname= "";
 		ProductDto dto= service.getById(num);
-		System.out.println(dto);
 		fname=dto.getProductimg();
 		ResponseEntity<byte[]> result = null; //선언
 		try {
 			fname = URLDecoder.decode(fname, "utf-8");
-			System.out.println(fname);
 			File f = new File(fname);
 			HttpHeaders header = new HttpHeaders(); //HttpHeaders 객체 생성
 			header.add("Content-Type", Files.probeContentType(f.toPath()));//응답 데이터의 종류를 설정

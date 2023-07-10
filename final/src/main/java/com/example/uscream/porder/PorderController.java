@@ -26,7 +26,6 @@ public class PorderController {
 
 	@PostMapping()
 	public Map order(@RequestBody PorderDto[] dto) {
-		System.out.println(dto);
 		int ordercnt = service.save(dto);
 		Map map = new HashMap();
 		map.put("ordercnt", ordercnt);
@@ -39,7 +38,6 @@ public class PorderController {
 		ArrayList<PorderDto> dlist = service.getAll();
 		Map map = new HashMap();
 		map.put("orderlist", dlist);
-		System.out.println(dlist);
 		return map;
 
 	}
@@ -47,12 +45,9 @@ public class PorderController {
 	@GetMapping("/detail/{storeid}/{orderdate}")
 	public Map getByOrdernum(@PathVariable("storeid") String storeid, @PathVariable("orderdate") String orderdate) {
 		String ordernum = orderdate + "#" + storeid;
-		System.out.println(ordernum);
 		ArrayList<PorderDto> dlist = service.getByOrderNum(ordernum);
 		Map map = new HashMap();
-		System.out.println(dlist);
 		map.put("Storeorder", dlist);
-		System.out.println(map);
 		return map;
 
 	}
@@ -90,10 +85,8 @@ public class PorderController {
 	@GetMapping("/orderlist")
 	public Map getOrderLsit() {
 		ArrayList<Map<String, String>> orderlist = service.getOrdernum();
-		System.out.println("orderlist:" + orderlist);
 		Map<String, Object> map = new HashMap();
 		map.put("orderlist", orderlist);
-		System.out.println("map" + map);
 		return map;
 
 	}
@@ -106,12 +99,9 @@ public class PorderController {
 
 	@GetMapping("/orderlist/{store}")
 	public Map getStoreOrderLsit(@PathVariable("store") String store) {
-		System.out.println(store);
 		ArrayList<Map<String, String>> orderlist = service.getStoreOrderlist(store);
-		System.out.println("orderlist:" + orderlist);
 		Map<String, Object> map = new HashMap();
 		map.put("orderlist", orderlist);
-		System.out.println("map" + map);
 		return map;
 
 	}
@@ -119,7 +109,6 @@ public class PorderController {
 	@GetMapping("/ordercost/{storeid}/{year}/{month}")
 	public Map getMonthlyOrderCost(@PathVariable("storeid") String storeid, @PathVariable("year") int year,
 			@PathVariable("month") int month) {
-		System.out.println(storeid + year+ month);
 		
 		ArrayList<Map<String, String>> monthlyorder = service.getMonthlyOrderCost(storeid, year, month);
 		Map<String, Object> map = new HashMap();

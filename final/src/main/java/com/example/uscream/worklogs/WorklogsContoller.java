@@ -62,11 +62,18 @@ public class WorklogsContoller {
 						dto.getStarttime(), dto.getEndtime());
 
 				if (arr.length > 2) {
+					
+					dto.setLatetime(arr[0]);
+					// -로 뜨지만 이렇게 만들어줬다.
+					// 왜냐하면 초과 근무 시간도 만들어줄려고
+					
+					/*
 					if (arr[0] > 0) { // 만약 늦었으면 늦은 시간을 넣어주고
 						dto.setLatetime(arr[0]);
 					} else { // 늦지 않으면 음수로(ex.-15) 뜨기 때문에 0으로 넣어줬다.
 						dto.setLatetime(0);
 					}
+					*/
 
 					dto.setAlltime(arr[2] - dto.getLatetime() + arr[1]); // 총 일 한 시간을 계산해서 넣어주기
 					dto.setStoreid(dto.getEmp().getStoreid()); // emp를 참조하여 업데이트 해주기

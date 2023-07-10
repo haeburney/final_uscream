@@ -19,15 +19,16 @@ public class SellingService {
  
 	 
 	// 판매내역 저장  
-	public SellingDto save(String sotreid,int sellproductnum,int cnt,int sellingprice) {
+	public SellingDto save(String sotreid,int sellproductnum,int cnt) {
 	      Store store = new Store(sotreid, "", "", "", 0, "", 0, 0);
 	      System.out.println(store);
-	      SellProduct sellproduct = new SellProduct(sellproductnum,"",sellingprice);
+	      SellProduct sellproduct = new SellProduct(sellproductnum,"",0);
 	      System.out.println(sellproduct);
 	      Selling entity = dao.save(new Selling(0, sellproduct,store,null,cnt, 0));
 	      SellingDto dto = new SellingDto(entity.getSellingnum(),entity.getSellproduct(),entity.getStoreid(),entity.getSellingdate(),entity.getSellingcnt(),entity.getSellingprice());
 	      return dto;
 	   }
+	
 	
 	// 판매내역 전체 검색 
 	public ArrayList<SellingDto> getAll() {
@@ -146,12 +147,6 @@ public class SellingService {
 		ArrayList<Map<String, Object[]>> list = dao.findByMonthRank3Store();
 		return list;
 	}
-	
-	// 월간 매출 TOP5 지점
-	public ArrayList<Map<String, Object[]>> getByMonthlyRank5(int year, int month) {
-		ArrayList<Map<String, Object[]>> list = dao.findByMonthRank5Store(year, month);
-		return list;
-	}
-	
+
 }
 

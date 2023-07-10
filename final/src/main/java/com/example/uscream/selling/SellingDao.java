@@ -177,26 +177,6 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
             ") r " +
             "ORDER BY r.sellingyear, r.sellingmonth, r.rank", nativeQuery = true)
 	ArrayList<Map<String, Object[]>> findByMonthRankStore();
-
-	// 전체 기간 월간 매출 TOP5 랭킹 (연도, 월 조회)
-	@Transactional
-    @Query(value = "SELECT r.sellingyear, r.sellingmonth, r.storeid, r.storename, r.totalprice, r.rank " +
-            "FROM (" +
-            "   SELECT EXTRACT(YEAR FROM se.sellingdate) AS sellingyear, EXTRACT(MONTH FROM se.sellingdate) AS sellingmonth, se.storeid, st.storename, " +
-            "          SUM(se.sellingprice) AS totalprice, " +
-            "          ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate) " +
-            "                             ORDER BY SUM(se.sellingprice) DESC) AS rank " +
-            "   FROM Selling se " +
-            "   JOIN Store st ON se.storeid = st.storeid " +
-            "   WHERE EXTRACT(YEAR FROM se.sellingdate) = :year " +
-            "   AND EXTRACT(MONTH FROM se.sellingdate) = :month " +
-            "   GROUP BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate), se.storeid, st.storename" +
-            ") r " +
-            "WHERE r.rank <=5 " + 
-            "ORDER BY r.sellingyear, r.sellingmonth, r.rank", nativeQuery = true)
-	ArrayList<Map<String, Object[]>> findByMonthRank5Store(
-			@Param("year") int year,
-			@Param("month") int month);
 	
 
 	// 일간 매출 TOP3 지점
