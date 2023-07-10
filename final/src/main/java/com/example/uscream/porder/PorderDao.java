@@ -43,9 +43,11 @@ public interface PorderDao extends JpaRepository<Porder, Integer>{
 	        + "GROUP BY p.ordernum, p.store, CASE "
 	        + "    WHEN p.checkconfirm = 0 THEN '처리중' "
 	        + "    WHEN p.checkconfirm IN (1, 2) THEN '처리완료' "
-	        + "END"
+	        + "END "
+	        + "ORDER BY TO_CHAR(MIN(p.orderdate), 'YYYYMMDD') DESC"
 	        , nativeQuery = true)
-    ArrayList<Map<String, String>> findDistinctOrdernums();
+	ArrayList<Map<String, String>> findDistinctOrdernums();
+
 	
 	@Modifying
 	@Transactional

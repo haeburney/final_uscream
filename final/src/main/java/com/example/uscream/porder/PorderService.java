@@ -64,7 +64,6 @@ public class PorderService {
 	
 	public ArrayList<PorderDto> getByOrderNum(String ordernum){
 		ArrayList<Porder> list = dao.findByOrdernumOrderByTempnum(ordernum);
-		System.out.println(list);
 		return change(list);
 	}	
 	public ArrayList<Map<String, String>> getStoreOrderlist(String store){
