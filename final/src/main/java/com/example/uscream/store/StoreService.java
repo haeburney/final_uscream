@@ -17,10 +17,12 @@ public class StoreService {
 	private ArrayList<StoreDto> change(ArrayList<Store> list){
 		ArrayList<StoreDto> slist = new ArrayList<StoreDto>();
 		for(Store entity:list) {
-			slist.add(new StoreDto(entity.getStoreid(),entity.getManagername(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getStoreimg(),entity.getX(),entity.getY(),null));
+			slist.add(new StoreDto(entity.getStoreid(),entity.getStorename(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getStoreimg(),entity.getX(),entity.getY(),null));
 		}
 		return slist;
 	}
+	
+	
 	
 	
 	
@@ -48,13 +50,23 @@ public class StoreService {
 	
 	// 4. 지점정보확인(1개_지점명으로 검색)
 		public ArrayList<StoreDto> getByStorename(String storename) {
-		ArrayList<Store> entity = dao.findByStorenameLike("%"+storename+"%");
+		ArrayList<Store> entity = dao.findByStorenameLike("%" + storename + "%");
+		System.out.println(entity);
 		ArrayList<StoreDto> slist = new ArrayList<StoreDto>();
+		System.out.println(slist);
 		for(Store s: entity) {
 			slist.add(new StoreDto(s.getStoreid(),s.getStorename(),s.getPwd(),s.getManagername(),s.getAccounttype(),s.getStoreimg(),s.getX(),s.getY(),null));
 		}		
 		return slist;
 	}
+		
+		
+		
+		
+		ArrayList<StoreDto> getAllWithType(int accounttype) {
+			ArrayList<Store> list = (ArrayList<Store>) dao.findByAccounttype(accounttype);
+			return change(list);
+		}
 		
 		
 		
@@ -69,6 +81,32 @@ public class StoreService {
 	public void deleteStore(String storeid) {
 		dao.deleteById(storeid);
 	}
+	
+	 public String findStoreIdByManagername(String managername) {
+	        Store store = dao.findByManagername(managername);
+	        if (store != null) {
+	            return store.getStoreid();
+	        }
+	        
+	        return null;
+	    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	
 }

@@ -54,6 +54,7 @@ public class MsgService {
 	
 	public MsgDto saveTemp(MsgDto msgdto) {
 		msgdto.setTempcheck(true);
+		msgdto.setReadcheck(true);
 		msgdto.setReal(true);
 		
 		Msg msg = dao.save(new Msg(msgdto.getMsgnum(), msgdto.getSender(), msgdto.getReceiver(), msgdto.getTitle(),
@@ -406,7 +407,42 @@ public class MsgService {
 			return dtolist;
 		}
 		
-		
+		//휴지통에서 제목으로 검색 
+		public ArrayList<MsgDto> FindDelMsg(String sender, String receiver, String title) {
+			
+			ArrayList<Msg> msglist = dao.findByTitleSender(sender, title);
+			ArrayList<Msg> msglist2 = dao.findByTitleReceiver(receiver, title);
+			
+			ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+			for (Msg msg : msglist) {
+				dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+						msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+						msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+			}
+			for (Msg msg : msglist2) {
+				dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+						msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+						msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+
+			}
+			 Collections.sort(dtolist, new Comparator<MsgDto>() {
+			        @Override
+			        public int compare(MsgDto msg1, MsgDto msg2) {
+			            try {
+			                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd HH:mm");
+			                LocalDateTime dateTime1 = LocalDateTime.parse(msg1.getMsgdate(), formatter);
+			                LocalDateTime dateTime2 = LocalDateTime.parse(msg2.getMsgdate(), formatter);
+			                return dateTime2.compareTo(dateTime1);
+			            } catch (DateTimeParseException e) {
+			               
+			                return 0; 
+			            }
+			        }
+			    });
+			 
+			
+			return dtolist ;
+		}
 		
 		//휴지통 완전 삭제
 		public void deleteReal(int num) {
