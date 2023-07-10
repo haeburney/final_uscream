@@ -39,15 +39,14 @@ public class VocController {
 	public Map add(VocDto dto) {
 	    Map map = new HashMap<>();
 	    boolean flag = true;
-	    VocDto dto2 = null;
-	    System.out.println(dto2);
-	    try {
-	        dto2 = service.save(dto);
-	    } catch(Exception e) {
-	        flag = false;
+	    VocDto dto2 = service.save(dto);
+	    
+	    if(dto2 != null) {
+	    	flag = false;
+	    	
+	    	map.put("dto2", dto2);
 	    }
-	    map.put("dto2", dto2);
-	    map.put("flag", flag);
+	    map.put("flag", flag);	
 	    
 	    return map;
 	}
@@ -107,6 +106,16 @@ public class VocController {
 		return map;
 	}
 	
+	@PutMapping("/checkedit/{vocnum}")
+	public Map checkedit(@PathVariable("vocnum") int vocnum, VocDto dto) {
+		VocDto v = service.getById(vocnum);
+		v.setVoccheck(1);
+		VocDto v2 = service.save(v);
+		Map map = new HashMap();
+		map.put("voc", v2);
+		
+		return map;
+	}
 	
 	//삭제
 	@DeleteMapping("/del/{vocnum}")
