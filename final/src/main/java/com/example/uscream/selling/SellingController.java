@@ -23,16 +23,16 @@ public class SellingController {
 	// 판매내역 추가
 	@PostMapping("/add") //
 	public Map add(TempDto dto) {
-		System.out.println(dto);
-		String storeid = dto.getStoreid();
-		int sellproductnum = dto.getSellproductnum();
-		int sellingcnt = dto.getSellingcnt();
-		int sellingprice = dto.getSellingprice();
-		SellingDto list = service.save(storeid,sellproductnum,sellingcnt,sellingprice);
-		Map map = new HashMap();
-		map.put("list", list);
-		return map; 
-	}
+	     System.out.println(dto);
+	     String storeid = dto.getStoreid();
+	     int sellproductnum = dto.getSellproductnum();
+	     int sellingcnt = dto.getSellingcnt();
+	     SellingDto list = service.save(storeid,sellproductnum,sellingcnt);
+	     Map map = new HashMap();
+	     map.put("list", list);
+	     return map; 
+	   }
+	
 	
 	// 전체 판매내역 검색
 	@GetMapping("")	//
@@ -184,15 +184,6 @@ public class SellingController {
 	@GetMapping("/monthlyrank3") // 
 	public Map getByMonthlyRank3() {
 		ArrayList<Map<String, Object[]>> list = service.getByMonthlyRank3();
-		Map map = new HashMap();
-		map.put("list", list);
-		return map; 
-	}
-	
-	// 월간 매출 TOP5 지점
-	@GetMapping("/monthlyrank5/{year}/{month}") // 
-	public Map getByMonthlyRank5(@PathVariable("year") int year, @PathVariable("month") int month) {
-		ArrayList<Map<String, Object[]>> list = service.getByMonthlyRank5(year, month);
 		Map map = new HashMap();
 		map.put("list", list);
 		return map; 

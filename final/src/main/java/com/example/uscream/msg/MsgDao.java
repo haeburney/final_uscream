@@ -18,12 +18,6 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value = "select * from msg where sender=:StroeDto.storeid and receiver=:StoreDto.storeid and real=1 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
 	Msg findByNames(@Param("StoreDto.storeid") String sender,@Param("StoreDto.storeid") String receiver);
 	
-	@Query(value = "select * from msg where sender = :sender and title like '%'||:text||'%' and real = 1 and delcheck=1 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
-	ArrayList<Msg> findByTitleSender(@Param("sender") String sender, @Param("text") String text);
-
-	@Query(value = "select * from msg where receiver = :receiver and title like '%'||:text||'%' and real = 0 and delcheck=1 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc", nativeQuery = true)
-	ArrayList<Msg> findByTitleReceiver(@Param("receiver") String receiver, @Param("text") String text);
-	
 	
 	
 //	========================== boolean 값 변경 -시작-
@@ -204,13 +198,6 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	ArrayList<Msg> findAllByDelAndReceiveMsg(@Param("StoreDto.storeid") String receiver);
 	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and delcheck=1 ", nativeQuery = true)
 	ArrayList<Msg> findAllByDelAndSendMsg(@Param("StoreDto.storeid") String sender);
-	
-	
-	
-	
-	
-	
-	
 	
 	// 완전삭제
 	@Modifying
