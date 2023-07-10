@@ -48,8 +48,9 @@ public class Selling {
 	public void calculateSellingPrice() {
 		int sellproductprice = sellproduct.getSellproductprice();
 		sellingprice = sellproductprice * sellingcnt;
+		sellingdate = new Date();
 	}
 	
-
+	
 }
 

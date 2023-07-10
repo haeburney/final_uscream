@@ -15,4 +15,5 @@ public class TempDto {
    private String storeid;
    private int sellproductnum;
    private int sellingcnt;
+   private int sellingprice;
 }
