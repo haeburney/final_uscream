@@ -8,5 +8,5 @@ public interface StoreDao extends JpaRepository<Store, String> {
 
 	ArrayList<Store> findByStorenameLike(String storename);
 	ArrayList<Store> findByManagernameContaining(String managername);
-	
+	Store findByManagername(String managername);
 }
