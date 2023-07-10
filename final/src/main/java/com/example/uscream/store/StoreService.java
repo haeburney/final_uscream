@@ -81,6 +81,32 @@ public class StoreService {
 	public void deleteStore(String storeid) {
 		dao.deleteById(storeid);
 	}
+	
+	 public String findStoreIdByManagername(String managername) {
+	        Store store = dao.findByManagername(managername);
+	        if (store != null) {
+	            return store.getStoreid();
+	        }
+	        
+	        return null;
+	    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	
 }
