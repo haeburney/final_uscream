@@ -57,6 +57,11 @@ public class StoreService {
 	}
 		
 		
+		ArrayList<StoreDto> getAllWithType(int accounttype) {
+			ArrayList<Store> list = (ArrayList<Store>) dao.findByAccounttype(accounttype);
+			return change(list);
+		}
+		
 		
 	//지점정보확인(1개_지점명으로 검색)
 //		public StoreDto getByStorename(String storename) {
