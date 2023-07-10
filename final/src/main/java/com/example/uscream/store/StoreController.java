@@ -83,6 +83,15 @@ public class StoreController {
 	}
 	
 	
+
+	@GetMapping("/accounttype/{accounttype}")
+	public Map getByAccounttype(@PathVariable("accounttype") int accounttype) {
+		ArrayList<StoreDto> list = service.getAllWithType(accounttype);
+		Map map = new HashMap();
+		map.put("storelist",list);
+		return map;
+	}
+
 	//2.로그인
 	@PostMapping("/login")
 	public Map login(String storeid, String pwd){
