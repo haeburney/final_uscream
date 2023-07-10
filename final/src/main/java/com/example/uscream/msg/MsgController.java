@@ -48,6 +48,7 @@ public class MsgController {
 	//메일 작성
 	@PostMapping("")
 	public Map sendMsg(MsgDto dto) {
+		System.out.println("1."+ dto);
 		Map map = new HashMap();
 		File dir = new File(path+"/"+"msgfile");   
 		dir.mkdir();										
@@ -78,11 +79,12 @@ public class MsgController {
 		
 		if(dto.getReceiver()==null) {
 		
-			
+			System.out.println("2. if ");
 			map.put("dto",null);
 		}
 		else {
 			
+			System.out.println("3.  " );
 			service.save(dto);
 			map.put("dto", dto);
 			
@@ -98,6 +100,7 @@ public class MsgController {
 	// 임시보관 메일 작성
 		@PostMapping("/temp")
 		public Map sendTempMsg(MsgDto dto) {
+			System.out.println("1. "+dto);
 			File dir = new File(path+"/"+"msgfile");   
 			dir.mkdir();										
 			
@@ -125,6 +128,7 @@ public class MsgController {
 			}
 			}
 			
+			System.out.println("2. "+dto);
 			service.saveTemp(dto);
 			
 			
@@ -213,7 +217,6 @@ public class MsgController {
 	
 		
 		ArrayList<MsgDto> msglist = service.selectAllReceiveMsg(store.getStoreid());
-		
 		
 		Map map = new HashMap();
 		map.put("countByReadReceiveMsg",countByReadReceiveMsg);
@@ -456,6 +459,17 @@ public class MsgController {
 			
 		return map;
 	}
+	// 휴지통 검색
+	@GetMapping("/del/search/{sender}/{receiver}/{title}")
+	public Map getMsgDelPage(@PathVariable("sender") String sender,@PathVariable("receiver") String receiver, 
+			@PathVariable("title") String title ) {
+		Map map = new HashMap();
+		ArrayList<MsgDto> msglist = service.FindDelMsg(sender,receiver,title);
+		map.put("msglist", msglist);
+		
+		return map;
+	}
+	
 	
 	
 	//완전 삭제
