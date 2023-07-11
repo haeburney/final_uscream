@@ -176,6 +176,21 @@ public class StoreController {
 		return result;
 	}
 
+	
+	
+	
+	// 매니저 이름으로 기본키 찾는 메서드
+		 @GetMapping("/manager/{managername}")
+		    public String getStoreIdByManagername(@PathVariable String managername) {
+		        String storeid = service.getStoreIdByManagername(managername);
+		        if (storeid != null) {
+		        	System.out.println(storeid);
+		            return storeid;
+		        } else {
+		            return "전송오류";
+		        }
+		    }
+		 
 
 
 	

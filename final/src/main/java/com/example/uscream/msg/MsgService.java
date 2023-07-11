@@ -55,7 +55,7 @@ public class MsgService {
 	public MsgDto saveTemp(MsgDto msgdto) {
 		msgdto.setTempcheck(true);
 		msgdto.setReal(true);
-		
+		msgdto.setReadcheck(true);
 		Msg msg = dao.save(new Msg(msgdto.getMsgnum(), msgdto.getSender(), msgdto.getReceiver(), msgdto.getTitle(),
 				msgdto.getMsgdate(), msgdto.getContent(), msgdto.getMsgfile(), msgdto.getReply(), msgdto.isMark(),
 				msgdto.isTempcheck(), msgdto.isReadcheck(), msgdto.isDelcheck(), msgdto.isReal()));
@@ -336,14 +336,8 @@ public class MsgService {
 	            }
 	        }
 	    });
-	 
-		
-		
-		
 		return dtolist;
 	}
-	
-	
 	
 	//DelMsg
 	
@@ -372,9 +366,6 @@ public class MsgService {
 		public ArrayList<MsgDto> selectAllDelMsg(String sender, String receiver) {
 		ArrayList<Msg> msglist = dao.findAllByDelAndReceiveMsg(receiver);
 		ArrayList<Msg> msglist2 = dao.findAllByDelAndSendMsg(sender);
-		
-	
-		
 		ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
 			for (Msg msg : msglist) {
 				dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
@@ -396,7 +387,6 @@ public class MsgService {
 			                LocalDateTime dateTime2 = LocalDateTime.parse(msg2.getMsgdate(), formatter);
 			                return dateTime2.compareTo(dateTime1);
 			            } catch (DateTimeParseException e) {
-			               
 			                return 0; 
 			            }
 			        }
@@ -425,11 +415,7 @@ public class MsgService {
 		public int deleteAll(String name) {
 			int number1 =dao.deleteAllByReceiveMsg(name);
 			int number2 =dao.deleteAllBySendMsg(name);
-			
-			
 			return number1+number2;
 			
 		}
-		
-
 }
