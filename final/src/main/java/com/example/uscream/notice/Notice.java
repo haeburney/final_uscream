@@ -30,9 +30,10 @@ public class Notice {
 	private int noticenum;
 	
 	private String title;
+	
 	@Lob
 	@Column(name="content" ,columnDefinition = "CLOB")
-	private long content;
+	private String content;
 
 	private Date wdate;
 	@PrePersist
