@@ -8,4 +8,5 @@ import com.example.uscream.store.Store;
 
 public interface EmpDao extends JpaRepository<Emp, Integer> {
 	 ArrayList<Emp> findByStoreidOrderByJoindateDesc(Store storeid);	// 지점아이디별로 직원 불러오기
+	 ArrayList<Emp> findByStoreidOrderByEmpname(Store storeid);
 }

@@ -56,8 +56,27 @@ public class EmpController {
 			flag = false;
 			e.printStackTrace();
 		}
-		System.out.println("dto :"+dto);
+		//System.out.println("dto :"+dto);
 		map.put("dto", dto);
+		map.put("flag", flag);
+		
+		return map;
+	}
+	
+	// 지점 아이디로 검색 + 이름순
+	@GetMapping("/name/storeid/{storeid}")
+	public Map getByStoreidAndName(@PathVariable("storeid") String storeid) {
+		Map map = new HashMap<>();
+		boolean flag = true;
+		ArrayList<EmpDto> list = new ArrayList<>();
+		
+		try {
+			list = service.getByStoreIdAndName(storeid);
+		} catch ( Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("list", list);
 		map.put("flag", flag);
 		
 		return map;

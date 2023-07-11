@@ -74,4 +74,54 @@ public class WorklogsService {
 
 		return list;
 	}
+	
+	// 지각 + 멤버 보기
+	public ArrayList<WorklogsDto> getByLateTimeAndEmp(int empnum) {
+		Emp e = new Emp(empnum, null, "", null, null, "");
+		ArrayList<Worklogs> list = dao.findByLateTimeAndEmp(empnum);
+		ArrayList<WorklogsDto> dtoList = new ArrayList<WorklogsDto>();
+		for (Worklogs vo : list) {
+			dtoList.add(new WorklogsDto(vo.getWnum(), vo.getEmp(), vo.getStoreid(), vo.getWdate(), vo.getStarttime(),
+					vo.getEndtime(), vo.getAlltime(), vo.getLatetime()));
+		}
+
+		return dtoList;
+	}
+	
+	// 초과 + 멤버 보기
+	public ArrayList<WorklogsDto> getByOverTimeAndEmp(int empnum) {
+		Emp e = new Emp(empnum, null, "", null, null, "");
+		ArrayList<Worklogs> list = dao.findByOverTimeAndEmp(empnum);
+		ArrayList<WorklogsDto> dtoList = new ArrayList<WorklogsDto>();
+		for (Worklogs vo : list) {
+			dtoList.add(new WorklogsDto(vo.getWnum(), vo.getEmp(), vo.getStoreid(), vo.getWdate(), vo.getStarttime(),
+					vo.getEndtime(), vo.getAlltime(), vo.getLatetime()));
+		}
+
+		return dtoList;
+	}
+	
+	// 지각 전체보기
+	public ArrayList<WorklogsDto> getByLateTime(String storeid) {
+		ArrayList<Worklogs> list = dao.findByLateTime(storeid);
+		ArrayList<WorklogsDto> dtoList = new ArrayList<WorklogsDto>();
+		for (Worklogs vo : list) {
+			dtoList.add(new WorklogsDto(vo.getWnum(), vo.getEmp(), vo.getStoreid(), vo.getWdate(), vo.getStarttime(),
+					vo.getEndtime(), vo.getAlltime(), vo.getLatetime()));
+		}
+
+		return dtoList;
+	}
+	
+	// 초과 전체보기
+	public ArrayList<WorklogsDto> getByOverTime(String storeid) {
+		ArrayList<Worklogs> list = dao.findByOverTime(storeid);
+		ArrayList<WorklogsDto> dtoList = new ArrayList<WorklogsDto>();
+		for (Worklogs vo : list) {
+			dtoList.add(new WorklogsDto(vo.getWnum(), vo.getEmp(), vo.getStoreid(), vo.getWdate(), vo.getStarttime(),
+					vo.getEndtime(), vo.getAlltime(), vo.getLatetime()));
+		}
+
+		return dtoList;
+	}
 }

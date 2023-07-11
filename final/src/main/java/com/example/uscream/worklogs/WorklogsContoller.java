@@ -62,18 +62,15 @@ public class WorklogsContoller {
 						dto.getStarttime(), dto.getEndtime());
 
 				if (arr.length > 2) {
-					
+
 					dto.setLatetime(arr[0]);
 					// -로 뜨지만 이렇게 만들어줬다.
 					// 왜냐하면 초과 근무 시간도 만들어줄려고
-					
+
 					/*
-					if (arr[0] > 0) { // 만약 늦었으면 늦은 시간을 넣어주고
-						dto.setLatetime(arr[0]);
-					} else { // 늦지 않으면 음수로(ex.-15) 뜨기 때문에 0으로 넣어줬다.
-						dto.setLatetime(0);
-					}
-					*/
+					 * if (arr[0] > 0) { // 만약 늦었으면 늦은 시간을 넣어주고 dto.setLatetime(arr[0]); } else { //
+					 * 늦지 않으면 음수로(ex.-15) 뜨기 때문에 0으로 넣어줬다. dto.setLatetime(0); }
+					 */
 
 					dto.setAlltime(arr[2] - dto.getLatetime() + arr[1]); // 총 일 한 시간을 계산해서 넣어주기
 					dto.setStoreid(dto.getEmp().getStoreid()); // emp를 참조하여 업데이트 해주기
@@ -156,7 +153,7 @@ public class WorklogsContoller {
 		map.put("flag", flag);
 		return map;
 	}
-	
+
 	// 직원 아이디로 가져오기
 	@GetMapping("empnum/{empnum}")
 	public Map getByEmpnum(@PathVariable("empnum") int empnum) {
@@ -165,7 +162,7 @@ public class WorklogsContoller {
 		ArrayList<WorklogsDto> list = new ArrayList<WorklogsDto>();
 		try {
 			list = wlService.getByEmp(empnum);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			flag = false;
 			e.printStackTrace();
 		}
@@ -208,6 +205,78 @@ public class WorklogsContoller {
 			e.printStackTrace();
 		}
 
+		map.put("flag", flag);
+		return map;
+	}
+
+	// 지각 + 멤버별
+	@GetMapping("/latetime/{empnum}")
+	public Map getLateTimeAndEmp(@PathVariable("empnum") int empnum) {
+		Map map = new HashMap();
+		boolean flag = true;
+		ArrayList<WorklogsDto> list = new ArrayList<WorklogsDto>();
+
+		try {
+			list = wlService.getByLateTimeAndEmp(empnum);
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
+
+	// 초과 + 멤버별
+	@GetMapping("/overtime/{empnum}")
+	public Map getOverTimeAndEmp(@PathVariable("empnum") int empnum) {
+		Map map = new HashMap();
+		boolean flag = true;
+		ArrayList<WorklogsDto> list = new ArrayList<WorklogsDto>();
+
+		try {
+			list = wlService.getByOverTimeAndEmp(empnum);
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
+
+	// 지각만
+	@GetMapping("/latetime/storeid/{storeid}")
+	public Map getLateTime(@PathVariable("storeid") String storeid) {
+		Map map = new HashMap();
+		boolean flag = true;
+		ArrayList<WorklogsDto> list = new ArrayList<WorklogsDto>();
+
+		try {
+			list = wlService.getByLateTime(storeid);
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("list", list);
+		map.put("flag", flag);
+		return map;
+	}
+
+	// 초과만
+	@GetMapping("/overtime/storeid/{storeid}")
+	public Map getOverTime(@PathVariable("storeid") String storeid) {
+		Map map = new HashMap();
+		boolean flag = true;
+		ArrayList<WorklogsDto> list = new ArrayList<WorklogsDto>();
+
+		try {
+			list = wlService.getByOverTime(storeid);
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
+		}
+		map.put("list", list);
 		map.put("flag", flag);
 		return map;
 	}
