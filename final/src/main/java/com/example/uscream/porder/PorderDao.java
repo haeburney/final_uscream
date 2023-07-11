@@ -47,6 +47,12 @@ public interface PorderDao extends JpaRepository<Porder, Integer>{
 	        + "ORDER BY TO_CHAR(MIN(p.orderdate), 'YYYYMMDD') DESC"
 	        , nativeQuery = true)
 	ArrayList<Map<String, String>> findDistinctOrdernums();
+	
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * FROM (SELECT * FROM porder WHERE ckeckconfirm = 0 ORDER BY orderdate) WHERE ROWNUM <= 3"
+			, nativeQuery = true)
+	ArrayList<Porder> findNotConfirm();
 
 	
 	@Modifying
@@ -76,6 +82,7 @@ public interface PorderDao extends JpaRepository<Porder, Integer>{
 		    +"GROUP BY EXTRACT(YEAR FROM confirmdate),EXTRACT(MONTH FROM confirmdate), store, checkconfirm"
 			,nativeQuery = true)
 	ArrayList<Map<String, String>> findMonthlyOrderCost(@Param("store") String storeid, @Param("year") int year, @Param("month") int month);
+	
 	
 	
 }
