@@ -36,5 +36,23 @@ public interface WorklogsDao extends JpaRepository<Worklogs, Integer> {
 			, nativeQuery = true)
 	ArrayList<Object[]> findByMonthAndStoreid(@Param("year") int year, @Param("month") int month,  @Param("storeid") String storeid);
 
-
+	// 지각만 보기 + 멤버
+	@Transactional
+	@Query(value = "select * from worklogs where latetime > 0 and emp = :emp order by wdate desc", nativeQuery = true)
+	ArrayList<Worklogs> findByLateTimeAndEmp(@Param("emp") int emp);
+	
+	// 초과만 보기 + 멤버
+	@Transactional
+	@Query(value = "select * from worklogs where latetime < 0 and emp = :emp order by wdate desc", nativeQuery = true)
+	ArrayList<Worklogs> findByOverTimeAndEmp(@Param("emp")int emp);
+	
+	// 지각만 보기
+	@Transactional
+	@Query(value = "select * from worklogs where latetime > 0 and storeid = :storeid order by wdate desc", nativeQuery = true)
+	ArrayList<Worklogs> findByLateTime( @Param("storeid") String storeid);
+	
+	// 초과만 보기
+	@Transactional
+	@Query(value = "select * from worklogs where latetime < 0 and storeid = :storeid order by wdate desc", nativeQuery = true)
+	ArrayList<Worklogs> findByOverTime( @Param("storeid") String storeid);
 }
