@@ -41,6 +41,14 @@ public class PorderController {
 		return map;
 
 	}
+	@GetMapping("/notconfirm")
+	public Map getNotConfirm() {
+		ArrayList<PorderDto> dlist = service.getNotConfirm();
+		Map map = new HashMap();
+		map.put("orderlist", dlist);
+		return map;
+		
+	}
 
 	@GetMapping("/detail/{storeid}/{orderdate}")
 	public Map getByOrdernum(@PathVariable("storeid") String storeid, @PathVariable("orderdate") String orderdate) {
