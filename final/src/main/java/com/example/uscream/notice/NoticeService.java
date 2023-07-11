@@ -59,6 +59,18 @@ public class NoticeService {
 		return list2;
 	}
 	
+	//리스트 3개만 
+   public ArrayList<NoticeDto> getByThree(){
+	      ArrayList<Notice> list = (ArrayList<Notice>) dao.findAllByOrderByNoticenumDesc();
+	      ArrayList<NoticeDto> list2 = new ArrayList<NoticeDto>();
+	      
+	      for(int i=0; i<3;i++) {
+	          Notice n = list.get(i);
+	          list2.add(new NoticeDto(n.getNoticenum(), n.getTitle(), n.getContent(), n.getWdate(), n.getCnt(), n.getImg1(), n.getImg2(), n.getImg3(), null));
+	      }
+	      return list2;
+	   }
+	
 	
 	//삭제
 	public void delNotice(int noticenum) {
