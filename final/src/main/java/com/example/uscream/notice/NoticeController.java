@@ -89,6 +89,23 @@ public class NoticeController {
 		return map;
 	}
 	
+	//리스트 3개만
+	@GetMapping("/three")
+	public Map getThree() {
+	    ArrayList<NoticeDto> list = null;
+	    Map map = new HashMap();
+	    boolean flag = true;
+	    try {
+	        list = service.getByThree();
+	    } catch (Exception e) {
+	        flag= false;
+	        e.printStackTrace();
+	    }
+	    map.put("flag",flag);
+	    map.put("list", list);
+	      
+	    return map;
+	}
 	
 	//수정
 	@PutMapping("/edit/{noticenum}")
