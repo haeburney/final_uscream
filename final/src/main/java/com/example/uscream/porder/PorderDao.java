@@ -50,9 +50,45 @@ public interface PorderDao extends JpaRepository<Porder, Integer>{
 	
 	@Modifying
 	@Transactional
-	@Query(value = "SELECT * FROM (SELECT * FROM porder WHERE ckeckconfirm = 0 ORDER BY orderdate) WHERE ROWNUM <= 3"
+	@Query(value = "SELECT * FROM ("
+		    + "SELECT p.ordernum, SUM(p.ordercost) AS totalcost, TO_CHAR(MIN(p.orderdate), 'YYYYMMDD') AS orderdate, TO_CHAR(MAX(p.confirmdate), 'YYYYMMDD') AS confirmdate, p.store, "
+		    + "CASE "
+		    + "    WHEN p.checkconfirm = 0 THEN '처리중' "
+		    + "    WHEN p.checkconfirm IN (1, 2) THEN '처리완료' "
+		    + "END AS status, "
+		    + "SUM(CASE WHEN p.checkconfirm = 1 THEN p.ordercost ELSE 0 END) AS ordercost "
+		    + "FROM Porder p "
+		    + "WHERE p.checkconfirm = 0 "
+		    + "GROUP BY p.ordernum, p.store, "
+		    + "CASE "
+		    + "    WHEN p.checkconfirm = 0 THEN '처리중' "
+		    + "    WHEN p.checkconfirm IN (1, 2) THEN '처리완료' "
+		    + "END "
+		    + "ORDER BY TO_CHAR(MIN(p.orderdate), 'YYYYMMDD') DESC"
+		    + ") WHERE ROWNUM <= 3"
 			, nativeQuery = true)
-	ArrayList<Porder> findNotConfirm();
+	ArrayList<Map<String, String>> findNotConfirm();
+	
+	@Modifying
+	@Transactional
+	@Query(value = "SELECT * FROM ("
+		    + "SELECT p.ordernum, SUM(p.ordercost) AS totalcost, TO_CHAR(MIN(p.orderdate), 'YYYYMMDD') AS orderdate, TO_CHAR(MAX(p.confirmdate), 'YYYYMMDD') AS confirmdate, p.store, "
+		    + "CASE "
+		    + "    WHEN p.checkconfirm = 0 THEN '처리중' "
+		    + "    WHEN p.checkconfirm IN (1, 2) THEN '처리완료' "
+		    + "END AS status, "
+		    + "SUM(CASE WHEN p.checkconfirm = 1 THEN p.ordercost ELSE 0 END) AS ordercost "
+		    + "FROM Porder p "
+		    + "WHERE p.checkconfirm = 0 and p.store = :storeid "
+		    + "GROUP BY p.ordernum, p.store, "
+		    + "CASE "
+		    + "    WHEN p.checkconfirm = 0 THEN '처리중' "
+		    + "    WHEN p.checkconfirm IN (1, 2) THEN '처리완료' "
+		    + "END "
+		    + "ORDER BY TO_CHAR(MIN(p.orderdate), 'YYYYMMDD') DESC"
+		    + ") WHERE ROWNUM <= 3"
+			, nativeQuery = true)
+	ArrayList<Map<String, String>> findNotConfirmAndStoreid(@Param("storeid") String Stroeid);
 
 	
 	@Modifying
