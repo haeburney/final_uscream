@@ -79,11 +79,8 @@ public class NetsalesController {
 			if (!salesList.isEmpty()) {
 			    Map<String, Object[]> salesData = salesList.get(0);
 			    Object salesDataArray = salesData.get("TOTALPRICE");
-			    if (salesDataArray instanceof Object) {
-			        Object salesValues = (Object) salesDataArray;
-			        if (salesValues instanceof Integer) {
-			            msellingprice = ((Number) salesValues).intValue();
-			        }
+			    if (salesDataArray instanceof Integer) {
+			        msellingprice = (int) salesDataArray;
 			    }
 			}
 
@@ -108,8 +105,7 @@ public class NetsalesController {
 			    Map<String, String> orderData = orderList.get(0);
 			    Object monthlyTotalValueObj = orderData.get("MONTHLY_TOTAL");
 			    if (monthlyTotalValueObj instanceof Integer) {
-			        String monthlyTotalValue = monthlyTotalValueObj.toString();
-			        mordercost = Integer.parseInt(monthlyTotalValue);
+			    	mordercost = (Integer) monthlyTotalValueObj;
 			    }
 			}
 
