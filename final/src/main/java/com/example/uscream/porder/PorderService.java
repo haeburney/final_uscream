@@ -66,9 +66,13 @@ public class PorderService {
 		ArrayList<Porder> list = dao.findByOrdernumOrderByTempnum(ordernum);
 		return change(list);
 	}	
-	public ArrayList<PorderDto> getNotConfirm(){
-		ArrayList<Porder> list = dao.findNotConfirm();
-		return change(list);
+	public ArrayList<Map<String, String>> getNotConfirm(){
+		
+		return  dao.findNotConfirm();
+	}	
+	public ArrayList<Map<String, String>> getNotConfirmAndStoreid(String storeid){
+		
+		return  dao.findNotConfirmAndStoreid(storeid);
 	}	
 	public ArrayList<Map<String, String>> getStoreOrderlist(String store){
 		return  dao.findDistinctOrdernumsByStore(store);
