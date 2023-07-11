@@ -173,15 +173,20 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 		
 	// 모든 즐찾 메세지 조회  1.받은 메세지 중 즐찾 2. 보낸 메세지 중에 즐찾 3. 임시보관 중 즐찾 
 	
-	@Query(value = "select * from msg where receiver=:StoreDto.storeid and real=0 and mark=1", nativeQuery = true)
+	@Query(value = "select * from msg where receiver=:StoreDto.storeid and real=0 and mark=1 and delcheck=0", nativeQuery = true)
 	ArrayList<Msg> findAllByMarkReceiveMsg(@Param("StoreDto.storeid") String receiver);
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and mark=1", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and mark=1 and delcheck=0", nativeQuery = true)
 	ArrayList<Msg> findAllByMarkSendMsg(@Param("StoreDto.storeid") String sender);
-	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and mark=1 and tempcheck=1", nativeQuery = true)
+	@Query(value = "select * from msg where sender=:StoreDto.storeid and real=1 and mark=1 and tempcheck=1 and delcheck=0", nativeQuery = true)
 	ArrayList<Msg> findAllByMarkTempMsg(@Param("StoreDto.storeid") String sender);
 		
+	// 즐찾에서 제목으로 검색 
 	
-	
+	@Query(value = "select * from msg where sender = :sender and title like '%'||:text||'%' and real=1 and mark=1 and delcheck=0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc, title desc", nativeQuery = true)
+	ArrayList<Msg> findMarkByTitleSender(@Param("sender") String sender, @Param("text") String text);
+
+	@Query(value = "select * from msg where receiver = :receiver and title like '%'||:text||'%' and real=0 and mark=1 and delcheck=0 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc, title desc", nativeQuery = true)
+	ArrayList<Msg> findMarkByTitleReceiver(@Param("receiver") String receiver, @Param("text") String text);
 	
 	
 	

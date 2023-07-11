@@ -77,15 +77,6 @@ public class MsgService {
 				msg.isReadcheck(), msg.isDelcheck(), msg.isReal());
 	}
 
-	// 이름을 두 개 받아 메일 하나를 조회하는 메서드 
-	public MsgDto getMsges(String sender, String receiver) {
-		
-		
-		
-		return null;
-	}
-	
-
 	
 
 //	============ boolean 값 변경하는 서비스=============================
@@ -339,6 +330,30 @@ public class MsgService {
 		return dtolist;
 	}
 	
+	// 제목으로 즐겨찾기 글 검색하는 메서드 
+	public ArrayList<MsgDto> getMsgesMarkByTitle(String sender, String receiver, String title) {
+				
+				ArrayList<Msg> msglist  =dao.findMarkByTitleSender(sender, title);
+				ArrayList<Msg> msglist2 =dao.findMarkByTitleReceiver(receiver, title);
+				
+				ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+				for (Msg msg : msglist) {
+					dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+							msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+							msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+				}
+				for (Msg msg : msglist2) {
+					dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+							msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+							msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+				}
+				
+				
+				return dtolist;
+			}
+			
+			
+	
 	//DelMsg
 	
 	// 휴지통에서 읽지 않은 메세지 수와 전체 메세지 수 조회
@@ -395,6 +410,32 @@ public class MsgService {
 			
 			return dtolist;
 		}
+		
+		// 제목으로 휴지통 글 검색하는 메서드 
+		public ArrayList<MsgDto> getMsgesByTitle(String sender, String receiver, String title) {
+			
+			ArrayList<Msg> msglist  =dao.findByTitleSender(sender, title);
+			ArrayList<Msg> msglist2 =dao.findByTitleReceiver(receiver, title);
+			
+			ArrayList<MsgDto> dtolist = new ArrayList<MsgDto>();
+			for (Msg msg : msglist) {
+				dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+						msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+						msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+			}
+			for (Msg msg : msglist2) {
+				dtolist.add(new MsgDto(msg.getMsgnum(), msg.getSender(), msg.getReceiver(), msg.getTitle(),
+						msg.getMsgdate(), msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(),
+						msg.isTempcheck(), msg.isReadcheck(), msg.isDelcheck(), msg.isReal()));
+			}
+			
+			
+			return dtolist;
+		}
+		
+
+		
+		
 		
 		
 		

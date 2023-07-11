@@ -56,12 +56,8 @@ public class MsgController {
 		
 		if(f != null) {
 		String fname = f.getOriginalFilename();			
-		
-		 		  
 		String newpath = path+"/"+"msgfile/"+fname; 
-		
 		File uploadfile = new File(newpath);		
-		
 		try {
 			f.transferTo(uploadfile);					
 			dto.setMsgfile(fname);
@@ -75,18 +71,14 @@ public class MsgController {
 			e.printStackTrace();
 		}
 		}
-		
 		if(dto.getReceiver()==null) {
-		
 			map.put("dto",null);
 		}
 		else {
-			
 			service.save(dto);
 			map.put("dto", dto);
 			
 		}
-		
 		return map;
 	}
 	
@@ -95,19 +87,14 @@ public class MsgController {
 		public Map sendTempMsg(MsgDto dto) {
 			File dir = new File(path+"/"+"msgfile");   
 			dir.mkdir();										
-			
-			MultipartFile f = dto.getMfile();	// 멀티파트파일 감자
-			
+			MultipartFile f = dto.getMfile();	
 			if(f != null) {
-			String fname = f.getOriginalFilename();			//감자 
-			
-			 		  
-			String newpath = path+"/"+"msgfile/"+fname; //실제 파일 경로  
-			
+			String fname = f.getOriginalFilename();			
+			String newpath = path+"/"+"msgfile/"+fname; 
 			File uploadfile = new File(newpath);		
 			
 			try {
-				f.transferTo(uploadfile);	// img 폴더에 파일이 들어간다. 				
+				f.transferTo(uploadfile);	 				
 				dto.setMsgfile(fname);
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
@@ -119,10 +106,7 @@ public class MsgController {
 				e.printStackTrace();
 			}
 			}
-			
 			service.saveTemp(dto);
-			
-			
 			Map map = new HashMap();
 			map.put("dto", dto);
 			return map;
@@ -132,7 +116,6 @@ public class MsgController {
 	@GetMapping("/search/{id}")
 	public Map getReceiver(@PathVariable("id") String id) {
 		Map map = new HashMap();
-		
 		StoreDto dto = storeservice.getById(id);
 		if(dto==null) {
 			map.put("dto", null);
@@ -143,25 +126,17 @@ public class MsgController {
 		return map;
 	}
 		
-		
 	// 답장 페이지에 정보 주기 
 	@GetMapping("/reply/{num}")
 	public Map sendReply(@PathVariable("num") int num) {
-
 		
 		MsgDto dto = service.getMsg(num);
 		MsgDto msgdto = new MsgDto();
-		
-		
-		
 		msgdto.setMsgnum(dto.getMsgnum());
 		msgdto.setSender(dto.getReceiver());
 		msgdto.setReceiver(dto.getSender());
 		msgdto.setReply(dto.getMsgnum());
 		msgdto.setTitle(dto.getTitle());
-		
-		
-		
 		Map map = new HashMap();
 		map.put("msgdto", msgdto);
 		
@@ -195,21 +170,15 @@ public class MsgController {
 		if( countmap == null) {
 			return null;
 		}
-		
 		Long countByReadReceiveMsg= (Long)countmap.get("countByReadReceiveMsg");;
 		if(countByReadReceiveMsg == null) {
 			countByReadReceiveMsg=	0L;
 		}
-		
 		Long countAllByReadReceiveMsg=(Long)countmap.get("countAllByReadReceiveMsg");
 		if(countAllByReadReceiveMsg==null) {
 			countAllByReadReceiveMsg=0L;
 		}
-	
-		
 		ArrayList<MsgDto> msglist = service.selectAllReceiveMsg(store.getStoreid());
-		
-		
 		Map map = new HashMap();
 		map.put("countByReadReceiveMsg",countByReadReceiveMsg);
 		map.put("countAllByReadReceiveMsg",countAllByReadReceiveMsg);
@@ -227,8 +196,6 @@ public class MsgController {
 		map.put("msglist", msglist);
 		
 		return map;
-		
-		
 	}
 	
 	
@@ -276,20 +243,15 @@ public class MsgController {
 		StoreDto store = storeservice.getById(storeid);
 		
 		ArrayList<MsgDto> msglist = service.selectAllMark(store.getStoreid());
-		
 		//전체 수
 		Long CountByMark =(Long)service.countSideBarMarkMsg(store.getStoreid());
-		
 		if(CountByMark ==null) {
 			CountByMark=0L;
 		}
 		Long CountByMarkAndRead =(Long)service.countByReadAndMarkRead(store.getStoreid());
-		
 		if(CountByMarkAndRead ==null) {
 			CountByMarkAndRead=0L;
 		}
-	
-		
 		Map map = new HashMap();
 		map.put("msglist", msglist);
 		map.put("CountByMarkAndRead", CountByMarkAndRead);
@@ -297,29 +259,31 @@ public class MsgController {
 		return map;
 	}	
 	
+	// 즐겨찾기에서 제목으로 검색 
+	@GetMapping("/mark/search/{sender}/{receiver}/{title}")
+	public Map getMarkSearchByTitle(@PathVariable("sender") String sender,@PathVariable("receiver") String receiver,@PathVariable("title") String title) {
+		Map map= new HashMap();
+		ArrayList<MsgDto> msglist = service.getMsgesMarkByTitle(sender, receiver, title);
+		map.put("msglist", msglist);
+		return map;
+	}
+
+	
+	
 	//사이드 바 
 	@GetMapping("/sidebar/{storeid}")
 	public Map getSideBar(@PathVariable("storeid") String storeid) {
 		StoreDto store = storeservice.getById(storeid);
 		
-		
-		
 		Long countSideBarReadMsg = (Long)service.countSideBarReadMsg(store.getStoreid());;
-		
 		if(countSideBarReadMsg == null) {
-			
 			countSideBarReadMsg=0L;
 		}
-		
-		
 		Long countSideBarMarkMsg =  (Long)service.countSideBarMarkMsg(store.getStoreid());
 		if(countSideBarMarkMsg == null) {
 			countSideBarMarkMsg=0L;
 		}
-	
-		
 		Map map = new HashMap();
-		
 		map.put("countSideBarReadMsg", countSideBarReadMsg);
 		map.put("countSideBarMarkMsg", countSideBarMarkMsg);
 		
@@ -338,15 +302,10 @@ public class MsgController {
 			if(countByReadSendMsg ==null) {
 				countByReadSendMsg =0L;					
 			}
-			
 			Long countAllByReadSendMsg= (Long)countmap.get("countAllByReadSendMsg"); ;
 			if(countAllByReadSendMsg ==null) {
 				countAllByReadSendMsg =0L;	
-				
 			}
-			
-
-			
 			Map map = new HashMap();
 			map.put("msglist", msglist);
 			map.put("countByReadSendMsg", countByReadSendMsg);
@@ -360,7 +319,6 @@ public class MsgController {
 		ArrayList<MsgDto> msglist = service.selectByReceiver(sender,receiver);
 			Map map = new HashMap();
 			map.put("msglist", msglist);
-			
 			return map;
 		}
 		
@@ -371,22 +329,16 @@ public class MsgController {
 			
 		StoreDto store = storeservice.getById(storeid);
 		ArrayList<MsgDto> msglist = service.selectAllTempMsg(store.getStoreid());
-		
 		Map countmap = service.countAllByTempMsg(store.getStoreid());
 
 		Long countByReadTempMsg= (Long)countmap.get("countByReadTempMsg"); ;
 		if(countByReadTempMsg ==null) {
 			countByReadTempMsg =0L;	
-			
 		}
-				
 		Long countAllByTempMsg= 	(Long)countmap.get("countAllByTempMsg");
 		if(countAllByTempMsg ==null) {
 			countAllByTempMsg = 0L;
-			
 		}
-		
-		
 		Map map = new HashMap();
 		map.put("countByReadTempMsg", countByReadTempMsg);
 		map.put("countAllByTempMsg", countAllByTempMsg);
@@ -408,53 +360,45 @@ public class MsgController {
 	//	휴지통 인덱스 페이지  (( 객체 확인 작업이 필요 )) 
 	@GetMapping("/del/{sender}/{receiver}")
 	public Map getDelPage(@PathVariable("sender") String sender, @PathVariable("receiver") String receiver ) {
-		
 		StoreDto store1 = storeservice.getById(sender);
 		StoreDto store2 = storeservice.getById(receiver);
 		boolean flag = false;
-		
 		if(store1 !=null) {
 			flag=true;
 		}
-		
 		if(store2 !=null) {
 			flag=true;
 		}
-		
 		ArrayList<MsgDto> msglist = service.selectAllDelMsg(sender,receiver);
-
-		
-		
 		Map countmap = service.countAllByDelMsg(sender,receiver);
-		
-	
 		Long countAllByDelAndReadMsg= (Long)countmap.get("countAllByDelAndReadMsg");
 		if(countAllByDelAndReadMsg == null ) {
-			
 			countAllByDelAndReadMsg=0L;	
 		}
-		
 		Long countAllByDelMsg= (Long)countmap.get("countAllByDelMsg");
 		if(countAllByDelMsg == null ) {
 			countAllByDelMsg=0L; 
 		}
-		
-		
-		
 		Map map = new HashMap();
 		map.put("countAllByDelAndReadMsg", countAllByDelAndReadMsg);
 		map.put("countAllByDelMsg", countAllByDelMsg);
 		map.put("msglist", msglist);
 		map.put("flag", flag);
-			
 		return map;
 	}
 	
+	// 휴지통에서 제목으로 검색 
+	@GetMapping("/del/search/{sender}/{receiver}/{title}")
+	public Map deleteSearchByTitle(@PathVariable("sender") String sender,@PathVariable("receiver") String receiver,@PathVariable("title") String title) {
+		Map map= new HashMap();
+		ArrayList<MsgDto> msglist = service.getMsgesByTitle(sender, receiver, title);
+		map.put("msglist", msglist);
+		return map;
+	}
 	
 	//완전 삭제
 	@DeleteMapping("/del/{msgnum}")
 	public void deleteReal(@PathVariable("msgnum") int num) {
-		
 		service.deleteReal(num);
 	}
 	
@@ -470,13 +414,8 @@ public class MsgController {
 			map.put("flag",flag);
 			map.put("number", number);
 		}
-		
 		map.put("flag", flag);
-		
-		
 		return map;
 	}
-	
-	
 
 }
