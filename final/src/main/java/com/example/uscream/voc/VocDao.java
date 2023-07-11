@@ -14,4 +14,8 @@ public interface VocDao extends JpaRepository<Voc, Integer> {
 	ArrayList<Voc> findByCategory(int category);
 	
 	ArrayList<Voc> findByStoreid(Store storeid);
+	
+	ArrayList<Voc> findAllByOrderByWdateDesc();
+	
+	ArrayList<Voc> findByStoreidOrderByWdateDesc(Store storeid);
 }
