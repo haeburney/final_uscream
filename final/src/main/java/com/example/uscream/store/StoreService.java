@@ -75,5 +75,15 @@ public class StoreService {
 		dao.deleteById(storeid);
 	}
 
+	//매니저 이름으로 storeid찾기 메서드
+	 public String getStoreIdByManagername(String managername) {
+	        Store store = dao.findByManagernameContaining(managername);
+	        if (store != null) {
+	            return store.getStoreid();
+	        }
+	        
+	        return null;
+	    }
+	 
 	
 }
