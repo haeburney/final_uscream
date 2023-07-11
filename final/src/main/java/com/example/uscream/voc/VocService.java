@@ -40,6 +40,31 @@ public class VocService {
 		return list2;
 	}
 	
+	// 3개만 받아오기 + 전체
+	public ArrayList<VocDto> getThree(){
+		ArrayList<Voc> list = (ArrayList<Voc>) dao.findAllByOrderByWdateDesc();
+		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
+		for(int i=0;i<3;i++) {
+			Voc v = list.get(i);
+			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
+			
+		}
+		return list2;
+	}
+	
+	// 3개만 받아오기 + 지점별
+	public ArrayList<VocDto> getThreeAndStoreid(String storeid){
+		Store s = new Store(storeid, "", "", "", 0, "", 0, 0);
+		ArrayList<Voc> list = (ArrayList<Voc>) dao.findByStoreidOrderByWdateDesc(s);
+		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
+		for(int i=0;i<3;i++) {
+			Voc v = list.get(i);
+			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
+			
+		}
+		return list2;
+	}
+	
 	//Id로 검색
 	public VocDto getById(int vocnum) {
 		Voc v = dao.findById(vocnum).orElse(null);

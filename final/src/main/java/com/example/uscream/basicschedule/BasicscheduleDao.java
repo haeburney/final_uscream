@@ -19,6 +19,6 @@ public interface BasicscheduleDao extends JpaRepository<Basicschedule, Integer> 
 	@Query(value = "select * from basicschedule "
 			+ "where extract(year from bsdate) = :year "
 			+ "and extract(month from bsdate) = :month "
-			+ "and emp = :emp order by bsdate desc", nativeQuery = true)
+			+ "and emp = :emp and status = 0 order by bsdate desc", nativeQuery = true)
 	ArrayList<Basicschedule> findByEmpAndMonth(@Param("year") int year, @Param("month") int month, @Param("emp") int emp);
 }

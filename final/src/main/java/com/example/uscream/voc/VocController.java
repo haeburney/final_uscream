@@ -69,6 +69,39 @@ public class VocController {
 		return map;
 	}
 	
+	// 3개만 
+	@GetMapping("/three")
+	public Map listThree() {
+		ArrayList<VocDto> list = null;
+		Map map = new HashMap();
+		boolean flag = true;
+		try {
+			list = service.getThree();
+		} catch(Exception e) {
+			flag = false;
+		}
+		map.put("flag", flag);
+		map.put("list", list);
+		
+		return map;
+	}
+	
+	// 3개만 + 지점별
+	@GetMapping("/three/{storeid}")
+	public Map listThreeStoreid(@PathVariable("storeid") String storeid) {
+		ArrayList<VocDto> list = null;
+		Map map = new HashMap();
+		boolean flag = true;
+		try {
+			list = service.getThreeAndStoreid(storeid);
+		} catch(Exception e) {
+			flag = false;
+		}
+		map.put("flag", flag);
+		map.put("list", list);
+		
+		return map;
+	}
 	
 	//아이디로 검색
 	@GetMapping("/schid/{vocnum}")
