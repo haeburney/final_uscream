@@ -17,7 +17,7 @@ public class StoreService {
 	private ArrayList<StoreDto> change(ArrayList<Store> list){
 		ArrayList<StoreDto> slist = new ArrayList<StoreDto>();
 		for(Store entity:list) {
-			slist.add(new StoreDto(entity.getStoreid(),entity.getManagername(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getStoreimg(),entity.getX(),entity.getY(),null));
+			slist.add(new StoreDto(entity.getStoreid(),entity.getStorename(),entity.getPwd(),entity.getManagername(),entity.getAccounttype(),entity.getStoreimg(),entity.getX(),entity.getY(),null));
 		}
 		return slist;
 	}

@@ -122,18 +122,20 @@ public class StoreController {
 	//3.1 지점하나만 조회
 		@GetMapping("/storeid/{storeid}")
 		public Map getByid(@PathVariable("storeid") String storeid) {
+			System.out.println(storeid);
 			StoreDto dto = service.getById(storeid);
+			System.out.println(dto);
 			Map map = new HashMap();
-			map.put("dto", dto);
+			map.put("storelist", dto);
 			return map;
 		}
 		
 	//3.2 지점하나만 조회(지점명으로 검색)
-		@GetMapping("/{storename}")
+		@GetMapping("/storename/{storename}")
 		public Map getByStorename(@PathVariable("storename") String storename) {
 			ArrayList<StoreDto> list = service.getByStorename(storename);
 			Map map = new HashMap();
-			map.put("list", list);
+			map.put("storelist", list);
 			return map;
 		}
 	
