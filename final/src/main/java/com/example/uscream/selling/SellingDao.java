@@ -212,6 +212,26 @@ public interface SellingDao extends JpaRepository<Selling, Integer> {
             "ORDER BY r.sellingyear, r.sellingmonth, r.rank", nativeQuery = true)
 	ArrayList<Map<String, Object[]>> findByMonthRank3Store();
 	
+	
+	@Transactional
+    @Query(value = "SELECT r.sellingyear, r.sellingmonth, r.storeid, r.storename, r.totalprice, r.rank " +
+            "FROM (" +
+            "   SELECT EXTRACT(YEAR FROM se.sellingdate) AS sellingyear, EXTRACT(MONTH FROM se.sellingdate) AS sellingmonth, se.storeid, st.storename, " +
+            "          SUM(se.sellingprice) AS totalprice, " +
+            "          ROW_NUMBER() OVER (PARTITION BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate) " +
+            "                             ORDER BY SUM(se.sellingprice) DESC) AS rank " +
+            "   FROM Selling se " +
+            "   JOIN Store st ON se.storeid = st.storeid " +
+            "   WHERE EXTRACT(YEAR FROM se.sellingdate) = :year " +
+            "   AND EXTRACT(MONTH FROM se.sellingdate) = :month " +
+            "   GROUP BY EXTRACT(YEAR FROM se.sellingdate), EXTRACT(MONTH FROM se.sellingdate), se.storeid, st.storename" +
+            ") r " +
+            "WHERE r.rank <=5 " + 
+            "ORDER BY r.sellingyear, r.sellingmonth, r.rank", nativeQuery = true)
+	ArrayList<Map<String, Object[]>> findByMonthRank5Store(
+			@Param("year") int year,
+			@Param("month") int month);
+	
 
 }
 
