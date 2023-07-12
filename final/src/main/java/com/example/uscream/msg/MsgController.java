@@ -45,32 +45,38 @@ public class MsgController {
 		this.storeservice = storeservice;
 	}
 	
+
 	//메일 작성
 	@PostMapping("")
 	public Map sendMsg(MsgDto dto) {
 		Map map = new HashMap();
-		File dir = new File(path+"/"+"msgfile");   
+		
+		File dir = new File(path+"msgfile");   
 		dir.mkdir();										
 		
 		MultipartFile f = dto.getMfile();	
 		
 		if(f != null) {
 		String fname = f.getOriginalFilename();			
-		String newpath = path+"/"+"msgfile/"+fname; 
+		String newpath = path+"msgfile/"+fname;
+		
 		File uploadfile = new File(newpath);		
-		try {
+		
+		try {			
 			f.transferTo(uploadfile);					
-			dto.setMsgfile(fname);
+			dto.setMsgfile(fname);		
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		}
+		
+	
+		    
+			
 		if(dto.getReceiver()==null) {
 			map.put("dto",null);
 		}
@@ -112,6 +118,13 @@ public class MsgController {
 			return map;
 		}
 		
+	//네브바 표시용
+	@GetMapping("/nav/{receiver}")
+	public int getCountForNav(@PathVariable("receiver") String receiver) {
+		return service.getCountForNav(receiver);
+	}
+	
+	
 	// 아이디로 행 하나 조회 
 	@GetMapping("/search/{id}")
 	public Map getReceiver(@PathVariable("id") String id) {

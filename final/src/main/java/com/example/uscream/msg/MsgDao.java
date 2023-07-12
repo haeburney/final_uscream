@@ -24,8 +24,9 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value = "select * from msg where receiver = :receiver and title like '%'||:text||'%' and real = 0 and delcheck=1 order by to_date(msgdate, 'yy.MM.dd hh24:MI') desc, title desc", nativeQuery = true)
 	ArrayList<Msg> findByTitleReceiver(@Param("receiver") String receiver, @Param("text") String text);
 	
-
-	
+	// 네브바 빨간 표시
+	@Query(value = "select count(*) from msg where receiver=:receiver and real=0 and delcheck=0 and readcheck=1", nativeQuery = true)
+	int countNav(@Param("receiver") String receiver);
 	
 //	========================== boolean 값 변경 -시작-
 	
@@ -89,7 +90,7 @@ public interface MsgDao extends JpaRepository<Msg, Integer> {
 	@Query(value = "select count(*) from msg where readcheck = 1 and receiver=:StoreDto.storeid and real=0 and delcheck=0", nativeQuery = true)
 	long countByReadReceiveMsg(@Param("StoreDto.storeid") String receiver);
 	// 2. 보낸 메세지에서 읽지 않은 메세지 수
-	@Query(value = "select count(*) from msg where readcheck = 1 and sender=:StoreDto.storeid and real=1 and delcheck=0", nativeQuery = true)
+	@Query(value = "select count(*) from msg where readcheck = 1 and sender=:StoreDto.storeid and real=1 and delcheck=0 and tempcheck=0", nativeQuery = true)
 	long countByReadSendMsg(@Param("StoreDto.storeid") String receiver);
 	// 3. 임시 보관함에서 읽지 않은 메세지 수
 	@Query(value = "select count(*) from msg where readcheck = 1 and tempcheck =1 and sender=:StoreDto.storeid and real=1 and delcheck=0", nativeQuery = true)

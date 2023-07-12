@@ -64,6 +64,11 @@ public class MsgService {
 				msg.getContent(), msg.getMsgfile(), null, msg.getReply(), msg.isMark(), msg.isTempcheck(),
 				msg.isReadcheck(), msg.isDelcheck(), msg.isReal());
 	}
+	
+	//네브바 표시
+	public int getCountForNav(String receiver) {
+		return dao.countNav(receiver);
+	}
 
 	// 메일 하나 조회
 	public MsgDto getMsg(int num) {
