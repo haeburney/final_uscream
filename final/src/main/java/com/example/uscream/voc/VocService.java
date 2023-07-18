@@ -16,18 +16,20 @@ public class VocService {
 	private VocDao dao;
 	
 	//추가 & 수정
-	public VocDto save(VocDto dto) {
-		Voc v = dao.save(new Voc(dto.getVocnum(), dto.getCategory(), dto.getTitle(), dto.getContent(), dto.getVoccheck(), dto.getWdate(), dto.getStoreid(), dto.getImg1()));
-		dto.setVocnum(v.getVocnum());
-		dto.setCategory(v.getCategory());
-		dto.setTitle(v.getTitle());
-		dto.setContent(v.getContent());
-		dto.setVoccheck(v.getVoccheck());
-		dto.setWdate(v.getWdate());
-		dto.setStoreid(v.getStoreid());
-		dto.setImg1(v.getImg1());
+	public VocDto save(VocTempDto dto) {
+		Store store = new Store(dto.getStore(), "", "", "", 0, "", 0, 0);
+		Voc v = dao.save(new Voc(dto.getVocnum(), dto.getCategory(), dto.getTitle(), dto.getContent(), dto.getVoccheck(), dto.getWdate(), store, dto.getImg1()));
+		VocDto d = new VocDto();
+		d.setVocnum(v.getVocnum());
+		d.setCategory(v.getCategory());
+		d.setTitle(v.getTitle());
+		d.setContent(v.getContent());
+		d.setVoccheck(v.getVoccheck());
+		d.setWdate(v.getWdate());
+		d.setStore(store);
+		d.setImg1(v.getImg1());
 		
-		return dto;
+		return d;
 	}
 	
 	//전체 검색
@@ -44,7 +46,7 @@ public class VocService {
 	public ArrayList<VocDto> getThree(){
 		ArrayList<Voc> list = (ArrayList<Voc>) dao.findAllByOrderByWdateDesc();
 		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
-		for(int i=0;i<3;i++) {
+		for(int i=0;i<list.size();i++) {
 			Voc v = list.get(i);
 			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
 			
@@ -54,14 +56,17 @@ public class VocService {
 	
 	// 3개만 받아오기 + 지점별
 	public ArrayList<VocDto> getThreeAndStoreid(String storeid){
-		Store s = new Store(storeid, "", "", "", 0, "", 0, 0);
-		ArrayList<Voc> list = (ArrayList<Voc>) dao.findByStoreidOrderByWdateDesc(s);
+		System.out.println(storeid);
+		
+		ArrayList<Voc> list = (ArrayList<Voc>) dao.findByStoreidOrderByWdateDesc(storeid);
+		System.out.println(list);
 		ArrayList<VocDto> list2 = new ArrayList<VocDto>();
-		for(int i=0;i<3;i++) {
+		for(int i=0;i<list.size();i++) {
 			Voc v = list.get(i);
 			list2.add(new VocDto(v.getVocnum(), v.getCategory(), v.getTitle(), v.getContent(), v.getVoccheck(), v.getWdate(), v.getStoreid(), v.getImg1(), null));
 			
 		}
+		System.out.println(list2);
 		return list2;
 	}
 	

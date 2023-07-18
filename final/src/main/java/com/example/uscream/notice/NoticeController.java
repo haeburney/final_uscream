@@ -1,5 +1,6 @@
 package com.example.uscream.notice;
 
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,6 +17,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -169,6 +171,17 @@ public class NoticeController {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	@PatchMapping("/upcnt/{noticenum}")
+	public Map upcnt(@PathVariable("noticenum") int noticenum) {
+		System.out.println(1);
+		service.upCnt(noticenum);
+		Map map = new HashMap();
+		map.put("cnt", "upcnt");
+		System.out.println(map);
+		return map;
+		
 	}
 	
 }

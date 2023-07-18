@@ -36,13 +36,13 @@ public class VocController {
 	private String path;
 	
 	@PostMapping("")
-	public Map add(VocDto dto) {
+	public Map add(VocTempDto dto) {
 	    Map map = new HashMap<>();
 	    boolean flag = true;
 	    VocDto dto2 = service.save(dto);
 	    
 	    if(dto2 != null) {
-	    	flag = false;
+	    	flag = true;
 	    	
 	    	map.put("dto2", dto2);
 	    }
@@ -94,11 +94,14 @@ public class VocController {
 		boolean flag = true;
 		try {
 			list = service.getThreeAndStoreid(storeid);
+			System.out.println(list);
 		} catch(Exception e) {
+			e.printStackTrace();
 			flag = false;
 		}
 		map.put("flag", flag);
 		map.put("list", list);
+		System.out.println(map);
 		
 		return map;
 	}
@@ -125,30 +128,30 @@ public class VocController {
 	}
 	
 	
-	//수정
-	@PutMapping("/edit/{vocnum}")
-	public Map edit(@PathVariable("vocnum") int vocnum, VocDto dto) {
-		VocDto v = service.getById(vocnum);
-		v.setCategory(dto.getCategory());
-		v.setTitle(dto.getTitle());
-		v.setContent(dto.getContent());
-		VocDto v2 = service.save(v);
-		Map map = new HashMap();
-		map.put("voc", v2);
-		
-		return map;
-	}
-	
-	@PutMapping("/checkedit/{vocnum}")
-	public Map checkedit(@PathVariable("vocnum") int vocnum, VocDto dto) {
-		VocDto v = service.getById(vocnum);
-		v.setVoccheck(1);
-		VocDto v2 = service.save(v);
-		Map map = new HashMap();
-		map.put("voc", v2);
-		
-		return map;
-	}
+//	//수정
+//	@PutMapping("/edit/{vocnum}")
+//	public Map edit(@PathVariable("vocnum") int vocnum, VocDto dto) {
+//		VocDto v = service.getById(vocnum);
+//		v.setCategory(dto.getCategory());
+//		v.setTitle(dto.getTitle());
+//		v.setContent(dto.getContent());
+//		VocDto v2 = service.save(v);
+//		Map map = new HashMap();
+//		map.put("voc", v2);
+//		
+//		return map;
+//	}
+//	
+//	@PutMapping("/checkedit/{vocnum}")
+//	public Map checkedit(@PathVariable("vocnum") int vocnum, VocDto dto) {
+//		VocDto v = service.getById(vocnum);
+//		v.setVoccheck(1);
+//		VocDto v2 = service.save(v);
+//		Map map = new HashMap();
+//		map.put("voc", v2);
+//		
+//		return map;
+//	}
 	
 	//삭제
 	@DeleteMapping("/del/{vocnum}")

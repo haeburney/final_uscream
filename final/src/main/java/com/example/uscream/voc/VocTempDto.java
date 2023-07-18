@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.uscream.store.Store;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,15 +16,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class VocDto {
-
+public class VocTempDto {
 	private int vocnum;
 	private int category;
 	private String title;
 	private String content;
 	private int voccheck;
 	private Date wdate;
-	private Store store;
+	private String store;
 	
 	private String img1;
 	private MultipartFile[] f = new MultipartFile[4];

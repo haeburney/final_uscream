@@ -50,7 +50,7 @@ public class NoticeService {
 	
 	//제목으로 검색
 	public ArrayList<NoticeDto> getByTitle(String title){
-		ArrayList<Notice> list = (ArrayList<Notice>) dao.findByTitleLike(title);
+		ArrayList<Notice> list = (ArrayList<Notice>) dao.findByTitleContaining(title);
 		ArrayList<NoticeDto> list2 = new ArrayList<NoticeDto>();
 		
 		for(Notice n : list) {
@@ -81,5 +81,10 @@ public class NoticeService {
 	//조회수
 	public void editCnt(int noticenum) {
 		dao.updateCnt(noticenum);
+	}
+	
+	public void upCnt(int noticenum) {
+		dao.upCnt(noticenum);
+		
 	}
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,9 +57,10 @@ public class ProductController {
 			try {
 				F.transferTo(newfile);
 				img=newpath;
-			} catch (IllegalStateException | IOException e) {
+			} catch (IllegalStateException | IOException e ) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				System.out.println(1);
 			}
 			
 			} else {
